@@ -58,11 +58,6 @@ static GLFWwindow* window;
 static int joysticks[GLFW_JOYSTICK_LAST + 1];
 static int joystick_count = 0;
 
-static void error_callback(int error, const char* description)
-{
-    fprintf(stderr, "Error: %s\n", description);
-}
-
 static void joystick_callback(int jid, int event)
 {
     if (event == GLFW_CONNECTED)
@@ -343,4 +338,3 @@ int main(void)
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
-

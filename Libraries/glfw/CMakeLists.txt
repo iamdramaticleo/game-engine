@@ -17,20 +17,10 @@ string(COMPARE EQUAL "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}" GLFW_ST
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 option(GLFW_BUILD_EXAMPLES "Build the GLFW example programs" ${GLFW_STANDALONE})
 option(GLFW_BUILD_TESTS "Build the GLFW test programs" ${GLFW_STANDALONE})
-option(GLFW_BUILD_DOCS "Build the GLFW documentation" ON)
 option(GLFW_INSTALL "Generate installation target" ON)
 
 include(GNUInstallDirs)
 include(CMakeDependentOption)
-
-if (GLFW_USE_OSMESA)
-    message(FATAL_ERROR "GLFW_USE_OSMESA has been removed; set the GLFW_PLATFORM init hint")
-endif()
-
-if (DEFINED GLFW_USE_WAYLAND AND UNIX AND NOT APPLE)
-    message(FATAL_ERROR
-        "GLFW_USE_WAYLAND has been removed; delete the CMake cache and set GLFW_BUILD_WAYLAND and GLFW_BUILD_X11 instead")
-endif()
 
 cmake_dependent_option(GLFW_BUILD_WIN32 "Build support for Win32" ON "WIN32" OFF)
 cmake_dependent_option(GLFW_BUILD_COCOA "Build support for Cocoa" ON "APPLE" OFF)
@@ -127,10 +117,6 @@ endif()
 
 if (GLFW_BUILD_TESTS)
     add_subdirectory(tests)
-endif()
-
-if (GLFW_BUILD_DOCS)
-    add_subdirectory(docs)
 endif()
 
 #--------------------------------------------------------------------
