@@ -707,13 +707,7 @@ struct _GLFWplatform
     void (*setWindowOpacity)(_GLFWwindow*,float);
     void (*setWindowMousePassthrough)(_GLFWwindow*,GLFWbool);
     void (*pollEvents)(void);
-    void (*waitEvents)(void);
-    void (*waitEventsTimeout)(double);
-    void (*postEmptyEvent)(void);
-    // EGL
-    EGLenum (*getEGLPlatform)(EGLint**);
-    EGLNativeDisplayType (*getEGLNativeDisplay)(void);
-    EGLNativeWindowType (*getEGLNativeWindow)(_GLFWwindow*);
+
     // vulkan
     void (*getRequiredInstanceExtensions)(char**);
     GLFWbool (*getPhysicalDevicePresentationSupport)(VkInstance,VkPhysicalDevice,uint32_t);
@@ -755,66 +749,6 @@ struct _GLFWlibrary
     } timer;
 
     struct {
-        EGLenum         platform;
-        EGLDisplay      display;
-        EGLint          major, minor;
-        GLFWbool        prefix;
-
-        GLFWbool        KHR_create_context;
-        GLFWbool        KHR_create_context_no_error;
-        GLFWbool        KHR_gl_colorspace;
-        GLFWbool        KHR_get_all_proc_addresses;
-        GLFWbool        KHR_context_flush_control;
-        GLFWbool        EXT_client_extensions;
-        GLFWbool        EXT_platform_base;
-        GLFWbool        EXT_platform_x11;
-        GLFWbool        EXT_platform_wayland;
-        GLFWbool        EXT_present_opaque;
-        GLFWbool        ANGLE_platform_angle;
-        GLFWbool        ANGLE_platform_angle_opengl;
-        GLFWbool        ANGLE_platform_angle_d3d;
-        GLFWbool        ANGLE_platform_angle_vulkan;
-        GLFWbool        ANGLE_platform_angle_metal;
-        GLFWbool        MESA_platform_surfaceless;
-
-        void*           handle;
-
-        PFN_eglGetConfigAttrib      GetConfigAttrib;
-        PFN_eglGetConfigs           GetConfigs;
-        PFN_eglGetDisplay           GetDisplay;
-        PFN_eglGetError             GetError;
-        PFN_eglInitialize           Initialize;
-        PFN_eglTerminate            Terminate;
-        PFN_eglBindAPI              BindAPI;
-        PFN_eglCreateContext        CreateContext;
-        PFN_eglDestroySurface       DestroySurface;
-        PFN_eglDestroyContext       DestroyContext;
-        PFN_eglCreateWindowSurface  CreateWindowSurface;
-        PFN_eglCreatePbufferSurface CreatePbufferSurface;
-        PFN_eglMakeCurrent          MakeCurrent;
-        PFN_eglSwapBuffers          SwapBuffers;
-        PFN_eglSwapInterval         SwapInterval;
-        PFN_eglQueryString          QueryString;
-        PFN_eglGetProcAddress       GetProcAddress;
-
-        PFNEGLGETPLATFORMDISPLAYEXTPROC GetPlatformDisplayEXT;
-        PFNEGLCREATEPLATFORMWINDOWSURFACEEXTPROC CreatePlatformWindowSurfaceEXT;
-    } egl;
-
-    struct {
-        void*           handle;
-
-        PFN_OSMesaCreateContextExt      CreateContextExt;
-        PFN_OSMesaCreateContextAttribs  CreateContextAttribs;
-        PFN_OSMesaDestroyContext        DestroyContext;
-        PFN_OSMesaMakeCurrent           MakeCurrent;
-        PFN_OSMesaGetColorBuffer        GetColorBuffer;
-        PFN_OSMesaGetDepthBuffer        GetDepthBuffer;
-        PFN_OSMesaGetProcAddress        GetProcAddress;
-
-    } osmesa;
-
-    struct {
         GLFWbool        available;
         void*           handle;
         char*           extensions[2];
@@ -831,7 +765,6 @@ struct _GLFWlibrary
 
     struct {
         GLFWmonitorfun  monitor;
-        GLFWjoystickfun joystick;
     } callbacks;
 
     // These are defined in platform.h

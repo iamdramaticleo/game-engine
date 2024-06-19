@@ -639,12 +639,6 @@ GLFWbool _glfwConnectWin32(int platformID, _GLFWplatform* platform)
         .setWindowOpacity = _glfwSetWindowOpacityWin32,
         .setWindowMousePassthrough = _glfwSetWindowMousePassthroughWin32,
         .pollEvents = _glfwPollEventsWin32,
-        .waitEvents = _glfwWaitEventsWin32,
-        .waitEventsTimeout = _glfwWaitEventsTimeoutWin32,
-        .postEmptyEvent = _glfwPostEmptyEventWin32,
-        .getEGLPlatform = _glfwGetEGLPlatformWin32,
-        .getEGLNativeDisplay = _glfwGetEGLNativeDisplayWin32,
-        .getEGLNativeWindow = _glfwGetEGLNativeWindowWin32,
         .getRequiredInstanceExtensions = _glfwGetRequiredInstanceExtensionsWin32,
         .getPhysicalDevicePresentationSupport = _glfwGetPhysicalDevicePresentationSupportWin32,
         .createWindowSurface = _glfwCreateWindowSurfaceWin32
