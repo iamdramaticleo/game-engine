@@ -620,47 +620,6 @@ struct _GLFWcursor
     GLFW_PLATFORM_CURSOR_STATE
 };
 
-// Gamepad mapping element structure
-//
-struct _GLFWmapelement
-{
-    uint8_t         type;
-    uint8_t         index;
-    int8_t          axisScale;
-    int8_t          axisOffset;
-};
-
-// Gamepad mapping structure
-//
-struct _GLFWmapping
-{
-    char            name[128];
-    char            guid[33];
-    _GLFWmapelement buttons[15];
-    _GLFWmapelement axes[6];
-};
-
-// Joystick structure
-//
-struct _GLFWjoystick
-{
-    GLFWbool        allocated;
-    GLFWbool        connected;
-    float*          axes;
-    int             axisCount;
-    unsigned char*  buttons;
-    int             buttonCount;
-    unsigned char*  hats;
-    int             hatCount;
-    char            name[128];
-    void*           userPointer;
-    char            guid[33];
-    _GLFWmapping*   mapping;
-
-    // This is defined in platform.h
-    GLFW_PLATFORM_JOYSTICK_STATE
-};
-
 // Thread local storage structure
 //
 struct _GLFWtls
@@ -785,11 +744,6 @@ struct _GLFWlibrary
     _GLFWmonitor**      monitors;
     int                 monitorCount;
 
-    GLFWbool            joysticksInitialized;
-    _GLFWjoystick       joysticks[GLFW_JOYSTICK_LAST + 1];
-    _GLFWmapping*       mappings;
-    int                 mappingCount;
-
     _GLFWtls            errorSlot;
     _GLFWtls            contextSlot;
     _GLFWmutex          errorLock;
@@ -883,7 +837,6 @@ struct _GLFWlibrary
     // These are defined in platform.h
     GLFW_PLATFORM_LIBRARY_WINDOW_STATE
     GLFW_PLATFORM_LIBRARY_CONTEXT_STATE
-    GLFW_PLATFORM_LIBRARY_JOYSTICK_STATE
 };
 
 // Global state shared between compilation units of GLFW
@@ -978,32 +931,7 @@ void _glfwAllocGammaArrays(GLFWgammaramp* ramp, unsigned int size);
 void _glfwFreeGammaArrays(GLFWgammaramp* ramp);
 void _glfwSplitBPP(int bpp, int* red, int* green, int* blue);
 
-void _glfwInitGamepadMappings(void);
-_GLFWjoystick* _glfwAllocJoystick(const char* name,
-                                  const char* guid,
-                                  int axisCount,
-                                  int buttonCount,
-                                  int hatCount);
-void _glfwFreeJoystick(_GLFWjoystick* js);
 void _glfwCenterCursorInContentArea(_GLFWwindow* window);
-
-GLFWbool _glfwInitEGL(void);
-void _glfwTerminateEGL(void);
-GLFWbool _glfwCreateContextEGL(_GLFWwindow* window,
-                               const _GLFWctxconfig* ctxconfig,
-                               const _GLFWfbconfig* fbconfig);
-#if defined(_GLFW_X11)
-GLFWbool _glfwChooseVisualEGL(const _GLFWwndconfig* wndconfig,
-                              const _GLFWctxconfig* ctxconfig,
-                              const _GLFWfbconfig* fbconfig,
-                              Visual** visual, int* depth);
-#endif /*_GLFW_X11*/
-
-GLFWbool _glfwInitOSMesa(void);
-void _glfwTerminateOSMesa(void);
-GLFWbool _glfwCreateContextOSMesa(_GLFWwindow* window,
-                                  const _GLFWctxconfig* ctxconfig,
-                                  const _GLFWfbconfig* fbconfig);
 
 GLFWbool _glfwInitVulkan(int mode);
 void _glfwTerminateVulkan(void);
