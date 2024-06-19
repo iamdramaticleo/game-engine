@@ -2168,25 +2168,6 @@ void _glfwPollEventsWin32(void)
     }
 }
 
-void _glfwWaitEventsWin32(void)
-{
-    WaitMessage();
-
-    _glfwPollEventsWin32();
-}
-
-void _glfwWaitEventsTimeoutWin32(double timeout)
-{
-    MsgWaitForMultipleObjects(0, NULL, FALSE, (DWORD) (timeout * 1e3), QS_ALLINPUT);
-
-    _glfwPollEventsWin32();
-}
-
-void _glfwPostEmptyEventWin32(void)
-{
-    PostMessageW(_glfw.win32.helperWindowHandle, WM_NULL, 0, 0);
-}
-
 void _glfwGetCursorPosWin32(_GLFWwindow* window, double* xpos, double* ypos)
 {
     POINT pos;

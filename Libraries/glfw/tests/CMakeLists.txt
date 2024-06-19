@@ -29,7 +29,6 @@ add_executable(monitors monitors.c ${GETOPT} ${GLAD_GL})
 add_executable(reopen reopen.c ${GLAD_GL})
 add_executable(cursor cursor.c ${GLAD_GL})
 
-add_executable(empty WIN32 MACOSX_BUNDLE empty.c ${TINYCTHREAD} ${GLAD_GL})
 add_executable(gamma WIN32 MACOSX_BUNDLE gamma.c ${GLAD_GL})
 add_executable(icon WIN32 MACOSX_BUNDLE icon.c ${GLAD_GL})
 add_executable(inputlag WIN32 MACOSX_BUNDLE inputlag.c ${GETOPT} ${GLAD_GL})
@@ -41,22 +40,14 @@ add_executable(title WIN32 MACOSX_BUNDLE title.c ${GLAD_GL})
 add_executable(triangle-vulkan WIN32 triangle-vulkan.c ${GLAD_VULKAN})
 add_executable(window WIN32 MACOSX_BUNDLE window.c ${GLAD_GL})
 
-target_link_libraries(empty Threads::Threads)
 target_link_libraries(threads Threads::Threads)
-if (RT_LIBRARY)
-    target_link_libraries(empty "${RT_LIBRARY}")
-    target_link_libraries(threads "${RT_LIBRARY}")
-endif()
 
-set(GUI_ONLY_BINARIES empty gamma icon inputlag joysticks tearing threads
-    timeout title triangle-vulkan window)
-set(CONSOLE_BINARIES allocator clipboard events msaa glfwinfo iconify monitors
-    reopen cursor)
+set(GUI_ONLY_BINARIES gamma icon inputlag joysticks tearing threads timeout title triangle-vulkan window)
+set(CONSOLE_BINARIES allocator clipboard events msaa glfwinfo iconify monitors reopen cursor)
 
 set_target_properties(${GUI_ONLY_BINARIES} ${CONSOLE_BINARIES} PROPERTIES
                       C_STANDARD 99
                       FOLDER "GLFW3/Tests")
-
 if (MSVC)
     # Tell MSVC to use main instead of WinMain
     set_target_properties(${GUI_ONLY_BINARIES} PROPERTIES
@@ -66,21 +57,3 @@ elseif (CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
     set_target_properties(${GUI_ONLY_BINARIES} PROPERTIES
                           LINK_FLAGS "-Wl,/entry:mainCRTStartup")
 endif()
-
-if (APPLE)
-    set_target_properties(empty PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Empty Event")
-    set_target_properties(gamma PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Gamma")
-    set_target_properties(inputlag PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Input Lag")
-    set_target_properties(joysticks PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Joysticks")
-    set_target_properties(tearing PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Tearing")
-    set_target_properties(threads PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Threads")
-    set_target_properties(timeout PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Timeout")
-    set_target_properties(title PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Title")
-    set_target_properties(window PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Window")
-
-    set_target_properties(${GUI_ONLY_BINARIES} PROPERTIES
-                          MACOSX_BUNDLE_SHORT_VERSION_STRING ${GLFW_VERSION}
-                          MACOSX_BUNDLE_LONG_VERSION_STRING ${GLFW_VERSION}
-                          MACOSX_BUNDLE_INFO_PLIST "${GLFW_SOURCE_DIR}/CMake/Info.plist.in")
-endif()
-

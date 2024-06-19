@@ -580,9 +580,6 @@ void _glfwSetRawMouseMotionWin32(_GLFWwindow *window, GLFWbool enabled);
 GLFWbool _glfwRawMouseMotionSupportedWin32(void);
 
 void _glfwPollEventsWin32(void);
-void _glfwWaitEventsWin32(void);
-void _glfwWaitEventsTimeoutWin32(double timeout);
-void _glfwPostEmptyEventWin32(void);
 
 void _glfwGetCursorPosWin32(_GLFWwindow* window, double* xpos, double* ypos);
 void _glfwSetCursorPosWin32(_GLFWwindow* window, double xpos, double ypos);
