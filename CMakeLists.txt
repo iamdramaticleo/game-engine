@@ -1,2 +1,2 @@
-add_subdirectory(Code)
-add_subdirectory(Libraries)
+add_subdirectory(code)
+add_subdirectory(libraries)

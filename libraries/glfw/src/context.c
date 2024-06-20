@@ -313,18 +313,10 @@ const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired, const _GL
 
 // Retrieves the attributes of the current context
 //
-GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
-                                    const _GLFWctxconfig* ctxconfig)
+GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window, const _GLFWctxconfig* ctxconfig)
 {
     _GLFWwindow* previous;
     const char* version;
-    const char* prefixes[] =
-    {
-        "OpenGL ES-CM ",
-        "OpenGL ES-CL ",
-        "OpenGL ES ",
-        NULL
-    };
 
     window->context.source = ctxconfig->source;
     window->context.client = GLFW_OPENGL_API;
@@ -484,8 +476,7 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
             //       only present from 3.0 while the extension applies from 1.1
 
             GLint strategy;
-            window->context.GetIntegerv(GL_RESET_NOTIFICATION_STRATEGY_ARB,
-                                        &strategy);
+            window->context.GetIntegerv(GL_RESET_NOTIFICATION_STRATEGY_ARB, &strategy);
 
             if (strategy == GL_LOSE_CONTEXT_ON_RESET_ARB)
                 window->context.robustness = GLFW_LOSE_CONTEXT_ON_RESET;
@@ -565,7 +556,6 @@ GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions
 
     return GLFW_TRUE;
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 //////                        GLFW public API                       //////
