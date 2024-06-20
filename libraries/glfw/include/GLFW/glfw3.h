@@ -29,63 +29,6 @@
 #ifndef _glfw3_h_
 #define _glfw3_h_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
-/*************************************************************************
- * Doxygen documentation
- *************************************************************************/
-
-/*! @file glfw3.h
- *  @brief The header of the GLFW 3 API.
- *
- *  This is the header file of the GLFW 3 API.  It defines all its types and
- *  declares all its functions.
- *
- *  For more information about how to use this file, see @ref build_include.
- */
-/*! @defgroup context Context reference
- *  @brief Functions and types related to OpenGL and OpenGL ES contexts.
- *
- *  This is the reference documentation for OpenGL and OpenGL ES context related
- *  functions.  For more task-oriented information, see the @ref context_guide.
- */
-/*! @defgroup vulkan Vulkan support reference
- *  @brief Functions and types related to Vulkan.
- *
- *  This is the reference documentation for Vulkan related functions and types.
- *  For more task-oriented information, see the @ref vulkan_guide.
- */
-/*! @defgroup init Initialization, version and error reference
- *  @brief Functions and types related to initialization and error handling.
- *
- *  This is the reference documentation for initialization and termination of
- *  the library, version management and error handling.  For more task-oriented
- *  information, see the @ref intro_guide.
- */
-/*! @defgroup input Input reference
- *  @brief Functions and types related to input handling.
- *
- *  This is the reference documentation for input related functions and types.
- *  For more task-oriented information, see the @ref input_guide.
- */
-/*! @defgroup monitor Monitor reference
- *  @brief Functions and types related to monitors.
- *
- *  This is the reference documentation for monitor related functions and types.
- *  For more task-oriented information, see the @ref monitor_guide.
- */
-/*! @defgroup window Window reference
- *  @brief Functions and types related to windows.
- *
- *  This is the reference documentation for window related functions and types,
- *  including creation, deletion and event polling.  For more task-oriented
- *  information, see the @ref window_guide.
- */
-
-
 /*************************************************************************
  * Compiler- and platform-specific preprocessor work
  *************************************************************************/
@@ -95,12 +38,6 @@ extern "C" {
 #if !defined(_WIN32) && (defined(__WIN32__) || defined(WIN32) || defined(__MINGW32__))
  #define _WIN32
 #endif /* _WIN32 */
-
-/* Include because most Windows GLU headers need wchar_t and
- * the macOS OpenGL header blocks the definition of ptrdiff_t by glext.h.
- * Include it unconditionally to avoid surprising side-effects.
- */
-#include <stddef.h>
 
 /* Include because it is needed by Vulkan and related functions.
  * Include it unconditionally to avoid surprising side-effects.
@@ -5198,7 +5135,6 @@ GLFWAPI VkResult glfwCreateWindowSurface(VkInstance instance, GLFWwindow* window
 
 #endif /*VK_VERSION_1_0*/
 
-
 /*************************************************************************
  * Global definition cleanup
  *************************************************************************/
@@ -5225,10 +5161,4 @@ GLFWAPI VkResult glfwCreateWindowSurface(VkInstance instance, GLFWwindow* window
 
 /* -------------------- END SYSTEM/COMPILER SPECIFIC --------------------- */
 
-
-#ifdef __cplusplus
-}
-#endif
-
 #endif /* _glfw3_h_ */
-

@@ -29,82 +29,20 @@
 #ifndef _glfw3_native_h_
 #define _glfw3_native_h_
 
-#ifdef __cplusplus
-extern "C" {
+/* This is a workaround for the fact that glfw3.h needs to export APIENTRY (for
+ * example to allow applications to correctly declare a GL_KHR_debug callback)
+ * but windows.h assumes no one will define APIENTRY before it does
+ */
+#if defined(GLFW_APIENTRY_DEFINED)
+ #undef APIENTRY
+ #undef GLFW_APIENTRY_DEFINED
 #endif
 
-#if !defined(GLFW_NATIVE_INCLUDE_NONE)
-
- #if defined(GLFW_EXPOSE_NATIVE_WIN32) || defined(GLFW_EXPOSE_NATIVE_WGL)
-  /* This is a workaround for the fact that glfw3.h needs to export APIENTRY (for
-   * example to allow applications to correctly declare a GL_KHR_debug callback)
-   * but windows.h assumes no one will define APIENTRY before it does
-   */
-  #if defined(GLFW_APIENTRY_DEFINED)
-   #undef APIENTRY
-   #undef GLFW_APIENTRY_DEFINED
-  #endif
-  #include <windows.h>
- #endif
-
- #if defined(GLFW_EXPOSE_NATIVE_COCOA) || defined(GLFW_EXPOSE_NATIVE_NSGL)
-  #if defined(__OBJC__)
-   #import <Cocoa/Cocoa.h>
-  #else
-   #include <ApplicationServices/ApplicationServices.h>
-   #include <objc/objc.h>
-  #endif
- #endif
-
- #if defined(GLFW_EXPOSE_NATIVE_X11) || defined(GLFW_EXPOSE_NATIVE_GLX)
-  #include <X11/Xlib.h>
-  #include <X11/extensions/Xrandr.h>
- #endif
-
- #if defined(GLFW_EXPOSE_NATIVE_WAYLAND)
-  #include <wayland-client.h>
- #endif
-
- #if defined(GLFW_EXPOSE_NATIVE_WGL)
-  /* WGL is declared by windows.h */
- #endif
- #if defined(GLFW_EXPOSE_NATIVE_NSGL)
-  /* NSGL is declared by Cocoa.h */
- #endif
- #if defined(GLFW_EXPOSE_NATIVE_GLX)
-  /* This is a workaround for the fact that glfw3.h defines GLAPIENTRY because by
-   * default it also acts as an OpenGL header
-   * However, glx.h will include gl.h, which will define it unconditionally
-   */
-  #if defined(GLFW_GLAPIENTRY_DEFINED)
-   #undef GLAPIENTRY
-   #undef GLFW_GLAPIENTRY_DEFINED
-  #endif
-  #include <GL/glx.h>
- #endif
- #if defined(GLFW_EXPOSE_NATIVE_EGL)
-  #include <EGL/egl.h>
- #endif
- #if defined(GLFW_EXPOSE_NATIVE_OSMESA)
-  /* This is a workaround for the fact that glfw3.h defines GLAPIENTRY because by
-   * default it also acts as an OpenGL header
-   * However, osmesa.h will include gl.h, which will define it unconditionally
-   */
-  #if defined(GLFW_GLAPIENTRY_DEFINED)
-   #undef GLAPIENTRY
-   #undef GLFW_GLAPIENTRY_DEFINED
-  #endif
-  #include <GL/osmesa.h>
- #endif
-
-#endif /*GLFW_NATIVE_INCLUDE_NONE*/
-
-
+#include <windows.h>
 /*************************************************************************
  * Functions
  *************************************************************************/
 
-#if defined(GLFW_EXPOSE_NATIVE_WIN32)
 /*! @brief Returns the adapter device name of the specified monitor.
  *
  *  @return The UTF-8 encoded adapter device name (for example `\\.\DISPLAY1`)
@@ -165,38 +103,5 @@ GLFWAPI const char* glfwGetWin32Monitor(GLFWmonitor* monitor);
  *  @ingroup native
  */
 GLFWAPI HWND glfwGetWin32Window(GLFWwindow* window);
-#endif
-
-#if defined(GLFW_EXPOSE_NATIVE_WGL)
-/*! @brief Returns the `HGLRC` of the specified window.
- *
- *  @return The `HGLRC` of the specified window, or `NULL` if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
- *  GLFW_PLATFORM_UNAVAILABLE and @ref GLFW_NO_WINDOW_CONTEXT.
- *
- *  @remark The `HDC` associated with the window can be queried with the
- *  [GetDC](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getdc)
- *  function.
- *  @code
- *  HDC dc = GetDC(glfwGetWin32Window(window));
- *  @endcode
- *  This DC is private and does not need to be released.
- *
- *  @thread_safety This function may be called from any thread.  Access is not
- *  synchronized.
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup native
- */
-GLFWAPI HGLRC glfwGetWGLContext(GLFWwindow* window);
-#endif
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* _glfw3_native_h_ */
-
