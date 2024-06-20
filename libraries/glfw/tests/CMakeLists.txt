@@ -36,6 +36,8 @@ add_executable(threads WIN32 MACOSX_BUNDLE threads.c ${TINYCTHREAD} ${GLAD_GL})
 add_executable(title WIN32 MACOSX_BUNDLE title.cpp ${GLAD_GL})
 add_executable(window WIN32 MACOSX_BUNDLE window.c ${GLAD_GL})
 
+target_link_libraries(title PRIVATE platform)
+
 target_link_libraries(threads Threads::Threads)
 
 set(GUI_ONLY_BINARIES gamma icon inputlag tearing threads title window)

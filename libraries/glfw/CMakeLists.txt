@@ -2,16 +2,6 @@ cmake_minimum_required(VERSION 3.4...3.28 FATAL_ERROR)
 
 project(GLFW VERSION 3.5.0 LANGUAGES C)
 
-if (POLICY CMP0069)
-    cmake_policy(SET CMP0069 NEW)
-endif()
-
-if (POLICY CMP0077)
-    cmake_policy(SET CMP0077 NEW)
-endif()
-
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
 string(COMPARE EQUAL "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}" GLFW_STANDALONE)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
@@ -26,10 +16,8 @@ cmake_dependent_option(GLFW_BUILD_COCOA "Build support for Cocoa" ON "APPLE" OFF
 cmake_dependent_option(GLFW_BUILD_X11 "Build support for X11" ON "UNIX;NOT APPLE" OFF)
 cmake_dependent_option(GLFW_BUILD_WAYLAND "Build support for Wayland" ON "UNIX;NOT APPLE" OFF)
 
-cmake_dependent_option(GLFW_USE_HYBRID_HPG "Force use of high-performance GPU on hybrid systems" OFF
-                       "WIN32" OFF)
-cmake_dependent_option(USE_MSVC_RUNTIME_LIBRARY_DLL "Use MSVC runtime library DLL" ON
-                       "MSVC" OFF)
+cmake_dependent_option(GLFW_USE_HYBRID_HPG "Force use of high-performance GPU on hybrid systems" OFF "WIN32" OFF)
+cmake_dependent_option(USE_MSVC_RUNTIME_LIBRARY_DLL "Use MSVC runtime library DLL" ON "MSVC" OFF)
 
 set(GLFW_LIBRARY_TYPE "${GLFW_LIBRARY_TYPE}" CACHE STRING
     "Library type override for GLFW (SHARED, STATIC, OBJECT, or empty to follow BUILD_SHARED_LIBS)")
