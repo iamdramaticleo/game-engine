@@ -2,21 +2,17 @@
 
 #define GLAD_GL_IMPLEMENTATION
 #include <glad/gl.h>
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
 
 #include <stdlib.h>
 
 int main()
 {
-	core::PlatformManager pm;
-
-    GLFWwindow* window;
+    core::PlatformManager pm;
 
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-    window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", NULL, NULL);
     if (!window)
     {
         glfwTerminate();

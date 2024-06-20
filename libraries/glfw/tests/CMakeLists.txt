@@ -1,4 +1,4 @@
-link_libraries(glfw)
+link_libraries(platform)
 
 include_directories("${GLFW_SOURCE_DIR}/deps")
 
@@ -36,16 +36,13 @@ add_executable(threads WIN32 MACOSX_BUNDLE threads.c ${TINYCTHREAD} ${GLAD_GL})
 add_executable(title WIN32 MACOSX_BUNDLE title.cpp ${GLAD_GL})
 add_executable(window WIN32 MACOSX_BUNDLE window.c ${GLAD_GL})
 
-target_link_libraries(title PRIVATE platform)
-
 target_link_libraries(threads Threads::Threads)
 
 set(GUI_ONLY_BINARIES gamma icon inputlag tearing threads title window)
 set(CONSOLE_BINARIES allocator clipboard events msaa glfwinfo iconify monitors reopen cursor)
 
-set_target_properties(${GUI_ONLY_BINARIES} ${CONSOLE_BINARIES} PROPERTIES
-                      C_STANDARD 99
-                      FOLDER "GLFW3/Tests")
+set_target_properties(${GUI_ONLY_BINARIES} ${CONSOLE_BINARIES} PROPERTIES C_STANDARD 99 FOLDER "GLFW3/Tests")
+
 if (MSVC)
     # Tell MSVC to use main instead of WinMain
     set_target_properties(${GUI_ONLY_BINARIES} PROPERTIES
