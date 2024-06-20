@@ -420,10 +420,7 @@ typedef struct _GLFWwindowWin32
     GLFWbool            frameAction;
     GLFWbool            iconified;
     GLFWbool            maximized;
-    // Whether to enable framebuffer transparency on DWM
-    GLFWbool            transparent;
     GLFWbool            scaleToMonitor;
-    GLFWbool            keymenu;
     GLFWbool            showDefault;
 
     // Cached size used to filter out duplicate events
@@ -568,13 +565,10 @@ GLFWbool _glfwWindowIconifiedWin32(_GLFWwindow* window);
 GLFWbool _glfwWindowVisibleWin32(_GLFWwindow* window);
 GLFWbool _glfwWindowMaximizedWin32(_GLFWwindow* window);
 GLFWbool _glfwWindowHoveredWin32(_GLFWwindow* window);
-GLFWbool _glfwFramebufferTransparentWin32(_GLFWwindow* window);
 void _glfwSetWindowResizableWin32(_GLFWwindow* window, GLFWbool enabled);
 void _glfwSetWindowDecoratedWin32(_GLFWwindow* window, GLFWbool enabled);
 void _glfwSetWindowFloatingWin32(_GLFWwindow* window, GLFWbool enabled);
 void _glfwSetWindowMousePassthroughWin32(_GLFWwindow* window, GLFWbool enabled);
-float _glfwGetWindowOpacityWin32(_GLFWwindow* window);
-void _glfwSetWindowOpacityWin32(_GLFWwindow* window, float opacity);
 
 void _glfwSetRawMouseMotionWin32(_GLFWwindow *window, GLFWbool enabled);
 GLFWbool _glfwRawMouseMotionSupportedWin32(void);
@@ -593,10 +587,6 @@ void _glfwSetCursorWin32(_GLFWwindow* window, _GLFWcursor* cursor);
 void _glfwSetClipboardStringWin32(const char* string);
 const char* _glfwGetClipboardStringWin32(void);
 
-EGLenum _glfwGetEGLPlatformWin32(EGLint** attribs);
-EGLNativeDisplayType _glfwGetEGLNativeDisplayWin32(void);
-EGLNativeWindowType _glfwGetEGLNativeWindowWin32(_GLFWwindow* window);
-
 void _glfwGetRequiredInstanceExtensionsWin32(char** extensions);
 GLFWbool _glfwGetPhysicalDevicePresentationSupportWin32(VkInstance instance, VkPhysicalDevice device, uint32_t queuefamily);
 VkResult _glfwCreateWindowSurfaceWin32(VkInstance instance, _GLFWwindow* window, const VkAllocationCallbacks* allocator, VkSurfaceKHR* surface);
@@ -612,7 +602,4 @@ void _glfwSetGammaRampWin32(_GLFWmonitor* monitor, const GLFWgammaramp* ramp);
 
 GLFWbool _glfwInitWGL(void);
 void _glfwTerminateWGL(void);
-GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
-                               const _GLFWctxconfig* ctxconfig,
-                               const _GLFWfbconfig* fbconfig);
-
+GLFWbool _glfwCreateContextWGL(_GLFWwindow* window, const _GLFWctxconfig* ctxconfig, const _GLFWfbconfig* fbconfig);

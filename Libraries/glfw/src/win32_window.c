@@ -367,43 +367,6 @@ static void updateWindowStyles(const _GLFWwindow* window)
                  SWP_FRAMECHANGED | SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-// Update window framebuffer transparency
-//
-static void updateFramebufferTransparency(const _GLFWwindow* window)
-{
-    BOOL composition, opaque;
-    DWORD color;
-
-    if (!IsWindowsVistaOrGreater())
-        return;
-
-    if (FAILED(DwmIsCompositionEnabled(&composition)) || !composition)
-       return;
-
-    if (IsWindows8OrGreater() ||
-        (SUCCEEDED(DwmGetColorizationColor(&color, &opaque)) && !opaque))
-    {
-        HRGN region = CreateRectRgn(0, 0, -1, -1);
-        DWM_BLURBEHIND bb = {0};
-        bb.dwFlags = DWM_BB_ENABLE | DWM_BB_BLURREGION;
-        bb.hRgnBlur = region;
-        bb.fEnable = TRUE;
-
-        DwmEnableBlurBehindWindow(window->win32.handle, &bb);
-        DeleteObject(region);
-    }
-    else
-    {
-        // HACK: Disable framebuffer transparency on Windows 7 when the
-        //       colorization color is opaque, because otherwise the window
-        //       contents is blended additively with the previous frame instead
-        //       of replacing it
-        DWM_BLURBEHIND bb = {0};
-        bb.dwFlags = DWM_BB_ENABLE;
-        DwmEnableBlurBehindWindow(window->win32.handle, &bb);
-    }
-}
-
 // Retrieves and translates modifier keys
 //
 static int getKeyMods(void)
@@ -634,15 +597,6 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
                     else
                         break;
                 }
-
-                // User trying to access application menu using ALT?
-                case SC_KEYMENU:
-                {
-                    if (!window->win32.keymenu)
-                        return 0;
-
-                    break;
-                }
             }
             break;
         }
@@ -683,9 +637,6 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
                 window->win32.highSurrogate = 0;
                 _glfwInputChar(window, codepoint, getKeyMods(), uMsg != WM_SYSCHAR);
             }
-
-            if (uMsg == WM_SYSCHAR && window->win32.keymenu)
-                break;
 
             return 0;
         }
@@ -1162,14 +1113,6 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
             break;
         }
 
-        case WM_DWMCOMPOSITIONCHANGED:
-        case WM_DWMCOLORIZATIONCOLORCHANGED:
-        {
-            if (window->win32.transparent)
-                updateFramebufferTransparency(window);
-            return 0;
-        }
-
         case WM_GETDPISCALEDSIZE:
         {
             if (window->win32.scaleToMonitor)
@@ -1418,7 +1361,6 @@ static int createNativeWindow(_GLFWwindow* window,
     }
 
     window->win32.scaleToMonitor = wndconfig->scaleToMonitor;
-    window->win32.keymenu = wndconfig->win32.keymenu;
     window->win32.showDefault = wndconfig->win32.showDefault;
 
     if (!window->monitor)
@@ -1480,12 +1422,6 @@ static int createNativeWindow(_GLFWwindow* window,
     }
 
     DragAcceptFiles(window->win32.handle, TRUE);
-
-    if (fbconfig->transparent)
-    {
-        updateFramebufferTransparency(window);
-        window->win32.transparent = GLFW_TRUE;
-    }
 
     _glfwGetWindowSizeWin32(window, &window->win32.width, &window->win32.height);
 
@@ -1957,33 +1893,6 @@ GLFWbool _glfwWindowMaximizedWin32(_GLFWwindow* window)
 GLFWbool _glfwWindowHoveredWin32(_GLFWwindow* window)
 {
     return cursorInContentArea(window);
-}
-
-GLFWbool _glfwFramebufferTransparentWin32(_GLFWwindow* window)
-{
-    BOOL composition, opaque;
-    DWORD color;
-
-    if (!window->win32.transparent)
-        return GLFW_FALSE;
-
-    if (!IsWindowsVistaOrGreater())
-        return GLFW_FALSE;
-
-    if (FAILED(DwmIsCompositionEnabled(&composition)) || !composition)
-        return GLFW_FALSE;
-
-    if (!IsWindows8OrGreater())
-    {
-        // HACK: Disable framebuffer transparency on Windows 7 when the
-        //       colorization color is opaque, because otherwise the window
-        //       contents is blended additively with the previous frame instead
-        //       of replacing it
-        if (FAILED(DwmGetColorizationColor(&color, &opaque)) || opaque)
-            return GLFW_FALSE;
-    }
-
-    return GLFW_TRUE;
 }
 
 void _glfwSetWindowResizableWin32(_GLFWwindow* window, GLFWbool enabled)

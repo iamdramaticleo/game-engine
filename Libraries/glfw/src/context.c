@@ -31,8 +31,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-#include <stdio.h>
-
 
 //////////////////////////////////////////////////////////////////////////
 //////                       GLFW internal API                      //////
@@ -46,9 +44,7 @@
 //
 GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
 {
-    if (ctxconfig->source != GLFW_NATIVE_CONTEXT_API &&
-        ctxconfig->source != GLFW_EGL_CONTEXT_API &&
-        ctxconfig->source != GLFW_OSMESA_CONTEXT_API)
+    if (ctxconfig->source != GLFW_NATIVE_CONTEXT_API)
     {
         _glfwInputError(GLFW_INVALID_ENUM,
                         "Invalid context creation API 0x%08X",
@@ -57,8 +53,7 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
     }
 
     if (ctxconfig->client != GLFW_NO_API &&
-        ctxconfig->client != GLFW_OPENGL_API &&
-        ctxconfig->client != GLFW_OPENGL_ES_API)
+        ctxconfig->client != GLFW_OPENGL_API)
     {
         _glfwInputError(GLFW_INVALID_ENUM,
                         "Invalid client API 0x%08X",
@@ -133,23 +128,6 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
             return GLFW_FALSE;
         }
     }
-    else if (ctxconfig->client == GLFW_OPENGL_ES_API)
-    {
-        if (ctxconfig->major < 1 || ctxconfig->minor < 0 ||
-            (ctxconfig->major == 1 && ctxconfig->minor > 1) ||
-            (ctxconfig->major == 2 && ctxconfig->minor > 0))
-        {
-            // OpenGL ES 1.0 is the smallest valid version
-            // OpenGL ES 1.x series ended with version 1.1
-            // OpenGL ES 2.x series ended with version 2.0
-            // For now, let everything else through
-
-            _glfwInputError(GLFW_INVALID_VALUE,
-                            "Invalid OpenGL ES version %i.%i",
-                            ctxconfig->major, ctxconfig->minor);
-            return GLFW_FALSE;
-        }
-    }
 
     if (ctxconfig->robustness)
     {
@@ -178,11 +156,7 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
     return GLFW_TRUE;
 }
 
-// Chooses the framebuffer config that best matches the desired one
-//
-const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
-                                         const _GLFWfbconfig* alternatives,
-                                         unsigned int count)
+const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired, const _GLFWfbconfig* alternatives, unsigned int count)
 {
     unsigned int i;
     unsigned int missing, leastMissing = UINT_MAX;
@@ -227,9 +201,6 @@ const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
                 // not important to us here, so we count them as one
                 missing++;
             }
-
-            if (desired->transparent != current->transparent)
-                missing++;
         }
 
         // These polynomials make many small channel size differences matter
@@ -345,7 +316,6 @@ const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
 GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
                                     const _GLFWctxconfig* ctxconfig)
 {
-    int i;
     _GLFWwindow* previous;
     const char* version;
     const char* prefixes[] =
@@ -391,18 +361,6 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
 
         glfwMakeContextCurrent((GLFWwindow*) previous);
         return GLFW_FALSE;
-    }
-
-    for (i = 0;  prefixes[i];  i++)
-    {
-        const size_t length = strlen(prefixes[i]);
-
-        if (strncmp(version, prefixes[i], length) == 0)
-        {
-            version += length;
-            window->context.client = GLFW_OPENGL_ES_API;
-            break;
-        }
     }
 
     if (!sscanf(version, "%d.%d.%d",

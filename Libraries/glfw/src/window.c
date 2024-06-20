@@ -337,9 +337,6 @@ GLFWAPI void glfwWindowHint(int hint, int value)
         case GLFW_DOUBLEBUFFER:
             _glfw.hints.framebuffer.doublebuffer = value ? GLFW_TRUE : GLFW_FALSE;
             return;
-        case GLFW_TRANSPARENT_FRAMEBUFFER:
-            _glfw.hints.framebuffer.transparent = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
         case GLFW_SAMPLES:
             _glfw.hints.framebuffer.samples = value;
             return;
@@ -373,20 +370,13 @@ GLFWAPI void glfwWindowHint(int hint, int value)
         case GLFW_POSITION_Y:
             _glfw.hints.window.ypos = value;
             return;
-        case GLFW_WIN32_KEYBOARD_MENU:
-            _glfw.hints.window.win32.keymenu = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
         case GLFW_WIN32_SHOWDEFAULT:
             _glfw.hints.window.win32.showDefault = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
-        case GLFW_COCOA_GRAPHICS_SWITCHING:
-            _glfw.hints.context.nsgl.offline = value ? GLFW_TRUE : GLFW_FALSE;
             return;
         case GLFW_SCALE_TO_MONITOR:
             _glfw.hints.window.scaleToMonitor = value ? GLFW_TRUE : GLFW_FALSE;
             return;
         case GLFW_SCALE_FRAMEBUFFER:
-        case GLFW_COCOA_RETINA_FRAMEBUFFER:
             _glfw.hints.window.scaleFramebuffer = value ? GLFW_TRUE : GLFW_FALSE;
             return;
         case GLFW_CENTER_CURSOR:
@@ -434,35 +424,6 @@ GLFWAPI void glfwWindowHint(int hint, int value)
     }
 
     _glfwInputError(GLFW_INVALID_ENUM, "Invalid window hint 0x%08X", hint);
-}
-
-GLFWAPI void glfwWindowHintString(int hint, const char* value)
-{
-    assert(value != NULL);
-
-    _GLFW_REQUIRE_INIT();
-
-    switch (hint)
-    {
-        case GLFW_COCOA_FRAME_NAME:
-            strncpy(_glfw.hints.window.ns.frameName, value,
-                    sizeof(_glfw.hints.window.ns.frameName) - 1);
-            return;
-        case GLFW_X11_CLASS_NAME:
-            strncpy(_glfw.hints.window.x11.className, value,
-                    sizeof(_glfw.hints.window.x11.className) - 1);
-            return;
-        case GLFW_X11_INSTANCE_NAME:
-            strncpy(_glfw.hints.window.x11.instanceName, value,
-                    sizeof(_glfw.hints.window.x11.instanceName) - 1);
-            return;
-        case GLFW_WAYLAND_APP_ID:
-            strncpy(_glfw.hints.window.wl.appId, value,
-                    sizeof(_glfw.hints.window.wl.appId) - 1);
-            return;
-    }
-
-    _glfwInputError(GLFW_INVALID_ENUM, "Invalid window hint string 0x%08X", hint);
 }
 
 GLFWAPI void glfwDestroyWindow(GLFWwindow* handle)
@@ -765,36 +726,6 @@ GLFWAPI void glfwGetWindowContentScale(GLFWwindow* handle,
     _glfw.platform.getWindowContentScale(window, xscale, yscale);
 }
 
-GLFWAPI float glfwGetWindowOpacity(GLFWwindow* handle)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(0.f);
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    return _glfw.platform.getWindowOpacity(window);
-}
-
-GLFWAPI void glfwSetWindowOpacity(GLFWwindow* handle, float opacity)
-{
-    assert(opacity == opacity);
-    assert(opacity >= 0.f);
-    assert(opacity <= 1.f);
-
-    _GLFW_REQUIRE_INIT();
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    if (opacity != opacity || opacity < 0.f || opacity > 1.f)
-    {
-        _glfwInputError(GLFW_INVALID_VALUE, "Invalid window opacity %f", opacity);
-        return;
-    }
-
-    _glfw.platform.setWindowOpacity(window, opacity);
-}
-
 GLFWAPI void glfwIconifyWindow(GLFWwindow* handle)
 {
     _GLFW_REQUIRE_INIT();
@@ -875,69 +806,6 @@ GLFWAPI void glfwFocusWindow(GLFWwindow* handle)
     assert(window != NULL);
 
     _glfw.platform.focusWindow(window);
-}
-
-GLFWAPI int glfwGetWindowAttrib(GLFWwindow* handle, int attrib)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(0);
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    switch (attrib)
-    {
-        case GLFW_FOCUSED:
-            return _glfw.platform.windowFocused(window);
-        case GLFW_ICONIFIED:
-            return _glfw.platform.windowIconified(window);
-        case GLFW_VISIBLE:
-            return _glfw.platform.windowVisible(window);
-        case GLFW_MAXIMIZED:
-            return _glfw.platform.windowMaximized(window);
-        case GLFW_HOVERED:
-            return _glfw.platform.windowHovered(window);
-        case GLFW_FOCUS_ON_SHOW:
-            return window->focusOnShow;
-        case GLFW_MOUSE_PASSTHROUGH:
-            return window->mousePassthrough;
-        case GLFW_TRANSPARENT_FRAMEBUFFER:
-            return _glfw.platform.framebufferTransparent(window);
-        case GLFW_RESIZABLE:
-            return window->resizable;
-        case GLFW_DECORATED:
-            return window->decorated;
-        case GLFW_FLOATING:
-            return window->floating;
-        case GLFW_AUTO_ICONIFY:
-            return window->autoIconify;
-        case GLFW_DOUBLEBUFFER:
-            return window->doublebuffer;
-        case GLFW_CLIENT_API:
-            return window->context.client;
-        case GLFW_CONTEXT_CREATION_API:
-            return window->context.source;
-        case GLFW_CONTEXT_VERSION_MAJOR:
-            return window->context.major;
-        case GLFW_CONTEXT_VERSION_MINOR:
-            return window->context.minor;
-        case GLFW_CONTEXT_REVISION:
-            return window->context.revision;
-        case GLFW_CONTEXT_ROBUSTNESS:
-            return window->context.robustness;
-        case GLFW_OPENGL_FORWARD_COMPAT:
-            return window->context.forward;
-        case GLFW_CONTEXT_DEBUG:
-            return window->context.debug;
-        case GLFW_OPENGL_PROFILE:
-            return window->context.profile;
-        case GLFW_CONTEXT_RELEASE_BEHAVIOR:
-            return window->context.release;
-        case GLFW_CONTEXT_NO_ERROR:
-            return window->context.noerror;
-    }
-
-    _glfwInputError(GLFW_INVALID_ENUM, "Invalid window attribute 0x%08X", attrib);
-    return 0;
 }
 
 GLFWAPI void glfwSetWindowAttrib(GLFWwindow* handle, int attrib, int value)

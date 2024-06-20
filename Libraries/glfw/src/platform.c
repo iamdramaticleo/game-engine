@@ -27,9 +27,6 @@
 
 #include "internal.h"
 
-#include <string.h>
-#include <stdlib.h>
-
 // These construct a string literal from individual numeric constants
 #define _GLFW_CONCAT_VERSION(m, n, r) #m "." #n "." #r
 #define _GLFW_MAKE_VERSION(m, n, r) _GLFW_CONCAT_VERSION(m, n, r)
@@ -47,15 +44,6 @@ static const struct
 #if defined(_GLFW_WIN32)
     { GLFW_PLATFORM_WIN32, _glfwConnectWin32 },
 #endif
-#if defined(_GLFW_COCOA)
-    { GLFW_PLATFORM_COCOA, _glfwConnectCocoa },
-#endif
-#if defined(_GLFW_WAYLAND)
-    { GLFW_PLATFORM_WAYLAND, _glfwConnectWayland },
-#endif
-#if defined(_GLFW_X11)
-    { GLFW_PLATFORM_X11, _glfwConnectX11 },
-#endif
 };
 
 GLFWbool _glfwSelectPlatform(int desiredID, _GLFWplatform* platform)
@@ -65,9 +53,6 @@ GLFWbool _glfwSelectPlatform(int desiredID, _GLFWplatform* platform)
 
     if (desiredID != GLFW_ANY_PLATFORM &&
         desiredID != GLFW_PLATFORM_WIN32 &&
-        desiredID != GLFW_PLATFORM_COCOA &&
-        desiredID != GLFW_PLATFORM_WAYLAND &&
-        desiredID != GLFW_PLATFORM_X11 &&
         desiredID != GLFW_PLATFORM_NULL)
     {
         _glfwInputError(GLFW_INVALID_ENUM, "Invalid platform ID 0x%08X", desiredID);
@@ -141,9 +126,6 @@ GLFWAPI int glfwPlatformSupported(int platformID)
     size_t i;
 
     if (platformID != GLFW_PLATFORM_WIN32 &&
-        platformID != GLFW_PLATFORM_COCOA &&
-        platformID != GLFW_PLATFORM_WAYLAND &&
-        platformID != GLFW_PLATFORM_X11 &&
         platformID != GLFW_PLATFORM_NULL)
     {
         _glfwInputError(GLFW_INVALID_ENUM, "Invalid platform ID 0x%08X", platformID);
@@ -161,49 +143,3 @@ GLFWAPI int glfwPlatformSupported(int platformID)
 
     return GLFW_FALSE;
 }
-
-GLFWAPI const char* glfwGetVersionString(void)
-{
-    return _GLFW_MAKE_VERSION(GLFW_VERSION_MAJOR,
-                              GLFW_VERSION_MINOR,
-                              GLFW_VERSION_REVISION)
-#if defined(_GLFW_WIN32)
-        " Win32 WGL"
-#endif
-#if defined(_GLFW_COCOA)
-        " Cocoa NSGL"
-#endif
-#if defined(_GLFW_WAYLAND)
-        " Wayland"
-#endif
-#if defined(_GLFW_X11)
-        " X11 GLX"
-#endif
-        " Null"
-        " EGL"
-        " OSMesa"
-#if defined(__MINGW64_VERSION_MAJOR)
-        " MinGW-w64"
-#elif defined(__MINGW32__)
-        " MinGW"
-#elif defined(_MSC_VER)
-        " VisualC"
-#endif
-#if defined(_GLFW_USE_HYBRID_HPG) || defined(_GLFW_USE_OPTIMUS_HPG)
-        " hybrid-GPU"
-#endif
-#if defined(_POSIX_MONOTONIC_CLOCK)
-        " monotonic"
-#endif
-#if defined(_GLFW_BUILD_DLL)
-#if defined(_WIN32)
-        " DLL"
-#elif defined(__APPLE__)
-        " dynamic"
-#else
-        " shared"
-#endif
-#endif
-        ;
-}
-

@@ -689,13 +689,6 @@ extern "C" {
  *  calling functions that require a current context.
  */
 #define GLFW_NO_CURRENT_CONTEXT     0x00010002
-/*! @brief One of the arguments to the function was an invalid enum value.
- *
- *  One of the arguments to the function was an invalid enum value, for example
- *  requesting @ref GLFW_RED_BITS with @ref glfwGetWindowAttrib.
- *
- *  @analysis Application programmer error.  Fix the offending call.
- */
 #define GLFW_INVALID_ENUM           0x00010003
 /*! @brief One of the arguments to the function was an invalid value.
  *
@@ -903,13 +896,6 @@ extern "C" {
  *  Cursor centering [window hint](@ref GLFW_CENTER_CURSOR_hint).
  */
 #define GLFW_CENTER_CURSOR          0x00020009
-/*! @brief Window framebuffer transparency hint and attribute
- *
- *  Window framebuffer transparency
- *  [window hint](@ref GLFW_TRANSPARENT_FRAMEBUFFER_hint) and
- *  [window attribute](@ref GLFW_TRANSPARENT_FRAMEBUFFER_attrib).
- */
-#define GLFW_TRANSPARENT_FRAMEBUFFER 0x0002000A
 /*! @brief Mouse cursor hover window attribute.
  *
  *  Mouse cursor hover [window attribute](@ref GLFW_HOVERED_attrib).
@@ -1102,44 +1088,12 @@ extern "C" {
  *  [window hint](@ref GLFW_SCALE_FRAMEBUFFER_hint).
  */
 #define GLFW_SCALE_FRAMEBUFFER      0x0002200D
-/*! @brief Legacy name for compatibility.
- *
- *  This is an alias for the
- *  [GLFW_SCALE_FRAMEBUFFER](@ref GLFW_SCALE_FRAMEBUFFER_hint) window hint for
- *  compatibility with earlier versions.
- */
-#define GLFW_COCOA_RETINA_FRAMEBUFFER 0x00023001
-/*! @brief macOS specific
- *  [window hint](@ref GLFW_COCOA_FRAME_NAME_hint).
- */
-#define GLFW_COCOA_FRAME_NAME         0x00023002
-/*! @brief macOS specific
- *  [window hint](@ref GLFW_COCOA_GRAPHICS_SWITCHING_hint).
- */
-#define GLFW_COCOA_GRAPHICS_SWITCHING 0x00023003
-/*! @brief X11 specific
- *  [window hint](@ref GLFW_X11_CLASS_NAME_hint).
- */
-#define GLFW_X11_CLASS_NAME         0x00024001
-/*! @brief X11 specific
- *  [window hint](@ref GLFW_X11_CLASS_NAME_hint).
- */
-#define GLFW_X11_INSTANCE_NAME      0x00024002
-#define GLFW_WIN32_KEYBOARD_MENU    0x00025001
 /*! @brief Win32 specific [window hint](@ref GLFW_WIN32_SHOWDEFAULT_hint).
  */
 #define GLFW_WIN32_SHOWDEFAULT      0x00025002
-/*! @brief Wayland specific
- *  [window hint](@ref GLFW_WAYLAND_APP_ID_hint).
- *  
- *  Allows specification of the Wayland app_id.
- */
-#define GLFW_WAYLAND_APP_ID         0x00026001
-/*! @} */
 
 #define GLFW_NO_API                          0
 #define GLFW_OPENGL_API             0x00030001
-#define GLFW_OPENGL_ES_API          0x00030002
 
 #define GLFW_NO_ROBUSTNESS                   0
 #define GLFW_NO_RESET_NOTIFICATION  0x00031001
@@ -1166,186 +1120,37 @@ extern "C" {
 #define GLFW_RELEASE_BEHAVIOR_NONE  0x00035002
 
 #define GLFW_NATIVE_CONTEXT_API     0x00036001
-#define GLFW_EGL_CONTEXT_API        0x00036002
-#define GLFW_OSMESA_CONTEXT_API     0x00036003
-
-#define GLFW_ANGLE_PLATFORM_TYPE_NONE    0x00037001
-#define GLFW_ANGLE_PLATFORM_TYPE_OPENGL  0x00037002
-#define GLFW_ANGLE_PLATFORM_TYPE_OPENGLES 0x00037003
-#define GLFW_ANGLE_PLATFORM_TYPE_D3D9    0x00037004
-#define GLFW_ANGLE_PLATFORM_TYPE_D3D11   0x00037005
-#define GLFW_ANGLE_PLATFORM_TYPE_VULKAN  0x00037007
-#define GLFW_ANGLE_PLATFORM_TYPE_METAL   0x00037008
-
-#define GLFW_WAYLAND_PREFER_LIBDECOR    0x00038001
-#define GLFW_WAYLAND_DISABLE_LIBDECOR   0x00038002
-
 #define GLFW_ANY_POSITION           0x80000000
 
-/*! @defgroup shapes Standard cursor shapes
- *  @brief Standard system cursor shapes.
- *
- *  These are the [standard cursor shapes](@ref cursor_standard) that can be
- *  requested from the platform (window system).
- *
- *  @ingroup input
- *  @{ */
-
-/*! @brief The regular arrow cursor shape.
- *
- *  The regular arrow cursor shape.
- */
 #define GLFW_ARROW_CURSOR           0x00036001
-/*! @brief The text input I-beam cursor shape.
- *
- *  The text input I-beam cursor shape.
- */
 #define GLFW_IBEAM_CURSOR           0x00036002
-/*! @brief The crosshair cursor shape.
- *
- *  The crosshair cursor shape.
- */
 #define GLFW_CROSSHAIR_CURSOR       0x00036003
-/*! @brief The pointing hand cursor shape.
- *
- *  The pointing hand cursor shape.
- */
 #define GLFW_POINTING_HAND_CURSOR   0x00036004
-/*! @brief The horizontal resize/move arrow shape.
- *
- *  The horizontal resize/move arrow shape.  This is usually a horizontal
- *  double-headed arrow.
- */
 #define GLFW_RESIZE_EW_CURSOR       0x00036005
-/*! @brief The vertical resize/move arrow shape.
- *
- *  The vertical resize/move shape.  This is usually a vertical double-headed
- *  arrow.
- */
 #define GLFW_RESIZE_NS_CURSOR       0x00036006
-/*! @brief The top-left to bottom-right diagonal resize/move arrow shape.
- *
- *  The top-left to bottom-right diagonal resize/move shape.  This is usually
- *  a diagonal double-headed arrow.
- *
- *  @note @macos This shape is provided by a private system API and may fail
- *  with @ref GLFW_CURSOR_UNAVAILABLE in the future.
- *
- *  @note @wayland This shape is provided by a newer standard not supported by
- *  all cursor themes.
- *
- *  @note @x11 This shape is provided by a newer standard not supported by all
- *  cursor themes.
- */
 #define GLFW_RESIZE_NWSE_CURSOR     0x00036007
-/*! @brief The top-right to bottom-left diagonal resize/move arrow shape.
- *
- *  The top-right to bottom-left diagonal resize/move shape.  This is usually
- *  a diagonal double-headed arrow.
- *
- *  @note @macos This shape is provided by a private system API and may fail
- *  with @ref GLFW_CURSOR_UNAVAILABLE in the future.
- *
- *  @note @wayland This shape is provided by a newer standard not supported by
- *  all cursor themes.
- *
- *  @note @x11 This shape is provided by a newer standard not supported by all
- *  cursor themes.
- */
 #define GLFW_RESIZE_NESW_CURSOR     0x00036008
-/*! @brief The omni-directional resize/move cursor shape.
- *
- *  The omni-directional resize cursor/move shape.  This is usually either
- *  a combined horizontal and vertical double-headed arrow or a grabbing hand.
- */
 #define GLFW_RESIZE_ALL_CURSOR      0x00036009
-/*! @brief The operation-not-allowed shape.
- *
- *  The operation-not-allowed shape.  This is usually a circle with a diagonal
- *  line through it.
- *
- *  @note @wayland This shape is provided by a newer standard not supported by
- *  all cursor themes.
- *
- *  @note @x11 This shape is provided by a newer standard not supported by all
- *  cursor themes.
- */
 #define GLFW_NOT_ALLOWED_CURSOR     0x0003600A
-/*! @brief Legacy name for compatibility.
- *
- *  This is an alias for compatibility with earlier versions.
- */
 #define GLFW_HRESIZE_CURSOR         GLFW_RESIZE_EW_CURSOR
-/*! @brief Legacy name for compatibility.
- *
- *  This is an alias for compatibility with earlier versions.
- */
 #define GLFW_VRESIZE_CURSOR         GLFW_RESIZE_NS_CURSOR
-/*! @brief Legacy name for compatibility.
- *
- *  This is an alias for compatibility with earlier versions.
- */
 #define GLFW_HAND_CURSOR            GLFW_POINTING_HAND_CURSOR
-/*! @} */
 
 #define GLFW_CONNECTED              0x00040001
 #define GLFW_DISCONNECTED           0x00040002
 
-/*! @addtogroup init
- *  @{ */
-/*! @brief Joystick hat buttons init hint.
- *
- *  Joystick hat buttons [init hint](@ref GLFW_JOYSTICK_HAT_BUTTONS).
- */
-#define GLFW_JOYSTICK_HAT_BUTTONS   0x00050001
-/*! @brief ANGLE rendering backend init hint.
- *
- *  ANGLE rendering backend [init hint](@ref GLFW_ANGLE_PLATFORM_TYPE_hint).
- */
-#define GLFW_ANGLE_PLATFORM_TYPE    0x00050002
 /*! @brief Platform selection init hint.
  *
  *  Platform selection [init hint](@ref GLFW_PLATFORM).
  */
 #define GLFW_PLATFORM               0x00050003
-/*! @brief macOS specific init hint.
- *
- *  macOS specific [init hint](@ref GLFW_COCOA_CHDIR_RESOURCES_hint).
- */
-#define GLFW_COCOA_CHDIR_RESOURCES  0x00051001
-/*! @brief macOS specific init hint.
- *
- *  macOS specific [init hint](@ref GLFW_COCOA_MENUBAR_hint).
- */
-#define GLFW_COCOA_MENUBAR          0x00051002
-/*! @brief X11 specific init hint.
- *
- *  X11 specific [init hint](@ref GLFW_X11_XCB_VULKAN_SURFACE_hint).
- */
-#define GLFW_X11_XCB_VULKAN_SURFACE 0x00052001
-/*! @brief Wayland specific init hint.
- *
- *  Wayland specific [init hint](@ref GLFW_WAYLAND_LIBDECOR_hint).
- */
-#define GLFW_WAYLAND_LIBDECOR       0x00053001
-/*! @} */
 
-/*! @addtogroup init
- *  @{ */
-/*! @brief Hint value that enables automatic platform selection.
- *
- *  Hint value for @ref GLFW_PLATFORM that enables automatic platform selection.
- */
 #define GLFW_ANY_PLATFORM           0x00060000
 #define GLFW_PLATFORM_WIN32         0x00060001
-#define GLFW_PLATFORM_COCOA         0x00060002
-#define GLFW_PLATFORM_WAYLAND       0x00060003
-#define GLFW_PLATFORM_X11           0x00060004
 #define GLFW_PLATFORM_NULL          0x00060005
 /*! @} */
 
 #define GLFW_DONT_CARE              -1
-
 
 /*************************************************************************
  * GLFW API types
@@ -3035,13 +2840,6 @@ GLFWAPI void glfwWindowHintString(int hint, const char* value);
  *  [make it current](@ref context_current).  For information about the `share`
  *  parameter, see @ref context_sharing.
  *
- *  The created window, framebuffer and context may differ from what you
- *  requested, as not all parameters and hints are
- *  [hard constraints](@ref window_hints_hard).  This includes the size of the
- *  window, especially for full screen windows.  To query the actual attributes
- *  of the created window, framebuffer and context, see @ref
- *  glfwGetWindowAttrib, @ref glfwGetWindowSize and @ref glfwGetFramebufferSize.
- *
  *  To create a full screen window, you need to specify the monitor the window
  *  will cover.  If no monitor is specified, the window will be windowed mode.
  *  Unless you have a way for the user to choose a specific monitor, it is
@@ -4007,43 +3805,6 @@ GLFWAPI GLFWmonitor* glfwGetWindowMonitor(GLFWwindow* window);
  */
 GLFWAPI void glfwSetWindowMonitor(GLFWwindow* window, GLFWmonitor* monitor, int xpos, int ypos, int width, int height, int refreshRate);
 
-/*! @brief Returns an attribute of the specified window.
- *
- *  This function returns the value of an attribute of the specified window or
- *  its OpenGL or OpenGL ES context.
- *
- *  @param[in] window The window to query.
- *  @param[in] attrib The [window attribute](@ref window_attribs) whose value to
- *  return.
- *  @return The value of the attribute, or zero if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
- *  GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR.
- *
- *  @remark Framebuffer related hints are not window attributes.  See @ref
- *  window_attribs_fb for more information.
- *
- *  @remark Zero is a valid value for many window and context related
- *  attributes so you cannot use a return value of zero as an indication of
- *  errors.  However, this function should not fail as long as it is passed
- *  valid arguments and the library has been [initialized](@ref intro_init).
- *
- *  @remark @wayland The Wayland protocol provides no way to check whether a
- *  window is iconfied, so @ref GLFW_ICONIFIED always returns `GLFW_FALSE`.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_attribs
- *  @sa @ref glfwSetWindowAttrib
- *
- *  @since Added in version 3.0.  Replaces `glfwGetWindowParam` and
- *  `glfwGetGLVersion`.
- *
- *  @ingroup window
- */
-GLFWAPI int glfwGetWindowAttrib(GLFWwindow* window, int attrib);
-
 /*! @brief Sets an attribute of the specified window.
  *
  *  This function sets the value of an attribute of the specified window.
@@ -4069,16 +3830,12 @@ GLFWAPI int glfwGetWindowAttrib(GLFWwindow* window, int attrib);
  *  GLFW_INVALID_ENUM, @ref GLFW_INVALID_VALUE, @ref GLFW_PLATFORM_ERROR and @ref
  *  GLFW_FEATURE_UNAVAILABLE (see remarks).
  *
- *  @remark Calling @ref glfwGetWindowAttrib will always return the latest
- *  value, even if that value is ignored by the current mode of the window.
- *
  *  @remark @wayland The [GLFW_FLOATING](@ref GLFW_FLOATING_attrib) window attribute is
  *  not supported.  Setting this will emit @ref GLFW_FEATURE_UNAVAILABLE.
  *
  *  @thread_safety This function must only be called from the main thread.
  *
  *  @sa @ref window_attribs
- *  @sa @ref glfwGetWindowAttrib
  *
  *  @since Added in version 3.3.
  *
