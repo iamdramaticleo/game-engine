@@ -1,4 +1,3 @@
-
 link_libraries(glfw)
 
 include_directories("${GLFW_SOURCE_DIR}/deps")
@@ -34,7 +33,7 @@ add_executable(icon WIN32 MACOSX_BUNDLE icon.c ${GLAD_GL})
 add_executable(inputlag WIN32 MACOSX_BUNDLE inputlag.c ${GETOPT} ${GLAD_GL})
 add_executable(tearing WIN32 MACOSX_BUNDLE tearing.c ${GLAD_GL})
 add_executable(threads WIN32 MACOSX_BUNDLE threads.c ${TINYCTHREAD} ${GLAD_GL})
-add_executable(title WIN32 MACOSX_BUNDLE title.c ${GLAD_GL})
+add_executable(title WIN32 MACOSX_BUNDLE title.cpp ${GLAD_GL})
 add_executable(window WIN32 MACOSX_BUNDLE window.c ${GLAD_GL})
 
 target_link_libraries(threads Threads::Threads)
