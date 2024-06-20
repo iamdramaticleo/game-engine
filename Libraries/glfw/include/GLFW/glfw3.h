@@ -276,97 +276,14 @@ extern "C" {
  * GLFW API tokens
  *************************************************************************/
 
-/*! @name GLFW version macros
- *  @{ */
-/*! @brief The major version number of the GLFW header.
- *
- *  The major version number of the GLFW header.  This is incremented when the
- *  API is changed in non-compatible ways.
- *  @ingroup init
- */
-#define GLFW_VERSION_MAJOR          3
-/*! @brief The minor version number of the GLFW header.
- *
- *  The minor version number of the GLFW header.  This is incremented when
- *  features are added to the API but it remains backward-compatible.
- *  @ingroup init
- */
-#define GLFW_VERSION_MINOR          5
-/*! @brief The revision number of the GLFW header.
- *
- *  The revision number of the GLFW header.  This is incremented when a bug fix
- *  release is made that does not contain any API changes.
- *  @ingroup init
- */
-#define GLFW_VERSION_REVISION       0
-/*! @} */
-
-/*! @brief One.
- *
- *  This is only semantic sugar for the number 1.  You can instead use `1` or
- *  `true` or `_True` or `GL_TRUE` or `VK_TRUE` or anything else that is equal
- *  to one.
- *
- *  @ingroup init
- */
 #define GLFW_TRUE                   1
-/*! @brief Zero.
- *
- *  This is only semantic sugar for the number 0.  You can instead use `0` or
- *  `false` or `_False` or `GL_FALSE` or `VK_FALSE` or anything else that is
- *  equal to zero.
- *
- *  @ingroup init
- */
 #define GLFW_FALSE                  0
 
-/*! @name Key and button actions
- *  @{ */
-/*! @brief The key or mouse button was released.
- *
- *  The key or mouse button was released.
- *
- *  @ingroup input
- */
 #define GLFW_RELEASE                0
-/*! @brief The key or mouse button was pressed.
- *
- *  The key or mouse button was pressed.
- *
- *  @ingroup input
- */
 #define GLFW_PRESS                  1
-/*! @brief The key was held down until it repeated.
- *
- *  The key was held down until it repeated.
- *
- *  @ingroup input
- */
 #define GLFW_REPEAT                 2
-/*! @} */
 
-/*! @defgroup hat_state Joystick hat states
- *  @brief Joystick hat states.
- *
- *  See [joystick hat input](@ref joystick_hat) for how these are used.
- *
- *  @ingroup input
- *  @{ */
-#define GLFW_HAT_CENTERED           0
-#define GLFW_HAT_UP                 1
-#define GLFW_HAT_RIGHT              2
-#define GLFW_HAT_DOWN               4
-#define GLFW_HAT_LEFT               8
-#define GLFW_HAT_RIGHT_UP           (GLFW_HAT_RIGHT | GLFW_HAT_UP)
-#define GLFW_HAT_RIGHT_DOWN         (GLFW_HAT_RIGHT | GLFW_HAT_DOWN)
-#define GLFW_HAT_LEFT_UP            (GLFW_HAT_LEFT  | GLFW_HAT_UP)
-#define GLFW_HAT_LEFT_DOWN          (GLFW_HAT_LEFT  | GLFW_HAT_DOWN)
-
-/*! @ingroup input
- */
 #define GLFW_KEY_UNKNOWN            -1
-
-/*! @} */
 
 /*! @defgroup keys Keyboard key tokens
  *  @brief Keyboard key tokens.
@@ -476,19 +393,6 @@ extern "C" {
 #define GLFW_KEY_F10                299
 #define GLFW_KEY_F11                300
 #define GLFW_KEY_F12                301
-#define GLFW_KEY_F13                302
-#define GLFW_KEY_F14                303
-#define GLFW_KEY_F15                304
-#define GLFW_KEY_F16                305
-#define GLFW_KEY_F17                306
-#define GLFW_KEY_F18                307
-#define GLFW_KEY_F19                308
-#define GLFW_KEY_F20                309
-#define GLFW_KEY_F21                310
-#define GLFW_KEY_F22                311
-#define GLFW_KEY_F23                312
-#define GLFW_KEY_F24                313
-#define GLFW_KEY_F25                314
 #define GLFW_KEY_KP_0               320
 #define GLFW_KEY_KP_1               321
 #define GLFW_KEY_KP_2               322
@@ -517,8 +421,6 @@ extern "C" {
 #define GLFW_KEY_MENU               348
 
 #define GLFW_KEY_LAST               GLFW_KEY_MENU
-
-/*! @} */
 
 /*! @defgroup mods Modifier key flags
  *  @brief Modifier key flags.
@@ -561,15 +463,6 @@ extern "C" {
  */
 #define GLFW_MOD_NUM_LOCK        0x0020
 
-/*! @} */
-
-/*! @defgroup buttons Mouse buttons
- *  @brief Mouse button IDs.
- *
- *  See [mouse button input](@ref input_mouse_button) for how these are used.
- *
- *  @ingroup input
- *  @{ */
 #define GLFW_MOUSE_BUTTON_1         0
 #define GLFW_MOUSE_BUTTON_2         1
 #define GLFW_MOUSE_BUTTON_3         2
@@ -582,265 +475,22 @@ extern "C" {
 #define GLFW_MOUSE_BUTTON_LEFT      GLFW_MOUSE_BUTTON_1
 #define GLFW_MOUSE_BUTTON_RIGHT     GLFW_MOUSE_BUTTON_2
 #define GLFW_MOUSE_BUTTON_MIDDLE    GLFW_MOUSE_BUTTON_3
-/*! @} */
 
-/*! @defgroup joysticks Joysticks
- *  @brief Joystick IDs.
- *
- *  See [joystick input](@ref joystick) for how these are used.
- *
- *  @ingroup input
- *  @{ */
-#define GLFW_JOYSTICK_1             0
-#define GLFW_JOYSTICK_2             1
-#define GLFW_JOYSTICK_3             2
-#define GLFW_JOYSTICK_4             3
-#define GLFW_JOYSTICK_5             4
-#define GLFW_JOYSTICK_6             5
-#define GLFW_JOYSTICK_7             6
-#define GLFW_JOYSTICK_8             7
-#define GLFW_JOYSTICK_9             8
-#define GLFW_JOYSTICK_10            9
-#define GLFW_JOYSTICK_11            10
-#define GLFW_JOYSTICK_12            11
-#define GLFW_JOYSTICK_13            12
-#define GLFW_JOYSTICK_14            13
-#define GLFW_JOYSTICK_15            14
-#define GLFW_JOYSTICK_16            15
-#define GLFW_JOYSTICK_LAST          GLFW_JOYSTICK_16
-/*! @} */
-
-/*! @defgroup gamepad_buttons Gamepad buttons
- *  @brief Gamepad buttons.
- *
- *  See @ref gamepad for how these are used.
- *
- *  @ingroup input
- *  @{ */
-#define GLFW_GAMEPAD_BUTTON_A               0
-#define GLFW_GAMEPAD_BUTTON_B               1
-#define GLFW_GAMEPAD_BUTTON_X               2
-#define GLFW_GAMEPAD_BUTTON_Y               3
-#define GLFW_GAMEPAD_BUTTON_LEFT_BUMPER     4
-#define GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER    5
-#define GLFW_GAMEPAD_BUTTON_BACK            6
-#define GLFW_GAMEPAD_BUTTON_START           7
-#define GLFW_GAMEPAD_BUTTON_GUIDE           8
-#define GLFW_GAMEPAD_BUTTON_LEFT_THUMB      9
-#define GLFW_GAMEPAD_BUTTON_RIGHT_THUMB     10
-#define GLFW_GAMEPAD_BUTTON_DPAD_UP         11
-#define GLFW_GAMEPAD_BUTTON_DPAD_RIGHT      12
-#define GLFW_GAMEPAD_BUTTON_DPAD_DOWN       13
-#define GLFW_GAMEPAD_BUTTON_DPAD_LEFT       14
-#define GLFW_GAMEPAD_BUTTON_LAST            GLFW_GAMEPAD_BUTTON_DPAD_LEFT
-
-#define GLFW_GAMEPAD_BUTTON_CROSS       GLFW_GAMEPAD_BUTTON_A
-#define GLFW_GAMEPAD_BUTTON_CIRCLE      GLFW_GAMEPAD_BUTTON_B
-#define GLFW_GAMEPAD_BUTTON_SQUARE      GLFW_GAMEPAD_BUTTON_X
-#define GLFW_GAMEPAD_BUTTON_TRIANGLE    GLFW_GAMEPAD_BUTTON_Y
-/*! @} */
-
-/*! @defgroup gamepad_axes Gamepad axes
- *  @brief Gamepad axes.
- *
- *  See @ref gamepad for how these are used.
- *
- *  @ingroup input
- *  @{ */
-#define GLFW_GAMEPAD_AXIS_LEFT_X        0
-#define GLFW_GAMEPAD_AXIS_LEFT_Y        1
-#define GLFW_GAMEPAD_AXIS_RIGHT_X       2
-#define GLFW_GAMEPAD_AXIS_RIGHT_Y       3
-#define GLFW_GAMEPAD_AXIS_LEFT_TRIGGER  4
-#define GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER 5
-#define GLFW_GAMEPAD_AXIS_LAST          GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER
-/*! @} */
-
-/*! @defgroup errors Error codes
- *  @brief Error codes.
- *
- *  See [error handling](@ref error_handling) for how these are used.
- *
- *  @ingroup init
- *  @{ */
-/*! @brief No error has occurred.
- *
- *  No error has occurred.
- *
- *  @analysis Yay.
- */
 #define GLFW_NO_ERROR               0
-/*! @brief GLFW has not been initialized.
- *
- *  This occurs if a GLFW function was called that must not be called unless the
- *  library is [initialized](@ref intro_init).
- *
- *  @analysis Application programmer error.  Initialize GLFW before calling any
- *  function that requires initialization.
- */
 #define GLFW_NOT_INITIALIZED        0x00010001
-/*! @brief No context is current for this thread.
- *
- *  This occurs if a GLFW function was called that needs and operates on the
- *  current OpenGL or OpenGL ES context but no context is current on the calling
- *  thread.  One such function is @ref glfwSwapInterval.
- *
- *  @analysis Application programmer error.  Ensure a context is current before
- *  calling functions that require a current context.
- */
 #define GLFW_NO_CURRENT_CONTEXT     0x00010002
 #define GLFW_INVALID_ENUM           0x00010003
-/*! @brief One of the arguments to the function was an invalid value.
- *
- *  One of the arguments to the function was an invalid value, for example
- *  requesting a non-existent OpenGL or OpenGL ES version like 2.7.
- *
- *  Requesting a valid but unavailable OpenGL or OpenGL ES version will instead
- *  result in a @ref GLFW_VERSION_UNAVAILABLE error.
- *
- *  @analysis Application programmer error.  Fix the offending call.
- */
 #define GLFW_INVALID_VALUE          0x00010004
-/*! @brief A memory allocation failed.
- *
- *  A memory allocation failed.
- *
- *  @analysis A bug in GLFW or the underlying operating system.  Report the bug
- *  to our [issue tracker](https://github.com/glfw/glfw/issues).
- */
 #define GLFW_OUT_OF_MEMORY          0x00010005
-/*! @brief GLFW could not find support for the requested API on the system.
- *
- *  GLFW could not find support for the requested API on the system.
- *
- *  @analysis The installed graphics driver does not support the requested
- *  API, or does not support it via the chosen context creation API.
- *  Below are a few examples.
- *
- *  @par
- *  Some pre-installed Windows graphics drivers do not support OpenGL.  AMD only
- *  supports OpenGL ES via EGL, while Nvidia and Intel only support it via
- *  a WGL or GLX extension.  macOS does not provide OpenGL ES at all.  The Mesa
- *  EGL, OpenGL and OpenGL ES libraries do not interface with the Nvidia binary
- *  driver.  Older graphics drivers do not support Vulkan.
- */
 #define GLFW_API_UNAVAILABLE        0x00010006
-/*! @brief The requested OpenGL or OpenGL ES version is not available.
- *
- *  The requested OpenGL or OpenGL ES version (including any requested context
- *  or framebuffer hints) is not available on this machine.
- *
- *  @analysis The machine does not support your requirements.  If your
- *  application is sufficiently flexible, downgrade your requirements and try
- *  again.  Otherwise, inform the user that their machine does not match your
- *  requirements.
- *
- *  @par
- *  Future invalid OpenGL and OpenGL ES versions, for example OpenGL 4.8 if 5.0
- *  comes out before the 4.x series gets that far, also fail with this error and
- *  not @ref GLFW_INVALID_VALUE, because GLFW cannot know what future versions
- *  will exist.
- */
 #define GLFW_VERSION_UNAVAILABLE    0x00010007
-/*! @brief A platform-specific error occurred that does not match any of the
- *  more specific categories.
- *
- *  A platform-specific error occurred that does not match any of the more
- *  specific categories.
- *
- *  @analysis A bug or configuration error in GLFW, the underlying operating
- *  system or its drivers, or a lack of required resources.  Report the issue to
- *  our [issue tracker](https://github.com/glfw/glfw/issues).
- */
 #define GLFW_PLATFORM_ERROR         0x00010008
-/*! @brief The requested format is not supported or available.
- *
- *  If emitted during window creation, the requested pixel format is not
- *  supported.
- *
- *  If emitted when querying the clipboard, the contents of the clipboard could
- *  not be converted to the requested format.
- *
- *  @analysis If emitted during window creation, one or more
- *  [hard constraints](@ref window_hints_hard) did not match any of the
- *  available pixel formats.  If your application is sufficiently flexible,
- *  downgrade your requirements and try again.  Otherwise, inform the user that
- *  their machine does not match your requirements.
- *
- *  @par
- *  If emitted when querying the clipboard, ignore the error or report it to
- *  the user, as appropriate.
- */
 #define GLFW_FORMAT_UNAVAILABLE     0x00010009
-/*! @brief The specified window does not have an OpenGL or OpenGL ES context.
- *
- *  A window that does not have an OpenGL or OpenGL ES context was passed to
- *  a function that requires it to have one.
- *
- *  @analysis Application programmer error.  Fix the offending call.
- */
 #define GLFW_NO_WINDOW_CONTEXT      0x0001000A
-/*! @brief The specified cursor shape is not available.
- *
- *  The specified standard cursor shape is not available, either because the
- *  current platform cursor theme does not provide it or because it is not
- *  available on the platform.
- *
- *  @analysis Platform or system settings limitation.  Pick another
- *  [standard cursor shape](@ref shapes) or create a
- *  [custom cursor](@ref cursor_custom).
- */
 #define GLFW_CURSOR_UNAVAILABLE     0x0001000B
-/*! @brief The requested feature is not provided by the platform.
- *
- *  The requested feature is not provided by the platform, so GLFW is unable to
- *  implement it.  The documentation for each function notes if it could emit
- *  this error.
- *
- *  @analysis Platform or platform version limitation.  The error can be ignored
- *  unless the feature is critical to the application.
- *
- *  @par
- *  A function call that emits this error has no effect other than the error and
- *  updating any existing out parameters.
- */
 #define GLFW_FEATURE_UNAVAILABLE    0x0001000C
-/*! @brief The requested feature is not implemented for the platform.
- *
- *  The requested feature has not yet been implemented in GLFW for this platform.
- *
- *  @analysis An incomplete implementation of GLFW for this platform, hopefully
- *  fixed in a future release.  The error can be ignored unless the feature is
- *  critical to the application.
- *
- *  @par
- *  A function call that emits this error has no effect other than the error and
- *  updating any existing out parameters.
- */
 #define GLFW_FEATURE_UNIMPLEMENTED  0x0001000D
-/*! @brief Platform unavailable or no matching platform was found.
- *
- *  If emitted during initialization, no matching platform was found.  If the @ref
- *  GLFW_PLATFORM init hint was set to `GLFW_ANY_PLATFORM`, GLFW could not detect any of
- *  the platforms supported by this library binary, except for the Null platform.  If the
- *  init hint was set to a specific platform, it is either not supported by this library
- *  binary or GLFW was not able to detect it.
- *
- *  If emitted by a native access function, GLFW was initialized for a different platform
- *  than the function is for.
- *
- *  @analysis Failure to detect any platform usually only happens on non-macOS Unix
- *  systems, either when no window system is running or the program was run from
- *  a terminal that does not have the necessary environment variables.  Fall back to
- *  a different platform if possible or notify the user that no usable platform was
- *  detected.
- *
- *  Failure to detect a specific platform may have the same cause as above or be because
- *  support for that platform was not compiled in.  Call @ref glfwPlatformSupported to
- *  check whether a specific platform is supported by a library binary.
- */
 #define GLFW_PLATFORM_UNAVAILABLE   0x0001000E
-/*! @} */
 
 /*! @addtogroup window
  *  @{ */
@@ -4204,8 +3854,6 @@ GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* 
  *  can pass events to GLFW in response to many window system function calls.
  *  GLFW will pass those events on to the application callbacks before
  *  returning.
- *
- *  Event processing is not required for joystick input to work.
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.

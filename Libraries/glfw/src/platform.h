@@ -27,13 +27,7 @@
 
 #if defined(GLFW_BUILD_WIN32_TIMER) || \
     defined(GLFW_BUILD_WIN32_MODULE) || \
-    defined(GLFW_BUILD_WIN32_THREAD) || \
-    defined(GLFW_BUILD_COCOA_TIMER) || \
-    defined(GLFW_BUILD_POSIX_TIMER) || \
-    defined(GLFW_BUILD_POSIX_MODULE) || \
-    defined(GLFW_BUILD_POSIX_THREAD) || \
-    defined(GLFW_BUILD_POSIX_POLL) || \
-    defined(GLFW_BUILD_LINUX_JOYSTICK)
+    defined(GLFW_BUILD_WIN32_THREAD)
  #error "You must not define these; define zero or more _GLFW_<platform> macros instead"
 #endif
 
@@ -50,67 +44,23 @@
  #define GLFW_WGL_LIBRARY_CONTEXT_STATE
 #endif
 
-#if defined(_GLFW_COCOA)
- #include "cocoa_platform.h"
- #define GLFW_EXPOSE_NATIVE_COCOA
- #define GLFW_EXPOSE_NATIVE_NSGL
-#else
- #define GLFW_COCOA_WINDOW_STATE
- #define GLFW_COCOA_MONITOR_STATE
- #define GLFW_COCOA_CURSOR_STATE
- #define GLFW_COCOA_LIBRARY_WINDOW_STATE
- #define GLFW_NSGL_CONTEXT_STATE
- #define GLFW_NSGL_LIBRARY_CONTEXT_STATE
-#endif
-
-#if defined(_GLFW_WAYLAND)
- #include "wl_platform.h"
- #define GLFW_EXPOSE_NATIVE_WAYLAND
-#else
- #define GLFW_WAYLAND_WINDOW_STATE
- #define GLFW_WAYLAND_MONITOR_STATE
- #define GLFW_WAYLAND_CURSOR_STATE
- #define GLFW_WAYLAND_LIBRARY_WINDOW_STATE
-#endif
-
-#if (defined(_GLFW_X11) || defined(_GLFW_WAYLAND)) && defined(__linux__)
- #define GLFW_BUILD_LINUX_JOYSTICK
-#endif
-
-#if defined(GLFW_BUILD_LINUX_JOYSTICK)
- #include "linux_joystick.h"
-#else
- #define GLFW_LINUX_JOYSTICK_STATE
- #define GLFW_LINUX_LIBRARY_JOYSTICK_STATE
-#endif
-
 #define GLFW_PLATFORM_WINDOW_STATE \
         GLFW_WIN32_WINDOW_STATE \
-        GLFW_COCOA_WINDOW_STATE \
-        GLFW_WAYLAND_WINDOW_STATE \
 
 #define GLFW_PLATFORM_MONITOR_STATE \
         GLFW_WIN32_MONITOR_STATE \
-        GLFW_COCOA_MONITOR_STATE \
-        GLFW_WAYLAND_MONITOR_STATE \
 
 #define GLFW_PLATFORM_CURSOR_STATE \
         GLFW_WIN32_CURSOR_STATE \
-        GLFW_COCOA_CURSOR_STATE \
-        GLFW_WAYLAND_CURSOR_STATE \
 
 #define GLFW_PLATFORM_LIBRARY_WINDOW_STATE \
         GLFW_WIN32_LIBRARY_WINDOW_STATE \
-        GLFW_COCOA_LIBRARY_WINDOW_STATE \
-        GLFW_WAYLAND_LIBRARY_WINDOW_STATE \
 
 #define GLFW_PLATFORM_CONTEXT_STATE \
         GLFW_WGL_CONTEXT_STATE \
-        GLFW_NSGL_CONTEXT_STATE \
 
 #define GLFW_PLATFORM_LIBRARY_CONTEXT_STATE \
         GLFW_WGL_LIBRARY_CONTEXT_STATE \
-        GLFW_NSGL_LIBRARY_CONTEXT_STATE \
 
 #if defined(_WIN32)
  #define GLFW_BUILD_WIN32_THREAD
@@ -149,11 +99,4 @@
 
 #if defined(_WIN32)
  #define GLFW_BUILD_WIN32_MODULE
-#else
- #define GLFW_BUILD_POSIX_MODULE
 #endif
-
-#if defined(_GLFW_WAYLAND) || defined(_GLFW_X11)
- #define GLFW_BUILD_POSIX_POLL
-#endif
-

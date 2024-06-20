@@ -33,11 +33,6 @@
 // Internal key state used for sticky keys
 #define _GLFW_STICK 3
 
-// Internal constants for gamepad mapping source types
-#define _GLFW_JOYSTICK_AXIS     1
-#define _GLFW_JOYSTICK_BUTTON   2
-#define _GLFW_JOYSTICK_HATBIT   3
-
 #define GLFW_MOD_MASK (GLFW_MOD_SHIFT | \
                        GLFW_MOD_CONTROL | \
                        GLFW_MOD_ALT | \

@@ -278,13 +278,10 @@ void _glfw_free(void* block)
         _glfw.allocator.deallocate(block, _glfw.allocator.user);
 }
 
-
 //////////////////////////////////////////////////////////////////////////
 //////                         GLFW event API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-// Notifies shared code of an error
-//
 void _glfwInputError(int code, const char* format, ...)
 {
     _GLFWerror* error;
@@ -439,16 +436,6 @@ GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator)
 GLFWAPI void glfwInitVulkanLoader(PFN_vkGetInstanceProcAddr loader)
 {
     _glfwInitHints.vulkanLoader = loader;
-}
-
-GLFWAPI void glfwGetVersion(int* major, int* minor, int* rev)
-{
-    if (major != NULL)
-        *major = GLFW_VERSION_MAJOR;
-    if (minor != NULL)
-        *minor = GLFW_VERSION_MINOR;
-    if (rev != NULL)
-        *rev = GLFW_VERSION_REVISION;
 }
 
 GLFWAPI int glfwGetError(const char** description)
