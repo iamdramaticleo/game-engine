@@ -71,8 +71,6 @@ static void* defaultReallocate(void* block, size_t size, void* user)
 //
 static void terminate(void)
 {
-    int i;
-
     memset(&_glfw.callbacks, 0, sizeof(_glfw.callbacks));
 
     while (_glfw.windowListHead)
@@ -81,7 +79,7 @@ static void terminate(void)
     while (_glfw.cursorListHead)
         glfwDestroyCursor((GLFWcursor*) _glfw.cursorListHead);
 
-    for (i = 0;  i < _glfw.monitorCount;  i++)
+    for (int i = 0;  i < _glfw.monitorCount;  i++)
     {
         _GLFWmonitor* monitor = _glfw.monitors[i];
         if (monitor->originalRamp.size)
@@ -111,94 +109,9 @@ static void terminate(void)
     memset(&_glfw, 0, sizeof(_glfw));
 }
 
-
 //////////////////////////////////////////////////////////////////////////
 //////                       GLFW internal API                      //////
 //////////////////////////////////////////////////////////////////////////
-
-// Encode a Unicode code point to a UTF-8 stream
-// Based on cutef8 by Jeff Bezanson (Public Domain)
-//
-size_t _glfwEncodeUTF8(char* s, uint32_t codepoint)
-{
-    size_t count = 0;
-
-    if (codepoint < 0x80)
-        s[count++] = (char) codepoint;
-    else if (codepoint < 0x800)
-    {
-        s[count++] = (codepoint >> 6) | 0xc0;
-        s[count++] = (codepoint & 0x3f) | 0x80;
-    }
-    else if (codepoint < 0x10000)
-    {
-        s[count++] = (codepoint >> 12) | 0xe0;
-        s[count++] = ((codepoint >> 6) & 0x3f) | 0x80;
-        s[count++] = (codepoint & 0x3f) | 0x80;
-    }
-    else if (codepoint < 0x110000)
-    {
-        s[count++] = (codepoint >> 18) | 0xf0;
-        s[count++] = ((codepoint >> 12) & 0x3f) | 0x80;
-        s[count++] = ((codepoint >> 6) & 0x3f) | 0x80;
-        s[count++] = (codepoint & 0x3f) | 0x80;
-    }
-
-    return count;
-}
-
-// Splits and translates a text/uri-list into separate file paths
-// NOTE: This function destroys the provided string
-//
-char** _glfwParseUriList(char* text, int* count)
-{
-    const char* prefix = "file://";
-    char** paths = NULL;
-    char* line;
-
-    *count = 0;
-
-    while ((line = strtok(text, "\r\n")))
-    {
-        char* path;
-
-        text = NULL;
-
-        if (line[0] == '#')
-            continue;
-
-        if (strncmp(line, prefix, strlen(prefix)) == 0)
-        {
-            line += strlen(prefix);
-            // TODO: Validate hostname
-            while (*line != '/')
-                line++;
-        }
-
-        (*count)++;
-
-        path = _glfw_calloc(strlen(line) + 1, 1);
-        paths = _glfw_realloc(paths, *count * sizeof(char*));
-        paths[*count - 1] = path;
-
-        while (*line)
-        {
-            if (line[0] == '%' && line[1] && line[2])
-            {
-                const char digits[3] = { line[1], line[2], '\0' };
-                *path = (char) strtol(digits, NULL, 16);
-                line += 2;
-            }
-            else
-                *path = *line;
-
-            path++;
-            line++;
-        }
-    }
-
-    return paths;
-}
 
 char* _glfw_strdup(const char* source)
 {
