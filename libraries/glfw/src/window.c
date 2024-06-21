@@ -30,7 +30,6 @@
 
 #include <assert.h>
 #include <string.h>
-#include <stdlib.h>
 #include <float.h>
 
 //////////////////////////////////////////////////////////////////////////
@@ -1028,7 +1027,7 @@ GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* 
     return cbfun;
 }
 
-GLFWAPI void glfwPollEvents(void)
+void glfwPollEvents(void)
 {
     _GLFW_REQUIRE_INIT();
     _glfw.platform.pollEvents();
