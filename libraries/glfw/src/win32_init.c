@@ -29,47 +29,13 @@
 
 #if defined(_GLFW_WIN32)
 
-#include <stdlib.h>
-
-static const GUID _glfw_GUID_DEVINTERFACE_HID =
-    {0x4d1e55b2,0xf16f,0x11cf,{0x88,0xcb,0x00,0x11,0x11,0x00,0x00,0x30}};
+static const GUID _glfw_GUID_DEVINTERFACE_HID = {0x4d1e55b2,0xf16f,0x11cf,{0x88,0xcb,0x00,0x11,0x11,0x00,0x00,0x30}};
 
 #define GUID_DEVINTERFACE_HID _glfw_GUID_DEVINTERFACE_HID
 
-#if defined(_GLFW_USE_HYBRID_HPG) || defined(_GLFW_USE_OPTIMUS_HPG)
-
-#if defined(_GLFW_BUILD_DLL)
- #pragma message("These symbols must be exported by the executable and have no effect in a DLL")
-#endif
-
-// Executables (but not DLLs) exporting this symbol with this value will be
-// automatically directed to the high-performance GPU on Nvidia Optimus systems
-// with up-to-date drivers
-//
-__declspec(dllexport) DWORD NvOptimusEnablement = 1;
-
-// Executables (but not DLLs) exporting this symbol with this value will be
-// automatically directed to the high-performance GPU on AMD PowerXpress systems
-// with up-to-date drivers
-//
-__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
-
-#endif // _GLFW_USE_HYBRID_HPG
-
-#if defined(_GLFW_BUILD_DLL)
-
-// GLFW DLL entry point
-//
-BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved)
-{
-    return TRUE;
-}
-
-#endif // _GLFW_BUILD_DLL
-
 // Load necessary libraries (DLLs)
 //
-static GLFWbool loadLibraries(void)
+static GLFWbool loadLibraries()
 {
     if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
                                 GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
@@ -104,40 +70,6 @@ static GLFWbool loadLibraries(void)
     _glfw.win32.user32.GetSystemMetricsForDpi_ = (PFN_GetSystemMetricsForDpi)
         _glfwPlatformGetModuleSymbol(_glfw.win32.user32.instance, "GetSystemMetricsForDpi");
 
-    _glfw.win32.dinput8.instance = _glfwPlatformLoadModule("dinput8.dll");
-    if (_glfw.win32.dinput8.instance)
-    {
-        _glfw.win32.dinput8.Create = (PFN_DirectInput8Create)
-            _glfwPlatformGetModuleSymbol(_glfw.win32.dinput8.instance, "DirectInput8Create");
-    }
-
-    {
-        int i;
-        const char* names[] =
-        {
-            "xinput1_4.dll",
-            "xinput1_3.dll",
-            "xinput9_1_0.dll",
-            "xinput1_2.dll",
-            "xinput1_1.dll",
-            NULL
-        };
-
-        for (i = 0;  names[i];  i++)
-        {
-            _glfw.win32.xinput.instance = _glfwPlatformLoadModule(names[i]);
-            if (_glfw.win32.xinput.instance)
-            {
-                _glfw.win32.xinput.GetCapabilities = (PFN_XInputGetCapabilities)
-                    _glfwPlatformGetModuleSymbol(_glfw.win32.xinput.instance, "XInputGetCapabilities");
-                _glfw.win32.xinput.GetState = (PFN_XInputGetState)
-                    _glfwPlatformGetModuleSymbol(_glfw.win32.xinput.instance, "XInputGetState");
-
-                break;
-            }
-        }
-    }
-
     _glfw.win32.dwmapi.instance = _glfwPlatformLoadModule("dwmapi.dll");
     if (_glfw.win32.dwmapi.instance)
     {
@@ -170,16 +102,8 @@ static GLFWbool loadLibraries(void)
     return GLFW_TRUE;
 }
 
-// Unload used libraries (DLLs)
-//
-static void freeLibraries(void)
+static void freeLibraries()
 {
-    if (_glfw.win32.xinput.instance)
-        _glfwPlatformFreeModule(_glfw.win32.xinput.instance);
-
-    if (_glfw.win32.dinput8.instance)
-        _glfwPlatformFreeModule(_glfw.win32.dinput8.instance);
-
     if (_glfw.win32.user32.instance)
         _glfwPlatformFreeModule(_glfw.win32.user32.instance);
 
@@ -193,12 +117,8 @@ static void freeLibraries(void)
         _glfwPlatformFreeModule(_glfw.win32.ntdll.instance);
 }
 
-// Create key code translation tables
-//
-static void createKeyTables(void)
+static void createKeyTables()
 {
-    int scancode;
-
     memset(_glfw.win32.keycodes, -1, sizeof(_glfw.win32.keycodes));
     memset(_glfw.win32.scancodes, -1, sizeof(_glfw.win32.scancodes));
 
@@ -312,7 +232,7 @@ static void createKeyTables(void)
     _glfw.win32.keycodes[0x037] = GLFW_KEY_KP_MULTIPLY;
     _glfw.win32.keycodes[0x04A] = GLFW_KEY_KP_SUBTRACT;
 
-    for (scancode = 0;  scancode < 512;  scancode++)
+    for (int scancode = 0;  scancode < 512;  scancode++)
     {
         if (_glfw.win32.keycodes[scancode] > 0)
             _glfw.win32.scancodes[_glfw.win32.keycodes[scancode]] = scancode;
