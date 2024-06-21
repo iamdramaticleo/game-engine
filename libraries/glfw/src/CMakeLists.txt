@@ -1,10 +1,10 @@
-add_library(glfw STATIC
-                 "${GLFW_SOURCE_DIR}/include/GLFW/glfw3.h"
-                 "${GLFW_SOURCE_DIR}/include/GLFW/glfw3native.h"
-                 internal.h platform.h context.c init.c input.c monitor.c platform.c vulkan.c window.c)
+add_library(glfw)
+
+target_include_directories(glfw PUBLIC "../include/")
+target_sources(glfw PRIVATE context.c init.c input.c monitor.c platform.c vulkan.c window.c)
 
 if (WIN32)
-    target_sources(glfw PRIVATE win32_time.h win32_thread.h win32_module.c win32_time.c win32_thread.c)
+    target_sources(glfw PRIVATE win32_module.c win32_time.c win32_thread.c)
 endif()
 
 if (GLFW_BUILD_WIN32)
@@ -12,18 +12,13 @@ if (GLFW_BUILD_WIN32)
     target_sources(glfw PRIVATE win32_platform.h win32_init.c win32_monitor.c win32_window.c wgl_context.c)
 endif()
 
-set_target_properties(glfw PROPERTIES
-                      POSITION_INDEPENDENT_CODE ON
-                      C_STANDARD 99
-                      C_EXTENSIONS OFF
-                      FOLDER "GLFW3")
-
 target_include_directories(glfw PUBLIC
                            "$<BUILD_INTERFACE:${GLFW_SOURCE_DIR}/include>"
                            "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 target_include_directories(glfw PRIVATE
                            "${GLFW_SOURCE_DIR}/src"
                            "${GLFW_BINARY_DIR}/src")
+
 target_link_libraries(glfw PRIVATE Threads::Threads)
 
 if (GLFW_BUILD_WIN32)

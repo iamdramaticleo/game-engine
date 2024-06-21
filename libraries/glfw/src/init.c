@@ -31,8 +31,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <assert.h>
-
 
 // NOTE: The global variables below comprise all mutable global data in GLFW
 //       Any other mutable global variable is a bug
@@ -355,7 +353,7 @@ void _glfwInputError(int code, const char* format, ...)
 //////                        GLFW public API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-GLFWAPI int glfwInit(void)
+int glfwInit()
 {
     if (_glfw.initialized)
         return GLFW_TRUE;
@@ -399,7 +397,7 @@ GLFWAPI int glfwInit(void)
     return GLFW_TRUE;
 }
 
-GLFWAPI void glfwTerminate(void)
+void glfwTerminate()
 {
     if (!_glfw.initialized)
         return;

@@ -14,16 +14,7 @@ include(CMakeDependentOption)
 cmake_dependent_option(GLFW_BUILD_WIN32 "Build support for Win32" ON "WIN32" OFF)
 cmake_dependent_option(USE_MSVC_RUNTIME_LIBRARY_DLL "Use MSVC runtime library DLL" ON "MSVC" OFF)
 
-list(APPEND CMAKE_MODULE_PATH "${GLFW_SOURCE_DIR}/CMake/modules")
-
 find_package(Threads REQUIRED)
-
-#--------------------------------------------------------------------
-# Report backend selection
-#--------------------------------------------------------------------
-if (GLFW_BUILD_WIN32)
-    message(STATUS "Including Win32 support")
-endif()
 #--------------------------------------------------------------------
 # Apply Microsoft C runtime library option
 # This is here because it also applies to tests and examples

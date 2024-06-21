@@ -26,8 +26,7 @@
  *
  *************************************************************************/
 
-#ifndef _glfw3_h_
-#define _glfw3_h_
+#pragma once
 
 /*************************************************************************
  * Compiler- and platform-specific preprocessor work
@@ -47,10 +46,6 @@
 #if defined(GLFW_INCLUDE_VULKAN)
   #include <vulkan/vulkan.h>
 #endif /* Vulkan header */
-
-/* The Vulkan header may have indirectly included windows.h (because of
- * VK_USE_PLATFORM_WIN32_KHR) so we offer our replacement symbols after it.
- */
 
 /* It is customary to use APIENTRY for OpenGL function pointer declarations on
  * all platforms.  Additionally, the Windows OpenGL header needs APIENTRY.
@@ -5160,5 +5155,3 @@ GLFWAPI VkResult glfwCreateWindowSurface(VkInstance instance, GLFWwindow* window
 #endif
 
 /* -------------------- END SYSTEM/COMPILER SPECIFIC --------------------- */
-
-#endif /* _glfw3_h_ */
