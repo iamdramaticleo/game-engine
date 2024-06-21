@@ -48,4 +48,3 @@ GLFWproc _glfwPlatformGetModuleSymbol(void* module, const char* name)
 }
 
 #endif // GLFW_BUILD_WIN32_MODULE
-

@@ -25,8 +25,9 @@
 //
 //========================================================================
 
-#if defined(GLFW_BUILD_WIN32_TIMER) || \
-    defined(GLFW_BUILD_WIN32_MODULE) || \
+#pragma once
+
+#if defined(GLFW_BUILD_WIN32_MODULE) || \
     defined(GLFW_BUILD_WIN32_THREAD)
  #error "You must not define these; define zero or more _GLFW_<platform> macros instead"
 #endif
@@ -76,25 +77,6 @@
  #include "posix_thread.h"
  #define GLFW_PLATFORM_TLS_STATE    GLFW_POSIX_TLS_STATE
  #define GLFW_PLATFORM_MUTEX_STATE  GLFW_POSIX_MUTEX_STATE
-#endif
-
-#if defined(_WIN32)
- #define GLFW_BUILD_WIN32_TIMER
-#elif defined(__APPLE__)
- #define GLFW_BUILD_COCOA_TIMER
-#else
- #define GLFW_BUILD_POSIX_TIMER
-#endif
-
-#if defined(GLFW_BUILD_WIN32_TIMER)
- #include "win32_time.h"
- #define GLFW_PLATFORM_LIBRARY_TIMER_STATE  GLFW_WIN32_LIBRARY_TIMER_STATE
-#elif defined(GLFW_BUILD_COCOA_TIMER)
- #include "cocoa_time.h"
- #define GLFW_PLATFORM_LIBRARY_TIMER_STATE  GLFW_COCOA_LIBRARY_TIMER_STATE
-#elif defined(GLFW_BUILD_POSIX_TIMER)
- #include "posix_time.h"
- #define GLFW_PLATFORM_LIBRARY_TIMER_STATE  GLFW_POSIX_LIBRARY_TIMER_STATE
 #endif
 
 #if defined(_WIN32)

@@ -32,9 +32,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-// NOTE: The global variables below comprise all mutable global data in GLFW
-//       Any other mutable global variable is a bug
-
 // This contains all mutable state shared between compilation units of GLFW
 //
 _GLFWlibrary _glfw = { GLFW_FALSE };
@@ -46,8 +43,7 @@ static _GLFWerror _glfwMainThreadError;
 static GLFWallocator _glfwInitAllocator;
 static _GLFWinitconfig _glfwInitHints =
 {
-    .platformID = GLFW_ANY_PLATFORM,
-    .vulkanLoader = NULL
+    .platformID = GLFW_ANY_PLATFORM
 };
 
 // The allocation function used when no custom allocator is set
@@ -97,7 +93,6 @@ static void terminate(void)
     _glfw.monitors = NULL;
     _glfw.monitorCount = 0;
 
-    _glfwTerminateVulkan();
     _glfw.platform.terminate();
 
     _glfw.initialized = GLFW_FALSE;
@@ -387,10 +382,6 @@ int glfwInit()
     }
 
     _glfwPlatformSetTls(&_glfw.errorSlot, &_glfwMainThreadError);
-
-    _glfwPlatformInitTimer();
-    _glfw.timer.offset = _glfwPlatformGetTimerValue();
-
     _glfw.initialized = GLFW_TRUE;
 
     glfwDefaultWindowHints();
@@ -429,11 +420,6 @@ GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator)
     }
     else
         memset(&_glfwInitAllocator, 0, sizeof(GLFWallocator));
-}
-
-GLFWAPI void glfwInitVulkanLoader(PFN_vkGetInstanceProcAddr loader)
-{
-    _glfwInitHints.vulkanLoader = loader;
 }
 
 GLFWAPI int glfwGetError(const char** description)

@@ -433,17 +433,6 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window, const _GLFWctxconfig* c
             if (flags & GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT)
                 window->context.forward = GLFW_TRUE;
 
-            if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
-                window->context.debug = GLFW_TRUE;
-            else if (glfwExtensionSupported("GL_ARB_debug_output") &&
-                     ctxconfig->debug)
-            {
-                // HACK: This is a workaround for older drivers (pre KHR_debug)
-                //       not setting the debug bit in the context flags for
-                //       debug contexts
-                window->context.debug = GLFW_TRUE;
-            }
-
             if (flags & GL_CONTEXT_FLAG_NO_ERROR_BIT_KHR)
                 window->context.noerror = GLFW_TRUE;
         }

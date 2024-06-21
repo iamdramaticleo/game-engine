@@ -1,10 +1,10 @@
 add_library(glfw)
 
 target_include_directories(glfw PUBLIC "../include/")
-target_sources(glfw PRIVATE context.c init.c input.c monitor.c platform.c vulkan.c window.c)
+target_sources(glfw PRIVATE context.c init.c input.c monitor.c platform.c window.c)
 
 if (WIN32)
-    target_sources(glfw PRIVATE win32_module.c win32_time.c win32_thread.c)
+    target_sources(glfw PRIVATE win32_module.c win32_thread.c)
 endif()
 
 if (GLFW_BUILD_WIN32)

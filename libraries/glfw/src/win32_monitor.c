@@ -29,12 +29,8 @@
 
 #if defined(_GLFW_WIN32)
 
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
 #include <wchar.h>
 #include <assert.h>
-
 
 // Callback for EnumDisplayMonitors in createMonitor
 //
