@@ -5134,8 +5134,6 @@ GLFWAPI VkResult glfwCreateWindowSurface(VkInstance instance, GLFWwindow* window
  * Global definition cleanup
  *************************************************************************/
 
-/* ------------------- BEGIN SYSTEM/COMPILER SPECIFIC -------------------- */
-
 #ifdef GLFW_WINGDIAPI_DEFINED
  #undef WINGDIAPI
  #undef GLFW_WINGDIAPI_DEFINED
@@ -5153,5 +5151,3 @@ GLFWAPI VkResult glfwCreateWindowSurface(VkInstance instance, GLFWwindow* window
  #define GLAPIENTRY APIENTRY
  #define GLFW_GLAPIENTRY_DEFINED
 #endif
-
-/* -------------------- END SYSTEM/COMPILER SPECIFIC --------------------- */

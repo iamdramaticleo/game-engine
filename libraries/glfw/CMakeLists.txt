@@ -1,8 +1,6 @@
-cmake_minimum_required(VERSION 3.4...3.28 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.28)
 
 project(glfw)
-
-string(COMPARE EQUAL "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}" GLFW_STANDALONE)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 option(GLFW_BUILD_EXAMPLES "Build the GLFW example programs" ${GLFW_STANDALONE})

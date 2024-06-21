@@ -9,7 +9,7 @@ endif()
 
 if (GLFW_BUILD_WIN32)
     target_compile_definitions(glfw PRIVATE _GLFW_WIN32)
-    target_sources(glfw PRIVATE win32_platform.h win32_init.c win32_monitor.c win32_window.c wgl_context.c)
+    target_sources(glfw PRIVATE win32_init.c win32_monitor.c win32_window.c wgl_context.c)
 endif()
 
 target_include_directories(glfw PUBLIC
@@ -29,11 +29,6 @@ endif()
 # NOTE: The order matters here, Clang-CL matches both MSVC and Clang
 if (MSVC)
     target_compile_options(glfw PRIVATE "/W3")
-elseif (CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
-        CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
-        CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
-
-    target_compile_options(glfw PRIVATE "-Wall")
 endif()
 
 if (GLFW_BUILD_WIN32)
@@ -44,13 +39,3 @@ endif()
 if (MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
     target_compile_definitions(glfw PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif()
-
-foreach(arg ${glfw_PKG_DEPS})
-    string(APPEND deps " ${arg}")
-endforeach()
-foreach(arg ${glfw_PKG_LIBS})
-    string(APPEND libs " ${arg}")
-endforeach()
-
-set(GLFW_PKG_CONFIG_REQUIRES_PRIVATE "${deps}" CACHE INTERNAL "GLFW pkg-config Requires.private")
-set(GLFW_PKG_CONFIG_LIBS_PRIVATE "${libs}" CACHE INTERNAL "GLFW pkg-config Libs.private")
