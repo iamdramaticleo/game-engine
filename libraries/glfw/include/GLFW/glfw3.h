@@ -62,13 +62,6 @@
  #define GLFW_WINGDIAPI_DEFINED
 #endif /* WINGDIAPI */
 
-/* Some Windows GLU headers need this.
- */
-#if !defined(CALLBACK) && defined(_WIN32)
- #define CALLBACK __stdcall
- #define GLFW_CALLBACK_DEFINED
-#endif /* CALLBACK */
-
 /*************************************************************************
  * GLFW API tokens
  *************************************************************************/
@@ -1282,29 +1275,6 @@ typedef struct GLFWimage
     unsigned char* pixels;
 } GLFWimage;
 
-/*! @brief Gamepad input state
- *
- *  This describes the input state of a gamepad.
- *
- *  @sa @ref gamepad
- *  @sa @ref glfwGetGamepadState
- *
- *  @since Added in version 3.3.
- *
- *  @ingroup input
- */
-typedef struct GLFWgamepadstate
-{
-    /*! The states of each [gamepad button](@ref gamepad_buttons), `GLFW_PRESS`
-     *  or `GLFW_RELEASE`.
-     */
-    unsigned char buttons[15];
-    /*! The states of each [gamepad axis](@ref gamepad_axes), in the range -1.0
-     *  to 1.0 inclusive.
-     */
-    float axes[6];
-} GLFWgamepadstate;
-
 /*! @brief Custom heap memory allocator.
  *
  *  This describes a custom heap memory allocator for GLFW.  To set an allocator, pass it
@@ -1342,99 +1312,8 @@ typedef struct GLFWallocator
  * GLFW API functions
  *************************************************************************/
 
-/*! @brief Initializes the GLFW library.
- *
- *  This function initializes the GLFW library.  Before most GLFW functions can
- *  be used, GLFW must be initialized, and before an application terminates GLFW
- *  should be terminated in order to free any resources allocated during or
- *  after initialization.
- *
- *  If this function fails, it calls @ref glfwTerminate before returning.  If it
- *  succeeds, you should call @ref glfwTerminate before the application exits.
- *
- *  Additional calls to this function after successful initialization but before
- *  termination will return `GLFW_TRUE` immediately.
- *
- *  The @ref GLFW_PLATFORM init hint controls which platforms are considered during
- *  initialization.  This also depends on which platforms the library was compiled to
- *  support.
- *
- *  @return `GLFW_TRUE` if successful, or `GLFW_FALSE` if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_PLATFORM_UNAVAILABLE and @ref
- *  GLFW_PLATFORM_ERROR.
- *
- *  @remark @macos This function will change the current directory of the
- *  application to the `Contents/Resources` subdirectory of the application's
- *  bundle, if present.  This can be disabled with the @ref
- *  GLFW_COCOA_CHDIR_RESOURCES init hint.
- *
- *  @remark @macos This function will create the main menu and dock icon for the
- *  application.  If GLFW finds a `MainMenu.nib` it is loaded and assumed to
- *  contain a menu bar.  Otherwise a minimal menu bar is created manually with
- *  common commands like Hide, Quit and About.  The About entry opens a minimal
- *  about dialog with information from the application's bundle.  The menu bar
- *  and dock icon can be disabled entirely with the @ref GLFW_COCOA_MENUBAR init
- *  hint.
- *
- *  @remark __Wayland, X11:__ If the library was compiled with support for both
- *  Wayland and X11, and the @ref GLFW_PLATFORM init hint is set to
- *  `GLFW_ANY_PLATFORM`, the `XDG_SESSION_TYPE` environment variable affects
- *  which platform is picked.  If the environment variable is not set, or is set
- *  to something other than `wayland` or `x11`, the regular detection mechanism
- *  will be used instead.
- *
- *  @remark @x11 This function will set the `LC_CTYPE` category of the
- *  application locale according to the current environment if that category is
- *  still "C".  This is because the "C" locale breaks Unicode text input.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref intro_init
- *  @sa @ref glfwInitHint
- *  @sa @ref glfwInitAllocator
- *  @sa @ref glfwTerminate
- *
- *  @since Added in version 1.0.
- *
- *  @ingroup init
- */
-int glfwInit();
-
-/*! @brief Terminates the GLFW library.
- *
- *  This function destroys all remaining windows and cursors, restores any
- *  modified gamma ramps and frees any other allocated resources.  Once this
- *  function is called, you must again call @ref glfwInit successfully before
- *  you will be able to use most GLFW functions.
- *
- *  If GLFW has been successfully initialized, this function should be called
- *  before the application exits.  If initialization fails, there is no need to
- *  call this function, as it is called by @ref glfwInit before it returns
- *  failure.
- *
- *  This function has no effect if GLFW is not initialized.
- *
- *  @errors Possible errors include @ref GLFW_PLATFORM_ERROR.
- *
- *  @remark This function may be called before @ref glfwInit.
- *
- *  @warning The contexts of any remaining windows must not be current on any
- *  other thread when this function is called.
- *
- *  @reentrancy This function must not be called from a callback.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref intro_init
- *  @sa @ref glfwInit
- *
- *  @since Added in version 1.0.
- *
- *  @ingroup init
- */
-void glfwTerminate(void);
+int  glfwInit();
+void glfwTerminate();
 
 /*! @brief Sets the specified init hint to the desired value.
  *
@@ -1603,30 +1482,7 @@ int glfwPlatformSupported(int platform);
  *  @ingroup monitor
  */
 GLFWmonitor** glfwGetMonitors(int* count);
-
-/*! @brief Returns the primary monitor.
- *
- *  This function returns the primary monitor.  This is usually the monitor
- *  where elements like the task bar or global menu bar are located.
- *
- *  @return The primary monitor, or `NULL` if no monitors were found or if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @remark The primary monitor is always first in the array returned by @ref
- *  glfwGetMonitors.
- *
- *  @sa @ref monitor_monitors
- *  @sa @ref glfwGetMonitors
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup monitor
- */
-GLFWmonitor* glfwGetPrimaryMonitor(void);
+GLFWmonitor*  glfwGetPrimaryMonitor(void);
 
 /*! @brief Returns the position of the monitor's viewport on the virtual screen.
  *

@@ -83,7 +83,7 @@ typedef void (APIENTRY * PFNGLGETINTEGERVPROC)(GLenum,GLint*);
 typedef const GLubyte* (APIENTRY * PFNGLGETSTRINGIPROC)(GLenum,GLuint);
 
 #include "platform.h"
-#include "../include/GLFW/glfw3native.hpp"
+#include "../include/GLFW/glfw3native.h"
 
 // Checks for whether the library has been initialized
 #define _GLFW_REQUIRE_INIT()                         \
@@ -338,8 +338,8 @@ struct _GLFWplatform
 {
     int platformID;
     // init
-    GLFWbool (*init)(void);
-    void (*terminate)(void);
+    GLFWbool (*init)();
+    void (*terminate)();
     // input
     void (*getCursorPos)(_GLFWwindow*,double*,double*);
     void (*setCursorPos)(_GLFWwindow*,double,double);
