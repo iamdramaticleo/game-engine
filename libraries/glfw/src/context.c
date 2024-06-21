@@ -550,7 +550,7 @@ GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions
 //////                        GLFW public API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-GLFWAPI void glfwMakeContextCurrent(GLFWwindow* handle)
+void glfwMakeContextCurrent(GLFWwindow* handle)
 {
     _GLFW_REQUIRE_INIT();
 
@@ -576,13 +576,7 @@ GLFWAPI void glfwMakeContextCurrent(GLFWwindow* handle)
         window->context.makeCurrent(window);
 }
 
-GLFWAPI GLFWwindow* glfwGetCurrentContext(void)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-    return _glfwPlatformGetTls(&_glfw.contextSlot);
-}
-
-GLFWAPI void glfwSwapBuffers(GLFWwindow* handle)
+void glfwSwapBuffers(GLFWwindow* handle)
 {
     _GLFW_REQUIRE_INIT();
 
@@ -599,7 +593,7 @@ GLFWAPI void glfwSwapBuffers(GLFWwindow* handle)
     window->context.swapBuffers(window);
 }
 
-GLFWAPI void glfwSwapInterval(int interval)
+void glfwSwapInterval(int interval)
 {
     _GLFWwindow* window;
 
@@ -616,7 +610,7 @@ GLFWAPI void glfwSwapInterval(int interval)
     window->context.swapInterval(interval);
 }
 
-GLFWAPI int glfwExtensionSupported(const char* extension)
+int glfwExtensionSupported(const char* extension)
 {
     _GLFWwindow* window;
     assert(extension != NULL);
@@ -682,7 +676,7 @@ GLFWAPI int glfwExtensionSupported(const char* extension)
     return window->context.extensionSupported(extension);
 }
 
-GLFWAPI GLFWglproc glfwGetProcAddress(const char* procname)
+GLFWglproc glfwGetProcAddress(const char* procname)
 {
     _GLFWwindow* window;
     assert(procname != NULL);

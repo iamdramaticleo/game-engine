@@ -118,22 +118,6 @@ Please check the [contribution
 guide](https://github.com/glfw/glfw/blob/master/docs/CONTRIBUTING.md) for
 information on what to include when reporting a bug.
 
-
-## Changelog since 3.4
-
- - Added `GLFW_UNLIMITED_MOUSE_BUTTONS` input mode that allows mouse buttons beyond
-   the limit of the mouse button tokens to be reported (#2423)
- - [Cocoa] Added `QuartzCore` framework as link-time dependency
- - [Cocoa] Removed support for OS X 10.10 Yosemite and earlier (#2506)
- - [Wayland] Bugfix: The fractional scaling related objects were not destroyed
- - [Wayland] Bugfix: `glfwInit` would segfault on compositor with no seat (#2517)
- - [Wayland] Bugfix: A drag entering a non-GLFW surface could cause a segfault
- - [Null] Added Vulkan 'window' surface creation via `VK_EXT_headless_surface`
- - [Null] Added EGL context creation on Mesa via `EGL_MESA_platform_surfaceless`
- - [EGL] Allowed native access on Wayland with `GLFW_CONTEXT_CREATION_API` set to
-   `GLFW_NATIVE_CONTEXT_API` (#2518)
-
-
 ## Contact
 
 On [glfw.org](https://www.glfw.org/) you can find the latest version of GLFW, as

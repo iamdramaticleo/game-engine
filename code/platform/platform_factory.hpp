@@ -1,5 +1,8 @@
 #pragma once
 
-class PlatformFactory
+namespace core
 {
-};
+    class PlatformFactory
+    {
+    };
+}

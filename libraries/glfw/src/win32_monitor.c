@@ -534,7 +534,7 @@ void _glfwSetGammaRampWin32(_GLFWmonitor* monitor, const GLFWgammaramp* ramp)
 //////                        GLFW native API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-GLFWAPI const char* glfwGetWin32Adapter(GLFWmonitor* handle)
+const char* glfwGetWin32Adapter(GLFWmonitor* handle)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 
@@ -550,7 +550,7 @@ GLFWAPI const char* glfwGetWin32Adapter(GLFWmonitor* handle)
     return monitor->win32.publicAdapterName;
 }
 
-GLFWAPI const char* glfwGetWin32Monitor(GLFWmonitor* handle)
+const char* glfwGetWin32Monitor(GLFWmonitor* handle)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 

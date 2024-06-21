@@ -309,7 +309,7 @@ void glfwTerminate()
     terminate();
 }
 
-GLFWAPI void glfwInitHint(int hint, int value)
+void glfwInitHint(int hint, int value)
 {
     switch (hint)
     {
@@ -322,7 +322,7 @@ GLFWAPI void glfwInitHint(int hint, int value)
                     "Invalid init hint 0x%08X", hint);
 }
 
-GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator)
+void glfwInitAllocator(const GLFWallocator* allocator)
 {
     if (allocator)
     {
@@ -335,7 +335,7 @@ GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator)
         memset(&_glfwInitAllocator, 0, sizeof(GLFWallocator));
 }
 
-GLFWAPI int glfwGetError(const char** description)
+int glfwGetError(const char** description)
 {
     _GLFWerror* error;
     int code = GLFW_NO_ERROR;
