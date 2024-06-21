@@ -3552,40 +3552,6 @@ GLFWAPI GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* window
  */
 GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* window, GLFWwindowcontentscalefun callback);
 
-/*! @brief Processes all pending events.
- *
- *  This function processes only those events that are already in the event
- *  queue and then returns immediately.  Processing events will cause the window
- *  and input callbacks associated with those events to be called.
- *
- *  On some platforms, a window move, resize or menu operation will cause event
- *  processing to block.  This is due to how event processing is designed on
- *  those platforms.  You can use the
- *  [window refresh callback](@ref window_refresh) to redraw the contents of
- *  your window when necessary during such operations.
- *
- *  Do not assume that callbacks you set will _only_ be called in response to
- *  event processing functions like this one.  While it is necessary to poll for
- *  events, window systems that require GLFW to register callbacks of its own
- *  can pass events to GLFW in response to many window system function calls.
- *  GLFW will pass those events on to the application callbacks before
- *  returning.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_PLATFORM_ERROR.
- *
- *  @reentrancy This function must not be called from a callback.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref events
- *  @sa @ref glfwWaitEvents
- *  @sa @ref glfwWaitEventsTimeout
- *
- *  @since Added in version 1.0.
- *
- *  @ingroup window
- */
 void glfwPollEvents();
 
 /*! @brief Returns the value of an input option for the specified window.
@@ -3711,74 +3677,6 @@ GLFWAPI void glfwSetInputMode(GLFWwindow* window, int mode, int value);
  *  @ingroup input
  */
 GLFWAPI int glfwRawMouseMotionSupported(void);
-
-/*! @brief Returns the layout-specific name of the specified printable key.
- *
- *  This function returns the name of the specified printable key, encoded as
- *  UTF-8.  This is typically the character that key would produce without any
- *  modifier keys, intended for displaying key bindings to the user.  For dead
- *  keys, it is typically the diacritic it would add to a character.
- *
- *  __Do not use this function__ for [text input](@ref input_char).  You will
- *  break text input for many languages even if it happens to work for yours.
- *
- *  If the key is `GLFW_KEY_UNKNOWN`, the scancode is used to identify the key,
- *  otherwise the scancode is ignored.  If you specify a non-printable key, or
- *  `GLFW_KEY_UNKNOWN` and a scancode that maps to a non-printable key, this
- *  function returns `NULL` but does not emit an error.
- *
- *  This behavior allows you to always pass in the arguments in the
- *  [key callback](@ref input_key) without modification.
- *
- *  The printable keys are:
- *  - `GLFW_KEY_APOSTROPHE`
- *  - `GLFW_KEY_COMMA`
- *  - `GLFW_KEY_MINUS`
- *  - `GLFW_KEY_PERIOD`
- *  - `GLFW_KEY_SLASH`
- *  - `GLFW_KEY_SEMICOLON`
- *  - `GLFW_KEY_EQUAL`
- *  - `GLFW_KEY_LEFT_BRACKET`
- *  - `GLFW_KEY_RIGHT_BRACKET`
- *  - `GLFW_KEY_BACKSLASH`
- *  - `GLFW_KEY_WORLD_1`
- *  - `GLFW_KEY_WORLD_2`
- *  - `GLFW_KEY_0` to `GLFW_KEY_9`
- *  - `GLFW_KEY_A` to `GLFW_KEY_Z`
- *  - `GLFW_KEY_KP_0` to `GLFW_KEY_KP_9`
- *  - `GLFW_KEY_KP_DECIMAL`
- *  - `GLFW_KEY_KP_DIVIDE`
- *  - `GLFW_KEY_KP_MULTIPLY`
- *  - `GLFW_KEY_KP_SUBTRACT`
- *  - `GLFW_KEY_KP_ADD`
- *  - `GLFW_KEY_KP_EQUAL`
- *
- *  Names for printable keys depend on keyboard layout, while names for
- *  non-printable keys are the same across layouts but depend on the application
- *  language and should be localized along with other user interface text.
- *
- *  @param[in] key The key to query, or `GLFW_KEY_UNKNOWN`.
- *  @param[in] scancode The scancode of the key to query.
- *  @return The UTF-8 encoded, layout-specific name of the key, or `NULL`.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
- *  GLFW_INVALID_VALUE, @ref GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR.
- *
- *  @remark The contents of the returned string may change when a keyboard
- *  layout change event is received.
- *
- *  @pointer_lifetime The returned string is allocated and freed by GLFW.  You
- *  should not free it yourself.  It is valid until the library is terminated.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref input_key_name
- *
- *  @since Added in version 3.2.
- *
- *  @ingroup input
- */
-GLFWAPI const char* glfwGetKeyName(int key, int scancode);
 
 /*! @brief Returns the platform-specific scancode of the specified key.
  *
