@@ -1,7 +1,8 @@
-add_library(glfw ${GLFW_LIBRARY_TYPE}
+add_library(glfw STATIC
                  "${GLFW_SOURCE_DIR}/include/GLFW/glfw3.h"
                  "${GLFW_SOURCE_DIR}/include/GLFW/glfw3native.h"
                  internal.h platform.h context.c init.c input.c monitor.c platform.c vulkan.c window.c)
+
 if (WIN32)
     target_sources(glfw PRIVATE win32_time.h win32_thread.h win32_module.c win32_time.c win32_thread.c)
 endif()
