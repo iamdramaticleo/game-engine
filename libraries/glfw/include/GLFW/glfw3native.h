@@ -26,8 +26,7 @@
  *
  *************************************************************************/
 
-#ifndef _glfw3_native_h_
-#define _glfw3_native_h_
+#pragma once
 
 /* This is a workaround for the fact that glfw3.h needs to export APIENTRY (for
  * example to allow applications to correctly declare a GL_KHR_debug callback)
@@ -39,69 +38,5 @@
 #endif
 
 #include <windows.h>
-/*************************************************************************
- * Functions
- *************************************************************************/
 
-/*! @brief Returns the adapter device name of the specified monitor.
- *
- *  @return The UTF-8 encoded adapter device name (for example `\\.\DISPLAY1`)
- *  of the specified monitor, or `NULL` if an [error](@ref error_handling)
- *  occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_PLATFORM_UNAVAILABLE.
- *
- *  @thread_safety This function may be called from any thread.  Access is not
- *  synchronized.
- *
- *  @since Added in version 3.1.
- *
- *  @ingroup native
- */
-GLFWAPI const char* glfwGetWin32Adapter(GLFWmonitor* monitor);
-
-/*! @brief Returns the display device name of the specified monitor.
- *
- *  @return The UTF-8 encoded display device name (for example
- *  `\\.\DISPLAY1\Monitor0`) of the specified monitor, or `NULL` if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_PLATFORM_UNAVAILABLE.
- *
- *  @thread_safety This function may be called from any thread.  Access is not
- *  synchronized.
- *
- *  @since Added in version 3.1.
- *
- *  @ingroup native
- */
-GLFWAPI const char* glfwGetWin32Monitor(GLFWmonitor* monitor);
-
-/*! @brief Returns the `HWND` of the specified window.
- *
- *  @return The `HWND` of the specified window, or `NULL` if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_PLATFORM_UNAVAILABLE.
- *
- *  @remark The `HDC` associated with the window can be queried with the
- *  [GetDC](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getdc)
- *  function.
- *  @code
- *  HDC dc = GetDC(glfwGetWin32Window(window));
- *  @endcode
- *  This DC is private and does not need to be released.
- *
- *  @thread_safety This function may be called from any thread.  Access is not
- *  synchronized.
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup native
- */
-GLFWAPI HWND glfwGetWin32Window(GLFWwindow* window);
-
-#endif /* _glfw3_native_h_ */
+HWND glfwGetWin32Window(GLFWwindow* window);
