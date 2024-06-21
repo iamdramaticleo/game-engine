@@ -11,22 +11,10 @@ if (GLFW_BUILD_WIN32)
     target_sources(glfw PRIVATE win32_platform.h win32_init.c win32_monitor.c win32_window.c wgl_context.c)
 endif()
 
-if (UNIX AND GLFW_BUILD_SHARED_LIBRARY)
-    # On Unix-like systems, shared libraries can use the soname system.
-    set(GLFW_LIB_NAME glfw)
-else()
-    set(GLFW_LIB_NAME glfw3)
-endif()
-set(GLFW_LIB_NAME_SUFFIX "")
-
 set_target_properties(glfw PROPERTIES
-                      OUTPUT_NAME ${GLFW_LIB_NAME}
-                      VERSION ${GLFW_VERSION_MAJOR}.${GLFW_VERSION_MINOR}
-                      SOVERSION ${GLFW_VERSION_MAJOR}
                       POSITION_INDEPENDENT_CODE ON
                       C_STANDARD 99
                       C_EXTENSIONS OFF
-                      DEFINE_SYMBOL _GLFW_BUILD_DLL
                       FOLDER "GLFW3")
 
 target_include_directories(glfw PUBLIC
@@ -61,67 +49,6 @@ if (MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
     target_compile_definitions(glfw PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif()
 
-# Workaround for -std=c99 on Linux disabling _DEFAULT_SOURCE (POSIX 2008 and more)
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    target_compile_definitions(glfw PRIVATE _DEFAULT_SOURCE)
-endif()
-
-if (GLFW_BUILD_SHARED_LIBRARY)
-    if (WIN32)
-        if (MINGW)
-            # Remove the dependency on the shared version of libgcc
-            # NOTE: MinGW-w64 has the correct default but MinGW needs this
-            target_link_libraries(glfw PRIVATE "-static-libgcc")
-
-            # Remove the lib prefix on the DLL (but not the import library)
-            set_target_properties(glfw PROPERTIES PREFIX "")
-
-            # Add a suffix to the import library to avoid naming conflicts
-            set_target_properties(glfw PROPERTIES IMPORT_SUFFIX "dll.a")
-        else()
-            # Add a suffix to the import library to avoid naming conflicts
-            set_target_properties(glfw PROPERTIES IMPORT_SUFFIX "dll.lib")
-        endif()
-        set (GLFW_LIB_NAME_SUFFIX "dll")
-
-        target_compile_definitions(glfw INTERFACE GLFW_DLL)
-    endif()
-
-    if (MINGW)
-        # Enable link-time exploit mitigation features enabled by default on MSVC
-        include(CheckCCompilerFlag)
-
-        # Compatibility with data execution prevention (DEP)
-        set(CMAKE_REQUIRED_FLAGS "-Wl,--nxcompat")
-        check_c_compiler_flag("" _GLFW_HAS_DEP)
-        if (_GLFW_HAS_DEP)
-            target_link_libraries(glfw PRIVATE "-Wl,--nxcompat")
-        endif()
-
-        # Compatibility with address space layout randomization (ASLR)
-        set(CMAKE_REQUIRED_FLAGS "-Wl,--dynamicbase")
-        check_c_compiler_flag("" _GLFW_HAS_ASLR)
-        if (_GLFW_HAS_ASLR)
-            target_link_libraries(glfw PRIVATE "-Wl,--dynamicbase")
-        endif()
-
-        # Compatibility with 64-bit address space layout randomization (ASLR)
-        set(CMAKE_REQUIRED_FLAGS "-Wl,--high-entropy-va")
-        check_c_compiler_flag("" _GLFW_HAS_64ASLR)
-        if (_GLFW_HAS_64ASLR)
-            target_link_libraries(glfw PRIVATE "-Wl,--high-entropy-va")
-        endif()
-
-        # Clear flags again to avoid breaking later tests
-        set(CMAKE_REQUIRED_FLAGS)
-    endif()
-
-    if (UNIX)
-        # Hide symbols not explicitly tagged for export from the shared library
-        target_compile_options(glfw PRIVATE "-fvisibility=hidden")
-    endif()
-endif()
-
 foreach(arg ${glfw_PKG_DEPS})
     string(APPEND deps " ${arg}")
 endforeach()
@@ -129,7 +56,5 @@ foreach(arg ${glfw_PKG_LIBS})
     string(APPEND libs " ${arg}")
 endforeach()
 
-set(GLFW_PKG_CONFIG_REQUIRES_PRIVATE "${deps}" CACHE INTERNAL
-    "GLFW pkg-config Requires.private")
-set(GLFW_PKG_CONFIG_LIBS_PRIVATE "${libs}" CACHE INTERNAL
-    "GLFW pkg-config Libs.private")
+set(GLFW_PKG_CONFIG_REQUIRES_PRIVATE "${deps}" CACHE INTERNAL "GLFW pkg-config Requires.private")
+set(GLFW_PKG_CONFIG_LIBS_PRIVATE "${libs}" CACHE INTERNAL "GLFW pkg-config Libs.private")
