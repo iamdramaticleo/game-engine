@@ -45,10 +45,8 @@ set_target_properties(${GUI_ONLY_BINARIES} ${CONSOLE_BINARIES} PROPERTIES C_STAN
 
 if (MSVC)
     # Tell MSVC to use main instead of WinMain
-    set_target_properties(${GUI_ONLY_BINARIES} PROPERTIES
-                          LINK_FLAGS "/ENTRY:mainCRTStartup")
+    set_target_properties(${GUI_ONLY_BINARIES} PROPERTIES LINK_FLAGS "/ENTRY:mainCRTStartup")
 elseif (CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
     # Tell Clang using MS CRT to use main instead of WinMain
-    set_target_properties(${GUI_ONLY_BINARIES} PROPERTIES
-                          LINK_FLAGS "-Wl,/entry:mainCRTStartup")
+    set_target_properties(${GUI_ONLY_BINARIES} PROPERTIES LINK_FLAGS "-Wl,/entry:mainCRTStartup")
 endif()

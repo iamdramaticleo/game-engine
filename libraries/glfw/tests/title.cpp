@@ -3,8 +3,6 @@
 #define GLAD_GL_IMPLEMENTATION
 #include <glad/gl.h>
 
-#include <stdlib.h>
-
 int main()
 {
     core::PlatformManager pm;
