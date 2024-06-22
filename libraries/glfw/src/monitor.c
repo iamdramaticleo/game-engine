@@ -402,26 +402,6 @@ const char* glfwGetMonitorName(GLFWmonitor* handle)
     return monitor->name;
 }
 
-void glfwSetMonitorUserPointer(GLFWmonitor* handle, void* pointer)
-{
-    _GLFW_REQUIRE_INIT();
-
-    _GLFWmonitor* monitor = (_GLFWmonitor*) handle;
-    assert(monitor != NULL);
-
-    monitor->userPointer = pointer;
-}
-
-void* glfwGetMonitorUserPointer(GLFWmonitor* handle)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
-    _GLFWmonitor* monitor = (_GLFWmonitor*) handle;
-    assert(monitor != NULL);
-
-    return monitor->userPointer;
-}
-
 GLFWmonitorfun glfwSetMonitorCallback(GLFWmonitorfun cbfun)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
@@ -551,4 +531,3 @@ void glfwSetGammaRamp(GLFWmonitor* handle, const GLFWgammaramp* ramp)
 
     _glfw.platform.setGammaRamp(monitor, ramp);
 }
-

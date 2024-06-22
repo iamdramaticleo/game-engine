@@ -321,47 +321,7 @@ static void makeContextCurrentWGL(_GLFWwindow* window)
 
 static void swapBuffersWGL(_GLFWwindow* window)
 {
-    if (!window->monitor)
-    {
-        // HACK: Use DwmFlush when desktop composition is enabled on Windows Vista and 7
-        if (!IsWindows8OrGreater() && IsWindowsVistaOrGreater())
-        {
-            BOOL enabled = FALSE;
-
-            if (SUCCEEDED(DwmIsCompositionEnabled(&enabled)) && enabled)
-            {
-                int count = abs(window->context.wgl.interval);
-                while (count--)
-                    DwmFlush();
-            }
-        }
-    }
-
     SwapBuffers(window->context.wgl.dc);
-}
-
-static void swapIntervalWGL(int interval)
-{
-    _GLFWwindow* window = _glfwPlatformGetTls(&_glfw.contextSlot);
-    assert(window != NULL);
-
-    window->context.wgl.interval = interval;
-
-    if (!window->monitor)
-    {
-        // HACK: Disable WGL swap interval when desktop composition is enabled on Windows
-        //       Vista and 7 to avoid interfering with DWM vsync
-        if (!IsWindows8OrGreater() && IsWindowsVistaOrGreater())
-        {
-            BOOL enabled = FALSE;
-
-            if (SUCCEEDED(DwmIsCompositionEnabled(&enabled)) && enabled)
-                interval = 0;
-        }
-    }
-
-    if (_glfw.wgl.EXT_swap_control)
-        wglSwapIntervalEXT(interval);
 }
 
 static int extensionSupportedWGL(const char* extension)
@@ -397,13 +357,9 @@ static void destroyContextWGL(_GLFWwindow* window)
     }
 }
 
-// Initialize WGL
-//
-GLFWbool _glfwInitWGL(void)
+GLFWbool _glfwInitWGL()
 {
     PIXELFORMATDESCRIPTOR pfd;
-    HGLRC prc, rc;
-    HDC pdc, dc;
 
     if (_glfw.wgl.instance)
         return GLFW_TRUE;
@@ -436,7 +392,7 @@ GLFWbool _glfwInitWGL(void)
     // NOTE: This code will accept the Microsoft GDI ICD; accelerated context
     //       creation failure occurs during manual pixel format enumeration
 
-    dc = GetDC(_glfw.win32.helperWindowHandle);
+    HDC dc = GetDC(_glfw.win32.helperWindowHandle);
 
     ZeroMemory(&pfd, sizeof(pfd));
     pfd.nSize = sizeof(pfd);
@@ -452,7 +408,7 @@ GLFWbool _glfwInitWGL(void)
         return GLFW_FALSE;
     }
 
-    rc = wglCreateContext(dc);
+    HGLRC rc = wglCreateContext(dc);
     if (!rc)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -460,8 +416,8 @@ GLFWbool _glfwInitWGL(void)
         return GLFW_FALSE;
     }
 
-    pdc = wglGetCurrentDC();
-    prc = wglGetCurrentContext();
+    HDC pdc = wglGetCurrentDC();
+    HGLRC prc = wglGetCurrentContext();
 
     if (!wglMakeCurrent(dc, rc))
     {
@@ -480,8 +436,6 @@ GLFWbool _glfwInitWGL(void)
         wglGetProcAddress("wglGetExtensionsStringARB");
     _glfw.wgl.CreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)
         wglGetProcAddress("wglCreateContextAttribsARB");
-    _glfw.wgl.SwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)
-        wglGetProcAddress("wglSwapIntervalEXT");
     _glfw.wgl.GetPixelFormatAttribivARB = (PFNWGLGETPIXELFORMATATTRIBIVARBPROC)
         wglGetProcAddress("wglGetPixelFormatAttribivARB");
 
@@ -501,8 +455,6 @@ GLFWbool _glfwInitWGL(void)
         extensionSupportedWGL("WGL_ARB_create_context_robustness");
     _glfw.wgl.ARB_create_context_no_error =
         extensionSupportedWGL("WGL_ARB_create_context_no_error");
-    _glfw.wgl.EXT_swap_control =
-        extensionSupportedWGL("WGL_EXT_swap_control");
     _glfw.wgl.EXT_colorspace =
         extensionSupportedWGL("WGL_EXT_colorspace");
     _glfw.wgl.ARB_pixel_format =
@@ -737,10 +689,9 @@ GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
 
     window->context.makeCurrent = makeContextCurrentWGL;
     window->context.swapBuffers = swapBuffersWGL;
-    window->context.swapInterval = swapIntervalWGL;
     window->context.extensionSupported = extensionSupportedWGL;
-    window->context.getProcAddress = getProcAddressWGL;
-    window->context.destroy = destroyContextWGL;
+    window->context.getProcAddress     = getProcAddressWGL;
+    window->context.destroy            = destroyContextWGL;
 
     return GLFW_TRUE;
 }
