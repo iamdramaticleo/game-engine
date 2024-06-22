@@ -1,8 +1,8 @@
-#include "glfw/public.hpp"
-
 #define GLAD_GL_IMPLEMENTATION
 #include <glad/gl.h>
+
 #include <glfw/platform.hpp>
+#include <glfw/window.hpp>
 
 int main()
 {
