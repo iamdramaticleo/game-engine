@@ -6,5 +6,7 @@ namespace core
 {
     class PlatformFactory
     {
+    public:
+        static std::shared_ptr<base::PlatformFactory> create_factory();
     };
 }
