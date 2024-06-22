@@ -2110,7 +2110,7 @@ void glfwWindowHintString(int hint, const char* value);
  *
  *  @ingroup window
  */
-GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share);
+GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonitor* monitor);
 
 /*! @brief Destroys the specified window and its context.
  *

@@ -539,10 +539,6 @@ GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
     int attribs[40];
     int pixelFormat;
     PIXELFORMATDESCRIPTOR pfd;
-    HGLRC share = NULL;
-
-    if (ctxconfig->share)
-        share = ctxconfig->share->context.wgl.handle;
 
     window->context.wgl.dc = GetDC(window->win32.handle);
     if (!window->context.wgl.dc)
@@ -678,8 +674,8 @@ GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
 
         SET_ATTRIB(0, 0);
 
-        window->context.wgl.handle =
-            wglCreateContextAttribsARB(window->context.wgl.dc, share, attribs);
+        window->context.wgl.handle = wglCreateContextAttribsARB(window->context.wgl.dc, NULL, attribs);
+
         if (!window->context.wgl.handle)
         {
             const DWORD error = GetLastError();
@@ -736,16 +732,6 @@ GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
             _glfwInputErrorWin32(GLFW_VERSION_UNAVAILABLE,
                                  "WGL: Failed to create OpenGL context");
             return GLFW_FALSE;
-        }
-
-        if (share)
-        {
-            if (!wglShareLists(share, window->context.wgl.handle))
-            {
-                _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                                     "WGL: Failed to enable sharing with specified OpenGL context");
-                return GLFW_FALSE;
-            }
         }
     }
 

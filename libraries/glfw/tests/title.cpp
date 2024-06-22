@@ -1,20 +1,21 @@
-#include "platform_manager.hpp"
+#include "glfw/public.hpp"
 
 #define GLAD_GL_IMPLEMENTATION
 #include <glad/gl.h>
+#include <glfw/platform.hpp>
 
 int main()
 {
-    core::PlatformManager pm;
+    glfw::Platform platform;
 
-    if (!glfwInit())
-        exit(EXIT_FAILURE);
+    platform.init();
 
-    GLFWwindow* window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", nullptr);
     if (!window)
     {
-        glfwTerminate();
-        exit(EXIT_FAILURE);
+        platform.release();
+
+        std::exit(EXIT_FAILURE);
     }
 
     glfwMakeContextCurrent(window);
@@ -27,9 +28,10 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         glfwSwapBuffers(window);
-        glfwPollEvents();
+        platform.update();
     }
 
-    glfwTerminate();
-    exit(EXIT_SUCCESS);
+    platform.release();
+
+    return EXIT_SUCCESS;
 }

@@ -175,10 +175,7 @@ void _glfwInputWindowMonitor(_GLFWwindow* window, _GLFWmonitor* monitor)
 //////                        GLFW public API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-GLFWwindow* glfwCreateWindow(int width, int height,
-                                     const char* title,
-                                     GLFWmonitor* monitor,
-                                     GLFWwindow* share)
+GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonitor* monitor)
 {
     _GLFWfbconfig fbconfig;
     _GLFWctxconfig ctxconfig;
@@ -207,7 +204,6 @@ GLFWwindow* glfwCreateWindow(int width, int height,
     wndconfig.width   = width;
     wndconfig.height  = height;
     wndconfig.title   = title;
-    ctxconfig.share   = (_GLFWwindow*) share;
 
     if (!_glfwIsValidContextConfig(&ctxconfig))
         return NULL;
@@ -251,7 +247,7 @@ GLFWwindow* glfwCreateWindow(int width, int height,
     return (GLFWwindow*) window;
 }
 
-void glfwDefaultWindowHints(void)
+void glfwDefaultWindowHints()
 {
     _GLFW_REQUIRE_INIT();
 
