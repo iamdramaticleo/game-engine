@@ -28,6 +28,10 @@
 
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*************************************************************************
  * Compiler- and platform-specific preprocessor work
  *************************************************************************/
@@ -4310,4 +4314,8 @@ GLFWglproc glfwGetProcAddress(const char* procname);
 #ifndef GLAPIENTRY
  #define GLAPIENTRY APIENTRY
  #define GLFW_GLAPIENTRY_DEFINED
+#endif
+
+#ifdef __cplusplus
+}
 #endif
