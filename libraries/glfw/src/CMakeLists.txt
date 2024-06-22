@@ -8,12 +8,6 @@ target_sources(glfw PRIVATE win32_init.c win32_monitor.c win32_window.c wgl_cont
 
 target_link_libraries(glfw PRIVATE Threads::Threads)
 
-# Enable a reasonable set of warnings
-# NOTE: The order matters here, Clang-CL matches both MSVC and Clang
-if (MSVC)
-    target_compile_options(glfw PRIVATE "/W3")
-endif()
-
 if (GLFW_BUILD_WIN32)
     target_compile_definitions(glfw PRIVATE UNICODE _UNICODE)
 endif()
