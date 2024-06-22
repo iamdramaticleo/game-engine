@@ -42,9 +42,6 @@ extern "C" {
  #define _WIN32
 #endif /* _WIN32 */
 
-/* Include because it is needed by Vulkan and related functions.
- * Include it unconditionally to avoid surprising side-effects.
- */
 #include <stdint.h>
 
 /* It is customary to use APIENTRY for OpenGL function pointer declarations on
@@ -4148,9 +4145,6 @@ void glfwMakeContextCurrent(GLFWwindow* window);
  *  a window without a context will generate a @ref GLFW_NO_WINDOW_CONTEXT
  *  error.
  *
- *  This function does not apply to Vulkan.  If you are rendering with Vulkan,
- *  see `vkQueuePresentKHR` instead.
- *
  *  @param[in] window The window whose buffers to swap.
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
@@ -4184,9 +4178,6 @@ void glfwSwapBuffers(GLFWwindow* window);
  *
  *  A context must be current on the calling thread.  Calling this function
  *  without a current context will cause a @ref GLFW_NO_CURRENT_CONTEXT error.
- *
- *  This function does not apply to Vulkan.  If you are rendering with Vulkan,
- *  see the present mode of your swapchain instead.
  *
  *  @param[in] interval The minimum number of screen updates to wait for
  *  until the buffers are swapped by @ref glfwSwapBuffers.
@@ -4229,10 +4220,6 @@ void glfwSwapInterval(int interval);
  *  frequently.  The extension strings will not change during the lifetime of
  *  a context, so there is no danger in doing this.
  *
- *  This function does not apply to Vulkan.  If you are using Vulkan, see @ref
- *  glfwGetRequiredInstanceExtensions, `vkEnumerateInstanceExtensionProperties`
- *  and `vkEnumerateDeviceExtensionProperties` instead.
- *
  *  @param[in] extension The ASCII encoded name of the extension.
  *  @return `GLFW_TRUE` if the extension is available, or `GLFW_FALSE`
  *  otherwise.
@@ -4261,10 +4248,6 @@ int glfwExtensionSupported(const char* extension);
  *
  *  A context must be current on the calling thread.  Calling this function
  *  without a current context will cause a @ref GLFW_NO_CURRENT_CONTEXT error.
- *
- *  This function does not apply to Vulkan.  If you are rendering with Vulkan,
- *  see @ref glfwGetInstanceProcAddress, `vkGetInstanceProcAddr` and
- *  `vkGetDeviceProcAddr` instead.
  *
  *  @param[in] procname The ASCII encoded name of the function.
  *  @return The address of the function, or `NULL` if an
