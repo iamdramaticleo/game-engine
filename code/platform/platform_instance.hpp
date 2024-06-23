@@ -4,7 +4,7 @@
 
 namespace core
 {
-    class PlatformManager
+    class PlatformInstance
     {
     public:
         void init(const std::shared_ptr<base::PlatformFactory>& factory);
@@ -12,14 +12,10 @@ namespace core
         void release() const;
         void update()  const;
 
-        PlatformManager(const PlatformManager&)            = delete;
-        PlatformManager& operator=(const PlatformManager&) = delete;
-
-        static PlatformManager& instance() noexcept;
+        PlatformInstance(const PlatformInstance&)            = delete;
+        PlatformInstance& operator=(const PlatformInstance&) = delete;
 
     private:
         std::unique_ptr<base::Platform> _platform;
-
-        PlatformManager() = default;
     };
 }
