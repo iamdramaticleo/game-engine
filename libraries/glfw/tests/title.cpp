@@ -1,6 +1,3 @@
-#define GLAD_GL_IMPLEMENTATION
-#include <glad/gl.h>
-
 #include "window_instance.hpp"
 #include "platform_instance.hpp"
 
@@ -15,7 +12,7 @@ int main()
     platform.init(factory);
     window.create(factory, config);
 
-    gladLoadGL(glfwGetProcAddress);
+    gladLoadGL();
 
     while (window.is_active())
     {

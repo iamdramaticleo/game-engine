@@ -3989,52 +3989,11 @@ void glfwSwapBuffers(GLFWwindow* window);
  *
  *  @thread_safety This function may be called from any thread.
  *
- *  @sa @ref context_glext
- *  @sa @ref glfwGetProcAddress
- *
  *  @since Added in version 1.0.
  *
  *  @ingroup context
  */
 int glfwExtensionSupported(const char* extension);
-
-/*! @brief Returns the address of the specified function for the current
- *  context.
- *
- *  This function returns the address of the specified OpenGL or OpenGL ES
- *  [core or extension function](@ref context_glext), if it is supported
- *  by the current context.
- *
- *  A context must be current on the calling thread.  Calling this function
- *  without a current context will cause a @ref GLFW_NO_CURRENT_CONTEXT error.
- *
- *  @param[in] procname The ASCII encoded name of the function.
- *  @return The address of the function, or `NULL` if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
- *  GLFW_NO_CURRENT_CONTEXT and @ref GLFW_PLATFORM_ERROR.
- *
- *  @remark The address of a given function is not guaranteed to be the same
- *  between contexts.
- *
- *  @remark This function may return a non-`NULL` address despite the
- *  associated version or extension not being available.  Always check the
- *  context version or extension string first.
- *
- *  @pointer_lifetime The returned function pointer is valid until the context
- *  is destroyed or the library is terminated.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref context_glext
- *  @sa @ref glfwExtensionSupported
- *
- *  @since Added in version 1.0.
- *
- *  @ingroup context
- */
-GLFWglproc glfwGetProcAddress(const char* procname);
 
 /*************************************************************************
  * Global definition cleanup

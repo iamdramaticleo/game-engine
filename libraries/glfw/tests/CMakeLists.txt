@@ -1,4 +1,4 @@
-link_libraries(platform)
+link_libraries(platform graphics)
 
 include_directories("../deps")
 
@@ -11,7 +11,6 @@ if (MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
-set(GLAD_GL "../deps/glad/gl.h")
 set(GETOPT "../deps/getopt.h"
            "../deps/getopt.c")
 set(TINYCTHREAD "../deps/tinycthread.h"
