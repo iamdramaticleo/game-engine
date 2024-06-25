@@ -104,13 +104,8 @@ typedef khronos_uint64_t GLuint64EXT;
 typedef struct __GLsync *GLsync;
 struct _cl_context;
 struct _cl_event;
-typedef void (APIENTRY *GLDEBUGPROC)(GLenum source,GLenum type,GLuint id,GLenum severity,GLsizei length,const GLchar *message,const void *userParam);
-typedef void (APIENTRY *GLDEBUGPROCARB)(GLenum source,GLenum type,GLuint id,GLenum severity,GLsizei length,const GLchar *message,const void *userParam);
-typedef void (APIENTRY *GLDEBUGPROCKHR)(GLenum source,GLenum type,GLuint id,GLenum severity,GLsizei length,const GLchar *message,const void *userParam);
-typedef void (APIENTRY *GLDEBUGPROCAMD)(GLuint id,GLenum category,GLenum severity,GLsizei length,const GLchar *message,void *userParam);
 typedef unsigned short GLhalfNV;
 typedef GLintptr GLvdpauSurfaceNV;
-typedef void (APIENTRY *GLVULKANPROCNV)(void);
 #define GL_STENCIL_BUFFER_BIT 0x00000400
 #define GL_TRUE 1
 #define GL_POINTS 0x0000
@@ -3214,9 +3209,6 @@ GLAPI PFNGLDEBUGMESSAGECONTROLPROC glad_glDebugMessageControl;
 #define glDebugMessageControl glad_glDebugMessageControl
 typedef void (APIENTRYP PFNGLDEBUGMESSAGEINSERTPROC)(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *buf);
 GLAPI PFNGLDEBUGMESSAGEINSERTPROC glad_glDebugMessageInsert;
-#define glDebugMessageInsert glad_glDebugMessageInsert
-typedef void (APIENTRYP PFNGLDEBUGMESSAGECALLBACKPROC)(GLDEBUGPROC callback, const void *userParam);
-GLAPI PFNGLDEBUGMESSAGECALLBACKPROC glad_glDebugMessageCallback;
 #define glDebugMessageCallback glad_glDebugMessageCallback
 typedef GLuint (APIENTRYP PFNGLGETDEBUGMESSAGELOGPROC)(GLuint count, GLsizei bufSize, GLenum *sources, GLenum *types, GLuint *ids, GLenum *severities, GLsizei *lengths, GLchar *messageLog);
 GLAPI PFNGLGETDEBUGMESSAGELOGPROC glad_glGetDebugMessageLog;

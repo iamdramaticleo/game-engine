@@ -999,7 +999,7 @@ int main(int argc, char** argv)
     gladLoadGL(glfwGetProcAddress);
     glfwSwapInterval(1);
 
-    glfwSetFramebufferSizeCallback(window, resize_callback);
+    glfwSetSizeCallback(window, resize_callback);
     glfwSetKeyCallback(window, key_callback);
 
     // Set initial aspect ratio

@@ -8,6 +8,8 @@ namespace glfw
         {
             std::exit(EXIT_FAILURE);
         }
+
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
     }
 
     void Platform::release()

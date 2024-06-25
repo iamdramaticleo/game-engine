@@ -19,6 +19,11 @@ namespace core
         _window->_state = base::window_state::closed;
     }
 
+    base::window_size& WindowInstance::size() const
+    {
+        return _window->_size;
+    }
+
     std::any WindowInstance::handle() const
     {
         return _window->handle();
@@ -38,5 +43,10 @@ namespace core
     void WindowInstance::update() const
     {
         _window->update();
+    }
+
+    void WindowInstance::resize(const base::window_size& size) const
+    {
+        _window->_size = size;
     }
 }

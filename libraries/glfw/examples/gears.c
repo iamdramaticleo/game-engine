@@ -325,7 +325,7 @@ int main(int argc, char *argv[])
     }
 
     // Set callback functions
-    glfwSetFramebufferSizeCallback(window, reshape);
+    glfwSetSizeCallback(window, reshape);
     glfwSetKeyCallback(window, key);
 
     glfwMakeContextCurrent(window);

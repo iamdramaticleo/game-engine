@@ -507,7 +507,7 @@ int main(void)
     }
 
     // Set callback functions
-    glfwSetFramebufferSizeCallback(window, framebufferSizeFun);
+    glfwSetSizeCallback(window, framebufferSizeFun);
     glfwSetWindowRefreshCallback(window, windowRefreshFun);
     glfwSetCursorPosCallback(window, cursorPosFun);
     glfwSetMouseButtonCallback(window, mouseButtonFun);

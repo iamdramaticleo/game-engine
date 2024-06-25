@@ -444,18 +444,6 @@ extern "C" {
  *  and [attribute](@ref GLFW_CONTEXT_ROBUSTNESS_attrib).
  */
 #define GLFW_CONTEXT_ROBUSTNESS     0x00022005
-/*! @brief OpenGL forward-compatibility hint and attribute.
- *
- *  OpenGL forward-compatibility [hint](@ref GLFW_OPENGL_FORWARD_COMPAT_hint)
- *  and [attribute](@ref GLFW_OPENGL_FORWARD_COMPAT_attrib).
- */
-#define GLFW_OPENGL_FORWARD_COMPAT  0x00022006
-/*! @brief OpenGL profile hint and attribute.
- *
- *  OpenGL profile [hint](@ref GLFW_OPENGL_PROFILE_hint) and
- *  [attribute](@ref GLFW_OPENGL_PROFILE_attrib).
- */
-#define GLFW_OPENGL_PROFILE         0x00022008
 /*! @brief Context flush-on-release hint and attribute.
  *
  *  Context flush-on-release [hint](@ref GLFW_CONTEXT_RELEASE_BEHAVIOR_hint) and
@@ -493,9 +481,7 @@ extern "C" {
 #define GLFW_NO_RESET_NOTIFICATION  0x00031001
 #define GLFW_LOSE_CONTEXT_ON_RESET  0x00031002
 
-#define GLFW_OPENGL_ANY_PROFILE              0
 #define GLFW_OPENGL_CORE_PROFILE    0x00032001
-#define GLFW_OPENGL_COMPAT_PROFILE  0x00032002
 
 #define GLFW_CURSOR                  0x00033001
 #define GLFW_STICKY_KEYS             0x00033002
@@ -882,27 +868,7 @@ typedef void (* GLFWwindowiconifyfun)(GLFWwindow* window, int iconified);
  *  @ingroup window
  */
 typedef void (* GLFWwindowmaximizefun)(GLFWwindow* window, int maximized);
-
-/*! @brief The function pointer type for framebuffer size callbacks.
- *
- *  This is the function pointer type for framebuffer size callbacks.
- *  A framebuffer size callback function has the following signature:
- *  @code
- *  void function_name(GLFWwindow* window, int width, int height)
- *  @endcode
- *
- *  @param[in] window The window whose framebuffer was resized.
- *  @param[in] width The new width, in pixels, of the framebuffer.
- *  @param[in] height The new height, in pixels, of the framebuffer.
- *
- *  @sa @ref window_fbsize
- *  @sa @ref glfwSetFramebufferSizeCallback
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
-typedef void (* GLFWframebuffersizefun)(GLFWwindow* window, int width, int height);
+typedef void (* GLFWframebuffersizefun)(int width, int height);
 
 /*! @brief The function pointer type for window content scale callbacks.
  *
@@ -2039,48 +2005,6 @@ GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonit
  */
 void glfwDestroyWindow(GLFWwindow* window);
 
-/*! @brief Checks the close flag of the specified window.
- *
- *  This function returns the value of the close flag of the specified window.
- *
- *  @param[in] window The window to query.
- *  @return The value of the close flag.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.  Access is not
- *  synchronized.
- *
- *  @sa @ref window_close
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
-int glfwWindowShouldClose(GLFWwindow* window);
-
-/*! @brief Sets the close flag of the specified window.
- *
- *  This function sets the value of the close flag of the specified window.
- *  This can be used to override the user's attempt to close the window, or
- *  to signal that it should be closed.
- *
- *  @param[in] window The window whose flag to change.
- *  @param[in] value The new value.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.  Access is not
- *  synchronized.
- *
- *  @sa @ref window_close
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
-void glfwSetWindowShouldClose(GLFWwindow* window, int value);
-
 /*! @brief Returns the title of the specified window.
  *
  *  This function returns the window title, encoded as UTF-8, of the specified
@@ -3072,35 +2996,7 @@ GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWwindow* window, GLFWwindow
  */
 GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow* window, GLFWwindowmaximizefun callback);
 
-/*! @brief Sets the framebuffer resize callback for the specified window.
- *
- *  This function sets the framebuffer resize callback of the specified window,
- *  which is called when the framebuffer of the specified window is resized.
- *
- *  @param[in] window The window whose callback to set.
- *  @param[in] callback The new callback, or `NULL` to remove the currently set
- *  callback.
- *  @return The previously set callback, or `NULL` if no callback was set or the
- *  library had not been [initialized](@ref intro_init).
- *
- *  @callback_signature
- *  @code
- *  void function_name(GLFWwindow* window, int width, int height)
- *  @endcode
- *  For more information about the callback parameters, see the
- *  [function pointer type](@ref GLFWframebuffersizefun).
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_fbsize
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
-GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* window, GLFWframebuffersizefun callback);
+void glfwSetSizeCallback(GLFWwindow* window, GLFWframebuffersizefun callback);
 
 /*! @brief Sets the window content scale callback for the specified window.
  *

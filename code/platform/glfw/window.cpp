@@ -5,13 +5,16 @@ namespace glfw
 {
     void Window::create(const base::window_config& config)
     {
-            _handle =  glfwCreateWindow(config.size.width, config.size.height, config.title.c_str(), nullptr);
+        _size   = config.size;
+        _handle = glfwCreateWindow(_size.width, _size.height, config.title.c_str(), nullptr);
+
         if (_handle == nullptr)
         {
             std::exit(EXIT_FAILURE);
         }
 
         glfwSetCloseCallback(_handle, core::WindowCallbacks::on_close);
+        glfwSetSizeCallback(_handle,  core::WindowCallbacks::on_size);
     }
 
     void Window::destroy()

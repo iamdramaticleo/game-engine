@@ -157,8 +157,6 @@ void _glfwInputWindowCloseRequest(_GLFWwindow* window)
 {
     assert(window != NULL);
 
-    window->shouldClose = GLFW_TRUE;
-
     if (window->callbacks.close)
         window->callbacks.close((GLFWwindow*) window);
 }
@@ -251,10 +249,11 @@ void glfwDefaultWindowHints()
 
     // The default is OpenGL with minimum version 1.0
     memset(&_glfw.hints.context, 0, sizeof(_glfw.hints.context));
-    _glfw.hints.context.client = GLFW_OPENGL_API;
-    _glfw.hints.context.source = GLFW_NATIVE_CONTEXT_API;
-    _glfw.hints.context.major  = 4;
-    _glfw.hints.context.minor  = 6;
+    _glfw.hints.context.client  = GLFW_NO_API;
+    _glfw.hints.context.source  = GLFW_NATIVE_CONTEXT_API;
+    _glfw.hints.context.major   = 4;
+    _glfw.hints.context.minor   = 6;
+    _glfw.hints.context.profile = GLFW_OPENGL_CORE_PROFILE;
 
     // The default is a focused, visible, resizable window with decorations
     memset(&_glfw.hints.window, 0, sizeof(_glfw.hints.window));
@@ -284,10 +283,8 @@ void glfwDefaultWindowHints()
     _glfw.hints.refreshRate = GLFW_DONT_CARE;
 }
 
-void glfwWindowHint(int hint, int value)
+void glfwWindowHint(const int hint, const int value)
 {
-    _GLFW_REQUIRE_INIT();
-
     switch (hint)
     {
         case GLFW_RED_BITS:
@@ -389,14 +386,8 @@ void glfwWindowHint(int hint, int value)
         case GLFW_CONTEXT_ROBUSTNESS:
             _glfw.hints.context.robustness = value;
             return;
-        case GLFW_OPENGL_FORWARD_COMPAT:
-            _glfw.hints.context.forward = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
         case GLFW_CONTEXT_NO_ERROR:
             _glfw.hints.context.noerror = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
-        case GLFW_OPENGL_PROFILE:
-            _glfw.hints.context.profile = value;
             return;
         case GLFW_CONTEXT_RELEASE_BEHAVIOR:
             _glfw.hints.context.release = value;
@@ -411,8 +402,6 @@ void glfwWindowHint(int hint, int value)
 
 void glfwDestroyWindow(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
 
     // Allow closing of NULL (to match the behavior of free)
@@ -441,26 +430,6 @@ void glfwDestroyWindow(GLFWwindow* handle)
 
     _glfw_free(window->title);
     _glfw_free(window);
-}
-
-int glfwWindowShouldClose(GLFWwindow* handle)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(0);
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    return window->shouldClose;
-}
-
-void glfwSetWindowShouldClose(GLFWwindow* handle, int value)
-{
-    _GLFW_REQUIRE_INIT();
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    window->shouldClose = value;
 }
 
 const char* glfwGetWindowTitle(GLFWwindow* handle)
@@ -975,16 +944,12 @@ GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* handle,
-                                                              GLFWframebuffersizefun cbfun)
+void glfwSetSizeCallback(GLFWwindow* handle, GLFWframebuffersizefun cbfun)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
     _GLFW_SWAP(GLFWframebuffersizefun, window->callbacks.fbsize, cbfun);
-    return cbfun;
 }
 
 GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* handle,

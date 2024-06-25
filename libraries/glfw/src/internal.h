@@ -62,7 +62,6 @@ typedef struct _GLFWmutex       _GLFWmutex;
 #define GL_CONTEXT_FLAGS 0x821e
 #define GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT 0x00000001
 #define GL_CONTEXT_PROFILE_MASK 0x9126
-#define GL_CONTEXT_COMPATIBILITY_PROFILE_BIT 0x00000002
 #define GL_CONTEXT_CORE_PROFILE_BIT 0x00000001
 #define GL_RESET_NOTIFICATION_STRATEGY_ARB 0x8256
 #define GL_LOSE_CONTEXT_ON_RESET_ARB 0x8252
@@ -168,7 +167,6 @@ struct _GLFWctxconfig
     int           source;
     int           major;
     int           minor;
-    GLFWbool      forward;
     GLFWbool      noerror;
     int           profile;
     int           robustness;
@@ -232,7 +230,6 @@ struct _GLFWwindow
     GLFWbool            floating;
     GLFWbool            focusOnShow;
     GLFWbool            mousePassthrough;
-    GLFWbool            shouldClose;
     void*               userPointer;
     GLFWbool            doublebuffer;
     GLFWvidmode         videoMode;
