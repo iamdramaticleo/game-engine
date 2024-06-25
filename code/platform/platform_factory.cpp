@@ -1,4 +1,4 @@
-#include      "platform_factory.hpp"
+#include "platform_factory.hpp"
 #include "glfw/platform_factory.hpp"
 
 namespace core
