@@ -123,7 +123,7 @@ void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height)
     assert(height >= 0);
 
     if (window->callbacks.fbsize)
-        window->callbacks.fbsize((GLFWwindow*) window, width, height);
+        window->callbacks.fbsize(width, height);
 }
 
 // Notifies shared code that a window content scale has changed
