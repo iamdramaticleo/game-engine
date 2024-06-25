@@ -253,8 +253,8 @@ void glfwDefaultWindowHints()
     memset(&_glfw.hints.context, 0, sizeof(_glfw.hints.context));
     _glfw.hints.context.client = GLFW_OPENGL_API;
     _glfw.hints.context.source = GLFW_NATIVE_CONTEXT_API;
-    _glfw.hints.context.major  = 1;
-    _glfw.hints.context.minor  = 0;
+    _glfw.hints.context.major  = 4;
+    _glfw.hints.context.minor  = 6;
 
     // The default is a focused, visible, resizable window with decorations
     memset(&_glfw.hints.window, 0, sizeof(_glfw.hints.window));
@@ -385,12 +385,6 @@ void glfwWindowHint(int hint, int value)
             return;
         case GLFW_CONTEXT_CREATION_API:
             _glfw.hints.context.source = value;
-            return;
-        case GLFW_CONTEXT_VERSION_MAJOR:
-            _glfw.hints.context.major = value;
-            return;
-        case GLFW_CONTEXT_VERSION_MINOR:
-            _glfw.hints.context.minor = value;
             return;
         case GLFW_CONTEXT_ROBUSTNESS:
             _glfw.hints.context.robustness = value;
