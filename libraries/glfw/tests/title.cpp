@@ -1,34 +1,31 @@
 #define GLAD_GL_IMPLEMENTATION
 #include <glad/gl.h>
 
-#include <glfw/platform.hpp>
-#include <glfw/window.hpp>
+#include "window_instance.hpp"
+#include "platform_instance.hpp"
 
 int main()
 {
-    glfw::Platform platform;
+    auto& platform = core::PlatformInstance::instance();
+    auto& window   = core::WindowInstance::instance();
 
-    platform.init();
+    const base::window_config config { "English 日本語 русский язык 官話", { 400, 400 } };
+    const auto factory = core::PlatformFactory::create_factory();
 
-    GLFWwindow* window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", nullptr);
-    if (!window)
-    {
-        platform.release();
+    platform.init(factory);
+    window.create(factory, config);
 
-        std::exit(EXIT_FAILURE);
-    }
-
-    glfwMakeContextCurrent(window);
     gladLoadGL(glfwGetProcAddress);
 
-    while (!glfwWindowShouldClose(window))
+    while (window.is_active())
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glfwSwapBuffers(window);
+        window.update();
         platform.update();
     }
 
+    window.destroy();
     platform.release();
 
     return EXIT_SUCCESS;

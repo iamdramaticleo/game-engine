@@ -638,7 +638,7 @@ int main(int argc, char** argv)
         glfwSetWindowSizeCallback(slots[i].window, window_size_callback);
         glfwSetFramebufferSizeCallback(slots[i].window, framebuffer_size_callback);
         glfwSetWindowContentScaleCallback(slots[i].window, window_content_scale_callback);
-        glfwSetWindowCloseCallback(slots[i].window, window_close_callback);
+        glfwSetCloseCallback(slots[i].window, window_close_callback);
         glfwSetWindowRefreshCallback(slots[i].window, window_refresh_callback);
         glfwSetWindowFocusCallback(slots[i].window, window_focus_callback);
         glfwSetWindowIconifyCallback(slots[i].window, window_iconify_callback);

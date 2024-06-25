@@ -2,7 +2,7 @@
 #pragma region declaration
 namespace core
 {
-    class WindowManager;
+    class WindowInstance;
 }
 #pragma endregion
 
@@ -14,7 +14,7 @@ namespace base
     class Window
     {
     public:
-        friend class core::WindowManager;
+        friend class core::WindowInstance;
 
         virtual void create(const window_config& config) = 0;
         virtual void destroy()                           = 0;

@@ -17,4 +17,10 @@ namespace core
     {
         _platform->update();
     }
+
+    PlatformInstance& PlatformInstance::instance()
+    {
+        static PlatformInstance instance;
+        return instance;
+    }
 }

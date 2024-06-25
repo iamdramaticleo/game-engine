@@ -162,7 +162,7 @@ int main(int argc, char** argv)
                    glfwGetTime() - base);
         }
 
-        glfwSetWindowCloseCallback(window, window_close_callback);
+        glfwSetCloseCallback(window, window_close_callback);
         glfwSetKeyCallback(window, key_callback);
 
         glfwMakeContextCurrent(window);

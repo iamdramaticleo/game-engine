@@ -8,14 +8,17 @@ namespace core
     {
     public:
         void init(const std::shared_ptr<base::PlatformFactory>& factory);
-
-        void release() const;
-        void update()  const;
+        void release()  const;
+        void update()   const;
 
         PlatformInstance(const PlatformInstance&)            = delete;
         PlatformInstance& operator=(const PlatformInstance&) = delete;
 
+        static PlatformInstance& instance();
+
     private:
         std::unique_ptr<base::Platform> _platform;
+
+        PlatformInstance() = default;
     };
 }

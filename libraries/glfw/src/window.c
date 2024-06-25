@@ -925,16 +925,12 @@ GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWwindowclosefun glfwSetWindowCloseCallback(GLFWwindow* handle,
-                                                      GLFWwindowclosefun cbfun)
+void glfwSetCloseCallback(GLFWwindow* handle, GLFWwindowclosefun cbfun)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
     _GLFW_SWAP(GLFWwindowclosefun, window->callbacks.close, cbfun);
-    return cbfun;
 }
 
 GLFWwindowrefreshfun glfwSetWindowRefreshCallback(GLFWwindow* handle,

@@ -1,14 +1,17 @@
 #include "window.hpp"
+#include "window_callbacks.hpp"
 
 namespace glfw
 {
     void Window::create(const base::window_config& config)
     {
-            _handle = glfwCreateWindow(config.size.width, config.size.height, config.title.c_str(), nullptr);
-        if (_handle)
+            _handle =  glfwCreateWindow(config.size.width, config.size.height, config.title.c_str(), nullptr);
+        if (_handle == nullptr)
         {
             std::exit(EXIT_FAILURE);
         }
+
+        glfwSetCloseCallback(_handle, core::WindowCallbacks::on_close);
     }
 
     void Window::destroy()
