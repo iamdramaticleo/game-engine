@@ -31,12 +31,11 @@ add_executable(icon WIN32 MACOSX_BUNDLE icon.c ${GLAD_GL})
 add_executable(inputlag WIN32 MACOSX_BUNDLE inputlag.c ${GETOPT} ${GLAD_GL})
 add_executable(tearing WIN32 MACOSX_BUNDLE tearing.c ${GLAD_GL})
 add_executable(threads WIN32 MACOSX_BUNDLE threads.c ${TINYCTHREAD} ${GLAD_GL})
-add_executable(title WIN32 MACOSX_BUNDLE title.cpp ${GLAD_GL})
 add_executable(window WIN32 MACOSX_BUNDLE window.c ${GLAD_GL})
 
 target_link_libraries(threads Threads::Threads)
 
-set(GUI_ONLY_BINARIES gamma icon inputlag tearing threads title window)
+set(GUI_ONLY_BINARIES gamma icon inputlag tearing threads window)
 set(CONSOLE_BINARIES allocator clipboard events msaa glfwinfo iconify monitors reopen cursor)
 
 set_target_properties(${GUI_ONLY_BINARIES} ${CONSOLE_BINARIES} PROPERTIES C_STANDARD 99 FOLDER "GLFW3/Tests")
