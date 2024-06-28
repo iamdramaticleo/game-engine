@@ -3,6 +3,8 @@
 namespace gl
 {
     constexpr uint32_t SHADER_BINARY_FORMAT = 0x9551;
+    constexpr uint32_t FRAGMENT_SHADER      = 0x8B30;
+    constexpr uint32_t VERTEX_SHADER        = 0x8B31;
 
     constexpr uint32_t STATIC_DRAW      = 0x88E4;
 
