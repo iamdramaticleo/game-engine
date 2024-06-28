@@ -1,0 +1,26 @@
+#include "shader_stage.hpp"
+#include "macros.hpp"
+
+namespace gl
+{
+    ShaderStage::ShaderStage(const uint32_t type)
+        : _type { type }
+    {
+    }
+
+    void ShaderStage::create()
+    {
+        _handle = glCreateShader(_type);
+    }
+
+    void ShaderStage::destroy()
+    {
+        glDeleteShader(_handle);
+    }
+
+    void ShaderStage::source(const std::vector<char>& source) const
+    {
+        glShaderBinary(1, &_handle,  SHADER_BINARY_FORMAT, source.data(), static_cast<int32_t>(source.size()));
+        glSpecializeShader(_handle, "main", 0, nullptr, nullptr);
+    }
+}

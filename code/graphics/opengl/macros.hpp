@@ -2,6 +2,8 @@
 
 namespace gl
 {
+    constexpr uint32_t SHADER_BINARY_FORMAT = 0x9551;
+
     constexpr uint32_t STATIC_DRAW      = 0x88E4;
 
     constexpr uint32_t ARRAY_BUFFER     = 0x8892;
