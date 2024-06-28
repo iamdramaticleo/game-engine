@@ -1,10 +1,18 @@
 #pragma once
+#pragma region declaration
+namespace gl
+{
+    class Buffer;
+}
+#pragma endregion
 
 namespace base
 {
     class buffer_data
     {
     public:
+        friend class gl::Buffer;
+
         template <typename buffer_t> static buffer_data create_from_buffer(const std::vector<buffer_t>& buffer)
         {
             return { buffer.data(), static_cast<uint32_t>(buffer.size() * sizeof(buffer_t)) };

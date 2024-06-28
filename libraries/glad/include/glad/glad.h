@@ -807,7 +807,6 @@ typedef GLintptr GLvdpauSurfaceNV;
 #define GL_PRIMITIVE_RESTART_INDEX 0x8F9E
 #define GL_COPY_READ_BUFFER 0x8F36
 #define GL_COPY_WRITE_BUFFER 0x8F37
-#define GL_UNIFORM_BUFFER 0x8A11
 #define GL_UNIFORM_BUFFER_BINDING 0x8A28
 #define GL_UNIFORM_BUFFER_START 0x8A29
 #define GL_UNIFORM_BUFFER_SIZE 0x8A2A
@@ -1754,9 +1753,6 @@ GLAPI PFNGLBINDBUFFERPROC glad_glBindBuffer;
 typedef void (APIENTRYP PFNGLDELETEBUFFERSPROC)(GLsizei n, const GLuint *buffers);
 GLAPI PFNGLDELETEBUFFERSPROC glad_glDeleteBuffers;
 #define glDeleteBuffers glad_glDeleteBuffers
-typedef void (APIENTRYP PFNGLBUFFERDATAPROC)(GLenum target, GLsizeiptr size, const void *data, GLenum usage);
-GLAPI PFNGLBUFFERDATAPROC glad_glBufferData;
-#define glBufferData glad_glBufferData
 typedef void (APIENTRYP PFNGLBUFFERSUBDATAPROC)(GLenum target, GLintptr offset, GLsizeiptr size, const void *data);
 GLAPI PFNGLBUFFERSUBDATAPROC glad_glBufferSubData;
 #define glBufferSubData glad_glBufferSubData

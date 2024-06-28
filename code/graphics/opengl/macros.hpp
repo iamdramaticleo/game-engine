@@ -2,6 +2,8 @@
 
 namespace gl
 {
+    constexpr uint32_t UNIFORM_BUFFER   = 0x8A11;
+
     constexpr uint32_t DEPTH_BUFFER_BIT = 0x00000100;
     constexpr uint32_t COLOR_BUFFER_BIT = 0x00004000;
 
