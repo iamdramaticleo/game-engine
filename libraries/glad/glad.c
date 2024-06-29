@@ -502,7 +502,6 @@ PFNGLGETOBJECTLABELPROC glad_glGetObjectLabel = NULL;
 PFNGLGETOBJECTPTRLABELPROC glad_glGetObjectPtrLabel = NULL;
 PFNGLGETPOINTERVPROC glad_glGetPointerv = NULL;
 PFNGLGETPROGRAMBINARYPROC glad_glGetProgramBinary = NULL;
-PFNGLGETPROGRAMINFOLOGPROC glad_glGetProgramInfoLog = NULL;
 PFNGLGETPROGRAMINTERFACEIVPROC glad_glGetProgramInterfaceiv = NULL;
 PFNGLGETPROGRAMPIPELINEINFOLOGPROC glad_glGetProgramPipelineInfoLog = NULL;
 PFNGLGETPROGRAMPIPELINEIVPROC glad_glGetProgramPipelineiv = NULL;
@@ -512,7 +511,6 @@ PFNGLGETPROGRAMRESOURCELOCATIONINDEXPROC glad_glGetProgramResourceLocationIndex 
 PFNGLGETPROGRAMRESOURCENAMEPROC glad_glGetProgramResourceName = NULL;
 PFNGLGETPROGRAMRESOURCEIVPROC glad_glGetProgramResourceiv = NULL;
 PFNGLGETPROGRAMSTAGEIVPROC glad_glGetProgramStageiv = NULL;
-PFNGLGETPROGRAMIVPROC glad_glGetProgramiv = NULL;
 PFNGLGETQUERYBUFFEROBJECTI64VPROC glad_glGetQueryBufferObjecti64v = NULL;
 PFNGLGETQUERYBUFFEROBJECTIVPROC glad_glGetQueryBufferObjectiv = NULL;
 PFNGLGETQUERYBUFFEROBJECTUI64VPROC glad_glGetQueryBufferObjectui64v = NULL;
@@ -1094,8 +1092,6 @@ static void load_GL_VERSION_2_0(GLADloadproc load) {
 	glad_glGetActiveUniform = (PFNGLGETACTIVEUNIFORMPROC)load("glGetActiveUniform");
 	glad_glGetAttachedShaders = (PFNGLGETATTACHEDSHADERSPROC)load("glGetAttachedShaders");
 	glad_glGetAttribLocation = (PFNGLGETATTRIBLOCATIONPROC)load("glGetAttribLocation");
-	glad_glGetProgramiv = (PFNGLGETPROGRAMIVPROC)load("glGetProgramiv");
-	glad_glGetProgramInfoLog = (PFNGLGETPROGRAMINFOLOGPROC)load("glGetProgramInfoLog");
 	glad_glGetShaderSource = (PFNGLGETSHADERSOURCEPROC)load("glGetShaderSource");
 	glad_glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)load("glGetUniformLocation");
 	glad_glGetUniformfv = (PFNGLGETUNIFORMFVPROC)load("glGetUniformfv");

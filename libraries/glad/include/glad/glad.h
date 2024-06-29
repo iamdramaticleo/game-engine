@@ -507,7 +507,6 @@ typedef GLintptr GLvdpauSurfaceNV;
 #define GL_SAMPLER_1D_SHADOW 0x8B61
 #define GL_SAMPLER_2D_SHADOW 0x8B62
 #define GL_DELETE_STATUS 0x8B80
-#define GL_LINK_STATUS 0x8B82
 #define GL_VALIDATE_STATUS 0x8B83
 #define GL_INFO_LOG_LENGTH 0x8B84
 #define GL_ATTACHED_SHADERS 0x8B85
@@ -1821,12 +1820,6 @@ GLAPI PFNGLGETATTACHEDSHADERSPROC glad_glGetAttachedShaders;
 typedef GLint (APIENTRYP PFNGLGETATTRIBLOCATIONPROC)(GLuint program, const GLchar *name);
 GLAPI PFNGLGETATTRIBLOCATIONPROC glad_glGetAttribLocation;
 #define glGetAttribLocation glad_glGetAttribLocation
-typedef void (APIENTRYP PFNGLGETPROGRAMIVPROC)(GLuint program, GLenum pname, GLint *params);
-GLAPI PFNGLGETPROGRAMIVPROC glad_glGetProgramiv;
-#define glGetProgramiv glad_glGetProgramiv
-typedef void (APIENTRYP PFNGLGETPROGRAMINFOLOGPROC)(GLuint program, GLsizei bufSize, GLsizei *length, GLchar *infoLog);
-GLAPI PFNGLGETPROGRAMINFOLOGPROC glad_glGetProgramInfoLog;
-#define glGetProgramInfoLog glad_glGetProgramInfoLog
 typedef void (APIENTRYP PFNGLGETSHADERSOURCEPROC)(GLuint shader, GLsizei bufSize, GLsizei *length, GLchar *source);
 GLAPI PFNGLGETSHADERSOURCEPROC glad_glGetShaderSource;
 #define glGetShaderSource glad_glGetShaderSource
