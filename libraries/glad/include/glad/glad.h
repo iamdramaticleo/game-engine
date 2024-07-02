@@ -1624,12 +1624,6 @@ GLAPI PFNGLBINDTEXTUREPROC glad_glBindTexture;
 typedef void (APIENTRYP PFNGLDELETETEXTURESPROC)(GLsizei n, const GLuint *textures);
 GLAPI PFNGLDELETETEXTURESPROC glad_glDeleteTextures;
 #define glDeleteTextures glad_glDeleteTextures
-typedef void (APIENTRYP PFNGLGENTEXTURESPROC)(GLsizei n, GLuint *textures);
-GLAPI PFNGLGENTEXTURESPROC glad_glGenTextures;
-#define glGenTextures glad_glGenTextures
-typedef GLboolean (APIENTRYP PFNGLISTEXTUREPROC)(GLuint texture);
-GLAPI PFNGLISTEXTUREPROC glad_glIsTexture;
-#define glIsTexture glad_glIsTexture
 #endif
 #ifndef GL_VERSION_1_2
 #define GL_VERSION_1_2 1

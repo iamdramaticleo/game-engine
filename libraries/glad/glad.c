@@ -448,7 +448,6 @@ PFNGLGENPROGRAMPIPELINESPROC glad_glGenProgramPipelines = NULL;
 PFNGLGENQUERIESPROC glad_glGenQueries = NULL;
 PFNGLGENRENDERBUFFERSPROC glad_glGenRenderbuffers = NULL;
 PFNGLGENSAMPLERSPROC glad_glGenSamplers = NULL;
-PFNGLGENTEXTURESPROC glad_glGenTextures = NULL;
 PFNGLGENTRANSFORMFEEDBACKSPROC glad_glGenTransformFeedbacks = NULL;
 PFNGLGENERATEMIPMAPPROC glad_glGenerateMipmap = NULL;
 PFNGLGENERATETEXTUREMIPMAPPROC glad_glGenerateTextureMipmap = NULL;
@@ -603,7 +602,6 @@ PFNGLISQUERYPROC glad_glIsQuery = NULL;
 PFNGLISRENDERBUFFERPROC glad_glIsRenderbuffer = NULL;
 PFNGLISSAMPLERPROC glad_glIsSampler = NULL;
 PFNGLISSYNCPROC glad_glIsSync = NULL;
-PFNGLISTEXTUREPROC glad_glIsTexture = NULL;
 PFNGLISTRANSFORMFEEDBACKPROC glad_glIsTransformFeedback = NULL;
 PFNGLLINEWIDTHPROC glad_glLineWidth = NULL;
 PFNGLLINKPROGRAMPROC glad_glLinkProgram = NULL;
@@ -1016,8 +1014,6 @@ static void load_GL_VERSION_1_1(GLADloadproc load) {
 	glad_glTexSubImage2D = (PFNGLTEXSUBIMAGE2DPROC)load("glTexSubImage2D");
 	glad_glBindTexture = (PFNGLBINDTEXTUREPROC)load("glBindTexture");
 	glad_glDeleteTextures = (PFNGLDELETETEXTURESPROC)load("glDeleteTextures");
-	glad_glGenTextures = (PFNGLGENTEXTURESPROC)load("glGenTextures");
-	glad_glIsTexture = (PFNGLISTEXTUREPROC)load("glIsTexture");
 }
 static void load_GL_VERSION_1_2(GLADloadproc load) {
 	if(!GLAD_GL_VERSION_1_2) return;
