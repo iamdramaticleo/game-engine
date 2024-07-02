@@ -622,9 +622,6 @@ typedef struct GLFWcursor GLFWcursor;
  *  @return The address of the newly allocated memory block, or `NULL` if an
  *  error occurred.
  *
- *  @pointer_lifetime The returned memory block must be valid at least until it
- *  is deallocated.
- *
  *  @reentrancy This function should not call any GLFW function.
  *
  *  @thread_safety This function must support being called from any thread that calls GLFW
@@ -678,9 +675,6 @@ typedef void* (* GLFWallocatefun)(size_t size, void* user);
  *  @return The address of the newly allocated or resized memory block, or
  *  `NULL` if an error occurred.
  *
- *  @pointer_lifetime The returned memory block must be valid at least until it
- *  is deallocated.
- *
  *  @reentrancy This function should not call any GLFW function.
  *
  *  @thread_safety This function must support being called from any thread that calls GLFW
@@ -720,9 +714,6 @@ typedef void* (* GLFWreallocatefun)(void* block, size_t size, void* user);
  *  @param[in] block The address of the memory block to deallocate.
  *  @param[in] user The user-defined pointer from the allocator.
  *
- *  @pointer_lifetime The specified memory block will not be accessed by GLFW
- *  after this function is called.
- *
  *  @reentrancy This function should not call any GLFW function.
  *
  *  @thread_safety This function must support being called from any thread that calls GLFW
@@ -736,29 +727,6 @@ typedef void* (* GLFWreallocatefun)(void* block, size_t size, void* user);
  *  @ingroup init
  */
 typedef void (* GLFWdeallocatefun)(void* block, void* user);
-
-/*! @brief The function pointer type for error callbacks.
- *
- *  This is the function pointer type for error callbacks.  An error callback
- *  function has the following signature:
- *  @code
- *  void callback_name(int error_code, const char* description)
- *  @endcode
- *
- *  @param[in] error_code An [error code](@ref errors).  Future releases may add
- *  more error codes.
- *  @param[in] description A UTF-8 encoded string describing the error.
- *
- *  @pointer_lifetime The error description string is valid until the callback
- *  function returns.
- *
- *  @sa @ref error_handling
- *  @sa @ref glfwSetErrorCallback
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup init
- */
 typedef void (* GLFWerrorfun)(int error_code, const char* description);
 
 /*! @brief The function pointer type for window position callbacks.
@@ -1292,58 +1260,6 @@ void glfwInitHint(int hint, int value);
  *  @ingroup init
  */
 void glfwInitAllocator(const GLFWallocator* allocator);
-
-/*! @brief Returns and clears the last error for the calling thread.
- *
- *  This function returns and clears the [error code](@ref errors) of the last
- *  error that occurred on the calling thread, and optionally a UTF-8 encoded
- *  human-readable description of it.  If no error has occurred since the last
- *  call, it returns @ref GLFW_NO_ERROR (zero) and the description pointer is
- *  set to `NULL`.
- *
- *  @param[in] description Where to store the error description pointer, or `NULL`.
- *  @return The last error code for the calling thread, or @ref GLFW_NO_ERROR
- *  (zero).
- *
- *  @errors None.
- *
- *  @pointer_lifetime The returned string is allocated and freed by GLFW.  You
- *  should not free it yourself.  It is guaranteed to be valid only until the
- *  next error occurs or the library is terminated.
- *
- *  @remark This function may be called before @ref glfwInit.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref error_handling
- *  @sa @ref glfwSetErrorCallback
- *
- *  @since Added in version 3.3.
- *
- *  @ingroup init
- */
-int glfwGetError(const char** description);
-
-/*! @brief Returns the currently selected platform.
- *
- *  This function returns the platform that was selected during initialization.  The
- *  returned value will be one of `GLFW_PLATFORM_WIN32`, `GLFW_PLATFORM_COCOA`,
- *  `GLFW_PLATFORM_WAYLAND`, `GLFW_PLATFORM_X11` or `GLFW_PLATFORM_NULL`.
- *
- *  @return The currently selected platform, or zero if an error occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref platform
- *  @sa @ref glfwPlatformSupported
- *
- *  @since Added in version 3.4.
- *
- *  @ingroup init
- */
-int glfwGetPlatform(void);
 
 /*! @brief Returns whether the library includes support for the specified platform.
  *
@@ -2178,35 +2094,6 @@ void glfwGetWindowPos(GLFWwindow* window, int* xpos, int* ypos);
  *  @ingroup window
  */
 void glfwSetWindowPos(GLFWwindow* window, int xpos, int ypos);
-
-/*! @brief Retrieves the size of the content area of the specified window.
- *
- *  This function retrieves the size, in screen coordinates, of the content area
- *  of the specified window.  If you wish to retrieve the size of the
- *  framebuffer of the window in pixels, see @ref glfwGetFramebufferSize.
- *
- *  Any or all of the size arguments may be `NULL`.  If an error occurs, all
- *  non-`NULL` size arguments will be set to zero.
- *
- *  @param[in] window The window whose size to retrieve.
- *  @param[out] width Where to store the width, in screen coordinates, of the
- *  content area, or `NULL`.
- *  @param[out] height Where to store the height, in screen coordinates, of the
- *  content area, or `NULL`.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_PLATFORM_ERROR.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_size
- *  @sa @ref glfwSetWindowSize
- *
- *  @since Added in version 1.0.
- *  @glfw3 Added window handle parameter.
- *
- *  @ingroup window
- */
 void glfwGetWindowSize(GLFWwindow* window, int* width, int* height);
 
 /*! @brief Sets the size limits of the specified window.
@@ -2332,35 +2219,6 @@ void glfwSetWindowAspectRatio(GLFWwindow* window, int numer, int denom);
  *  @ingroup window
  */
 void glfwSetWindowSize(GLFWwindow* window, int width, int height);
-
-/*! @brief Retrieves the size of the framebuffer of the specified window.
- *
- *  This function retrieves the size, in pixels, of the framebuffer of the
- *  specified window.  If you wish to retrieve the size of the window in screen
- *  coordinates, see @ref glfwGetWindowSize.
- *
- *  Any or all of the size arguments may be `NULL`.  If an error occurs, all
- *  non-`NULL` size arguments will be set to zero.
- *
- *  @param[in] window The window whose framebuffer to query.
- *  @param[out] width Where to store the width, in pixels, of the framebuffer,
- *  or `NULL`.
- *  @param[out] height Where to store the height, in pixels, of the framebuffer,
- *  or `NULL`.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_PLATFORM_ERROR.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_fbsize
- *  @sa @ref glfwSetFramebufferSizeCallback
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
-void glfwGetFramebufferSize(GLFWwindow* window, int* width, int* height);
 
 /*! @brief Retrieves the size of the frame of the window.
  *
