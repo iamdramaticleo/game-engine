@@ -284,12 +284,6 @@ extern "C" {
  *  [window attribute](@ref GLFW_VISIBLE_attrib).
  */
 #define GLFW_VISIBLE                0x00020004
-/*! @brief Window decoration window hint and attribute
- *
- *  Window decoration [window hint](@ref GLFW_DECORATED_hint) and
- *  [window attribute](@ref GLFW_DECORATED_attrib).
- */
-#define GLFW_DECORATED              0x00020005
 /*! @brief Window auto-iconification window hint and attribute
  *
  *  Window auto-iconification [window hint](@ref GLFW_AUTO_ICONIFY_hint) and
@@ -419,25 +413,12 @@ extern "C" {
  *  Monitor refresh rate [hint](@ref GLFW_REFRESH_RATE).
  */
 #define GLFW_REFRESH_RATE           0x0002100F
-/*! @brief Framebuffer double buffering hint and attribute.
- *
- *  Framebuffer double buffering [hint](@ref GLFW_DOUBLEBUFFER_hint) and
- *  [attribute](@ref GLFW_DOUBLEBUFFER_attrib).
- */
-#define GLFW_DOUBLEBUFFER           0x00021010
-
 /*! @brief Context client API hint and attribute.
  *
  *  Context client API [hint](@ref GLFW_CLIENT_API_hint) and
  *  [attribute](@ref GLFW_CLIENT_API_attrib).
  */
 #define GLFW_CLIENT_API             0x00022001
-/*! @brief Context client API revision number attribute.
- *
- *  Context client API revision number
- *  [attribute](@ref GLFW_CONTEXT_REVISION_attrib).
- */
-#define GLFW_CONTEXT_REVISION       0x00022004
 /*! @brief Context robustness hint and attribute.
  *
  *  Context client API revision number [hint](@ref GLFW_CONTEXT_ROBUSTNESS_hint)
@@ -1662,25 +1643,7 @@ const GLFWgammaramp* glfwGetGammaRamp(GLFWmonitor* monitor);
  *  @ingroup monitor
  */
 void glfwSetGammaRamp(GLFWmonitor* monitor, const GLFWgammaramp* ramp);
-
-/*! @brief Resets all window hints to their default values.
- *
- *  This function resets all window hints to their
- *  [default values](@ref window_hints_values).
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_hints
- *  @sa @ref glfwWindowHint
- *  @sa @ref glfwWindowHintString
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
-void glfwDefaultWindowHints(void);
+void glfwDefaultWindowHints();
 
 /*! @brief Sets the specified window hint to the desired value.
  *

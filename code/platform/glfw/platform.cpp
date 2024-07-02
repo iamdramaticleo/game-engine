@@ -10,6 +10,7 @@ namespace glfw
         }
 
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+        glfwWindowHint(GLFW_SAMPLES,    4);
     }
 
     void Platform::release()

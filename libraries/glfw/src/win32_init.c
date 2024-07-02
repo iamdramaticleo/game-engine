@@ -398,62 +398,6 @@ void _glfwInputErrorWin32(int error, const char* description)
     _glfwInputError(error, "%s: %s", description, message);
 }
 
-// Updates key names according to the current keyboard layout
-//
-void _glfwUpdateKeyNamesWin32(void)
-{
-    int key;
-    BYTE state[256] = {0};
-
-    memset(_glfw.win32.keynames, 0, sizeof(_glfw.win32.keynames));
-
-    for (key = GLFW_KEY_SPACE;  key <= GLFW_KEY_LAST;  key++)
-    {
-        UINT vk;
-        int scancode, length;
-        WCHAR chars[16];
-
-        scancode = _glfw.win32.scancodes[key];
-        if (scancode == -1)
-            continue;
-
-        if (key >= GLFW_KEY_KP_0 && key <= GLFW_KEY_KP_ADD)
-        {
-            const UINT vks[] = {
-                VK_NUMPAD0,  VK_NUMPAD1,  VK_NUMPAD2, VK_NUMPAD3,
-                VK_NUMPAD4,  VK_NUMPAD5,  VK_NUMPAD6, VK_NUMPAD7,
-                VK_NUMPAD8,  VK_NUMPAD9,  VK_DECIMAL, VK_DIVIDE,
-                VK_MULTIPLY, VK_SUBTRACT, VK_ADD
-            };
-
-            vk = vks[key - GLFW_KEY_KP_0];
-        }
-        else
-            vk = MapVirtualKeyW(scancode, MAPVK_VSC_TO_VK);
-
-        length = ToUnicode(vk, scancode, state,
-                           chars, sizeof(chars) / sizeof(WCHAR),
-                           0);
-
-        if (length == -1)
-        {
-            // This is a dead key, so we need a second simulated key press
-            // to make it output its own character (usually a diacritic)
-            length = ToUnicode(vk, scancode, state,
-                               chars, sizeof(chars) / sizeof(WCHAR),
-                               0);
-        }
-
-        if (length < 1)
-            continue;
-
-        WideCharToMultiByte(CP_UTF8, 0, chars, 1,
-                            _glfw.win32.keynames[key],
-                            sizeof(_glfw.win32.keynames[key]),
-                            NULL, NULL);
-    }
-}
-
 // Replacement for IsWindowsVersionOrGreater, as we cannot rely on the
 // application having a correct embedded manifest
 //
@@ -501,7 +445,6 @@ GLFWbool _glfwConnectWin32(int platformID, _GLFWplatform* platform)
         .createStandardCursor = _glfwCreateStandardCursorWin32,
         .destroyCursor = _glfwDestroyCursorWin32,
         .setCursor = _glfwSetCursorWin32,
-        .getScancodeName = _glfwGetScancodeNameWin32,
         .getKeyScancode = _glfwGetKeyScancodeWin32,
         .setClipboardString = _glfwSetClipboardStringWin32,
         .getClipboardString = _glfwGetClipboardStringWin32,
@@ -540,7 +483,6 @@ GLFWbool _glfwConnectWin32(int platformID, _GLFWplatform* platform)
         .windowMaximized = _glfwWindowMaximizedWin32,
         .windowHovered = _glfwWindowHoveredWin32,
         .setWindowResizable = _glfwSetWindowResizableWin32,
-        .setWindowDecorated = _glfwSetWindowDecoratedWin32,
         .setWindowFloating = _glfwSetWindowFloatingWin32,
         .setWindowMousePassthrough = _glfwSetWindowMousePassthroughWin32,
         .pollEvents = _glfwPollEventsWin32
@@ -556,7 +498,6 @@ int _glfwInitWin32(void)
         return GLFW_FALSE;
 
     createKeyTables();
-    _glfwUpdateKeyNamesWin32();
 
     if (_glfwIsWindows10Version1703OrGreaterWin32())
         SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
@@ -572,7 +513,7 @@ int _glfwInitWin32(void)
     return GLFW_TRUE;
 }
 
-void _glfwTerminateWin32(void)
+void _glfwTerminateWin32()
 {
     if (_glfw.win32.blankCursor)
         DestroyIcon((HICON) _glfw.win32.blankCursor);

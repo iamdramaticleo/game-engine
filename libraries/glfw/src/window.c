@@ -323,9 +323,6 @@ void glfwWindowHint(const int hint, const int value)
         case GLFW_STEREO:
             _glfw.hints.framebuffer.stereo = value ? GLFW_TRUE : GLFW_FALSE;
             return;
-        case GLFW_DOUBLEBUFFER:
-            _glfw.hints.framebuffer.doublebuffer = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
         case GLFW_SAMPLES:
             _glfw.hints.framebuffer.samples = value;
             return;
@@ -334,9 +331,6 @@ void glfwWindowHint(const int hint, const int value)
             return;
         case GLFW_RESIZABLE:
             _glfw.hints.window.resizable = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
-        case GLFW_DECORATED:
-            _glfw.hints.window.decorated = value ? GLFW_TRUE : GLFW_FALSE;
             return;
         case GLFW_FOCUSED:
             _glfw.hints.window.focused = value ? GLFW_TRUE : GLFW_FALSE;
@@ -737,12 +731,6 @@ void glfwSetWindowAttrib(GLFWwindow* handle, int attrib, int value)
             window->resizable = value;
             if (!window->monitor)
                 _glfw.platform.setWindowResizable(window, value);
-            return;
-
-        case GLFW_DECORATED:
-            window->decorated = value;
-            if (!window->monitor)
-                _glfw.platform.setWindowDecorated(window, value);
             return;
 
         case GLFW_FLOATING:
