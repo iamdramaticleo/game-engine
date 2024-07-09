@@ -95,7 +95,6 @@ int main(void)
 
     glfwMakeContextCurrent(window);
     gladLoadGL(glfwGetProcAddress);
-    glfwSwapInterval(1);
 
     // NOTE: OpenGL error checks have been omitted for brevity
 
@@ -159,5 +158,3 @@ int main(void)
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
-
-//! [code]
