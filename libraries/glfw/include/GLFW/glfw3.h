@@ -33,59 +33,6 @@
 extern "C" {
 #endif
 
-
-/*************************************************************************
- * Doxygen documentation
- *************************************************************************/
-
-/*! @file glfw3.h
- *  @brief The header of the GLFW 3 API.
- *
- *  This is the header file of the GLFW 3 API.  It defines all its types and
- *  declares all its functions.
- *
- *  For more information about how to use this file, see @ref build_include.
- */
-/*! @defgroup context Context reference
- *  @brief Functions and types related to OpenGL and OpenGL ES contexts.
- *
- *  This is the reference documentation for OpenGL and OpenGL ES context related
- *  functions.  For more task-oriented information, see the @ref context_guide.
- */
-/*! @defgroup vulkan Vulkan support reference
- *  @brief Functions and types related to Vulkan.
- *
- *  This is the reference documentation for Vulkan related functions and types.
- *  For more task-oriented information, see the @ref vulkan_guide.
- */
-/*! @defgroup init Initialization, version and error reference
- *  @brief Functions and types related to initialization and error handling.
- *
- *  This is the reference documentation for initialization and termination of
- *  the library, version management and error handling.  For more task-oriented
- *  information, see the @ref intro_guide.
- */
-/*! @defgroup input Input reference
- *  @brief Functions and types related to input handling.
- *
- *  This is the reference documentation for input related functions and types.
- *  For more task-oriented information, see the @ref input_guide.
- */
-/*! @defgroup monitor Monitor reference
- *  @brief Functions and types related to monitors.
- *
- *  This is the reference documentation for monitor related functions and types.
- *  For more task-oriented information, see the @ref monitor_guide.
- */
-/*! @defgroup window Window reference
- *  @brief Functions and types related to windows.
- *
- *  This is the reference documentation for window related functions and types,
- *  including creation, deletion and event polling.  For more task-oriented
- *  information, see the @ref window_guide.
- */
-
-
 /*************************************************************************
  * Compiler- and platform-specific preprocessor work
  *************************************************************************/
@@ -95,12 +42,6 @@ extern "C" {
 #if !defined(_WIN32) && (defined(__WIN32__) || defined(WIN32) || defined(__MINGW32__))
  #define _WIN32
 #endif /* _WIN32 */
-
-/* Include because most Windows GLU headers need wchar_t and
- * the macOS OpenGL header blocks the definition of ptrdiff_t by glext.h.
- * Include it unconditionally to avoid surprising side-effects.
- */
-#include <stddef.h>
 
 /* Include because it is needed by Vulkan and related functions.
  * Include it unconditionally to avoid surprising side-effects.
@@ -276,96 +217,14 @@ extern "C" {
  * GLFW API tokens
  *************************************************************************/
 
-/*! @brief One.
- *
- *  This is only semantic sugar for the number 1.  You can instead use `1` or
- *  `true` or `_True` or `GL_TRUE` or `VK_TRUE` or anything else that is equal
- *  to one.
- *
- *  @ingroup init
- */
 #define GLFW_TRUE                   1
-/*! @brief Zero.
- *
- *  This is only semantic sugar for the number 0.  You can instead use `0` or
- *  `false` or `_False` or `GL_FALSE` or `VK_FALSE` or anything else that is
- *  equal to zero.
- *
- *  @ingroup init
- */
 #define GLFW_FALSE                  0
 
-/*! @name Key and button actions
- *  @{ */
-/*! @brief The key or mouse button was released.
- *
- *  The key or mouse button was released.
- *
- *  @ingroup input
- */
 #define GLFW_RELEASE                0
-/*! @brief The key or mouse button was pressed.
- *
- *  The key or mouse button was pressed.
- *
- *  @ingroup input
- */
 #define GLFW_PRESS                  1
-/*! @brief The key was held down until it repeated.
- *
- *  The key was held down until it repeated.
- *
- *  @ingroup input
- */
 #define GLFW_REPEAT                 2
-/*! @} */
 
-/*! @defgroup hat_state Joystick hat states
- *  @brief Joystick hat states.
- *
- *  See [joystick hat input](@ref joystick_hat) for how these are used.
- *
- *  @ingroup input
- *  @{ */
-#define GLFW_HAT_CENTERED           0
-#define GLFW_HAT_UP                 1
-#define GLFW_HAT_RIGHT              2
-#define GLFW_HAT_DOWN               4
-#define GLFW_HAT_LEFT               8
-#define GLFW_HAT_RIGHT_UP           (GLFW_HAT_RIGHT | GLFW_HAT_UP)
-#define GLFW_HAT_RIGHT_DOWN         (GLFW_HAT_RIGHT | GLFW_HAT_DOWN)
-#define GLFW_HAT_LEFT_UP            (GLFW_HAT_LEFT  | GLFW_HAT_UP)
-#define GLFW_HAT_LEFT_DOWN          (GLFW_HAT_LEFT  | GLFW_HAT_DOWN)
-
-/*! @ingroup input
- */
 #define GLFW_KEY_UNKNOWN            -1
-
-/*! @} */
-
-/*! @defgroup keys Keyboard key tokens
- *  @brief Keyboard key tokens.
- *
- *  See [key input](@ref input_key) for how these are used.
- *
- *  These key codes are inspired by the _USB HID Usage Tables v1.12_ (p. 53-60),
- *  but re-arranged to map to 7-bit ASCII for printable keys (function keys are
- *  put in the 256+ range).
- *
- *  The naming of the key codes follow these rules:
- *   - The US keyboard layout is used
- *   - Names of printable alphanumeric characters are used (e.g. "A", "R",
- *     "3", etc.)
- *   - For non-alphanumeric characters, Unicode:ish names are used (e.g.
- *     "COMMA", "LEFT_SQUARE_BRACKET", etc.). Note that some names do not
- *     correspond to the Unicode standard (usually for brevity)
- *   - Keys that lack a clear US mapping are named "WORLD_x"
- *   - For non-printable keys, custom names are used (e.g. "F4",
- *     "BACKSPACE", etc.)
- *
- *  @ingroup input
- *  @{
- */
 
 /* Printable keys */
 #define GLFW_KEY_SPACE              32
@@ -451,19 +310,6 @@ extern "C" {
 #define GLFW_KEY_F10                299
 #define GLFW_KEY_F11                300
 #define GLFW_KEY_F12                301
-#define GLFW_KEY_F13                302
-#define GLFW_KEY_F14                303
-#define GLFW_KEY_F15                304
-#define GLFW_KEY_F16                305
-#define GLFW_KEY_F17                306
-#define GLFW_KEY_F18                307
-#define GLFW_KEY_F19                308
-#define GLFW_KEY_F20                309
-#define GLFW_KEY_F21                310
-#define GLFW_KEY_F22                311
-#define GLFW_KEY_F23                312
-#define GLFW_KEY_F24                313
-#define GLFW_KEY_F25                314
 #define GLFW_KEY_KP_0               320
 #define GLFW_KEY_KP_1               321
 #define GLFW_KEY_KP_2               322
@@ -1441,26 +1287,6 @@ typedef void (* GLFWwindowsizefun)(GLFWwindow* window, int width, int height);
  */
 typedef void (* GLFWwindowclosefun)(GLFWwindow* window);
 
-/*! @brief The function pointer type for window content refresh callbacks.
- *
- *  This is the function pointer type for window content refresh callbacks.
- *  A window content refresh callback function has the following signature:
- *  @code
- *  void function_name(GLFWwindow* window);
- *  @endcode
- *
- *  @param[in] window The window whose content needs to be refreshed.
- *
- *  @sa @ref window_refresh
- *  @sa @ref glfwSetWindowRefreshCallback
- *
- *  @since Added in version 2.5.
- *  @glfw3 Added window handle parameter.
- *
- *  @ingroup window
- */
-typedef void (* GLFWwindowrefreshfun)(GLFWwindow* window);
-
 /*! @brief The function pointer type for window focus callbacks.
  *
  *  This is the function pointer type for window focus callbacks.  A window
@@ -2081,192 +1907,6 @@ GLFWAPI void glfwInitHint(int hint, int value);
  *  @ingroup init
  */
 GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator);
-
-#if defined(VK_VERSION_1_0)
-
-/*! @brief Sets the desired Vulkan `vkGetInstanceProcAddr` function.
- *
- *  This function sets the `vkGetInstanceProcAddr` function that GLFW will use for all
- *  Vulkan related entry point queries.
- *
- *  This feature is mostly useful on macOS, if your copy of the Vulkan loader is in
- *  a location where GLFW cannot find it through dynamic loading, or if you are still
- *  using the static library version of the loader.
- *
- *  If set to `NULL`, GLFW will try to load the Vulkan loader dynamically by its standard
- *  name and get this function from there.  This is the default behavior.
- *
- *  The standard name of the loader is `vulkan-1.dll` on Windows, `libvulkan.so.1` on
- *  Linux and other Unix-like systems and `libvulkan.1.dylib` on macOS.  If your code is
- *  also loading it via these names then you probably don't need to use this function.
- *
- *  The function address you set is never reset by GLFW, but it only takes effect during
- *  initialization.  Once GLFW has been initialized, any updates will be ignored until the
- *  library is terminated and initialized again.
- *
- *  @param[in] loader The address of the function to use, or `NULL`.
- *
- *  @par Loader function signature
- *  @code
- *  PFN_vkVoidFunction vkGetInstanceProcAddr(VkInstance instance, const char* name)
- *  @endcode
- *  For more information about this function, see the
- *  [Vulkan Registry](https://www.khronos.org/registry/vulkan/).
- *
- *  @errors None.
- *
- *  @remark This function may be called before @ref glfwInit.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref vulkan_loader
- *  @sa @ref glfwInit
- *
- *  @since Added in version 3.4.
- *
- *  @ingroup init
- */
-GLFWAPI void glfwInitVulkanLoader(PFN_vkGetInstanceProcAddr loader);
-
-#endif /*VK_VERSION_1_0*/
-
-/*! @brief Retrieves the version of the GLFW library.
- *
- *  This function retrieves the major, minor and revision numbers of the GLFW
- *  library.  It is intended for when you are using GLFW as a shared library and
- *  want to ensure that you are using the minimum required version.
- *
- *  Any or all of the version arguments may be `NULL`.
- *
- *  @param[out] major Where to store the major version number, or `NULL`.
- *  @param[out] minor Where to store the minor version number, or `NULL`.
- *  @param[out] rev Where to store the revision number, or `NULL`.
- *
- *  @errors None.
- *
- *  @remark This function may be called before @ref glfwInit.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref intro_version
- *  @sa @ref glfwGetVersionString
- *
- *  @since Added in version 1.0.
- *
- *  @ingroup init
- */
-GLFWAPI void glfwGetVersion(int* major, int* minor, int* rev);
-
-/*! @brief Returns a string describing the compile-time configuration.
- *
- *  This function returns the compile-time generated
- *  [version string](@ref intro_version_string) of the GLFW library binary.  It describes
- *  the version, platforms, compiler and any platform or operating system specific
- *  compile-time options.  It should not be confused with the OpenGL or OpenGL ES version
- *  string, queried with `glGetString`.
- *
- *  __Do not use the version string__ to parse the GLFW library version.  The
- *  @ref glfwGetVersion function provides the version of the running library
- *  binary in numerical format.
- *
- *  __Do not use the version string__ to parse what platforms are supported.  The @ref
- *  glfwPlatformSupported function lets you query platform support.
- *
- *  @return The ASCII encoded GLFW version string.
- *
- *  @errors None.
- *
- *  @remark This function may be called before @ref glfwInit.
- *
- *  @pointer_lifetime The returned string is static and compile-time generated.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref intro_version
- *  @sa @ref glfwGetVersion
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup init
- */
-GLFWAPI const char* glfwGetVersionString(void);
-
-/*! @brief Returns and clears the last error for the calling thread.
- *
- *  This function returns and clears the [error code](@ref errors) of the last
- *  error that occurred on the calling thread, and optionally a UTF-8 encoded
- *  human-readable description of it.  If no error has occurred since the last
- *  call, it returns @ref GLFW_NO_ERROR (zero) and the description pointer is
- *  set to `NULL`.
- *
- *  @param[in] description Where to store the error description pointer, or `NULL`.
- *  @return The last error code for the calling thread, or @ref GLFW_NO_ERROR
- *  (zero).
- *
- *  @errors None.
- *
- *  @pointer_lifetime The returned string is allocated and freed by GLFW.  You
- *  should not free it yourself.  It is guaranteed to be valid only until the
- *  next error occurs or the library is terminated.
- *
- *  @remark This function may be called before @ref glfwInit.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref error_handling
- *  @sa @ref glfwSetErrorCallback
- *
- *  @since Added in version 3.3.
- *
- *  @ingroup init
- */
-GLFWAPI int glfwGetError(const char** description);
-
-/*! @brief Sets the error callback.
- *
- *  This function sets the error callback, which is called with an error code
- *  and a human-readable description each time a GLFW error occurs.
- *
- *  The error code is set before the callback is called.  Calling @ref
- *  glfwGetError from the error callback will return the same value as the error
- *  code argument.
- *
- *  The error callback is called on the thread where the error occurred.  If you
- *  are using GLFW from multiple threads, your error callback needs to be
- *  written accordingly.
- *
- *  Because the description string may have been generated specifically for that
- *  error, it is not guaranteed to be valid after the callback has returned.  If
- *  you wish to use it after the callback returns, you need to make a copy.
- *
- *  Once set, the error callback remains set even after the library has been
- *  terminated.
- *
- *  @param[in] callback The new callback, or `NULL` to remove the currently set
- *  callback.
- *  @return The previously set callback, or `NULL` if no callback was set.
- *
- *  @callback_signature
- *  @code
- *  void callback_name(int error_code, const char* description)
- *  @endcode
- *  For more information about the callback parameters, see the
- *  [callback pointer type](@ref GLFWerrorfun).
- *
- *  @errors None.
- *
- *  @remark This function may be called before @ref glfwInit.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref error_handling
- *  @sa @ref glfwGetError
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup init
- */
-GLFWAPI GLFWerrorfun glfwSetErrorCallback(GLFWerrorfun callback);
 
 /*! @brief Returns the currently selected platform.
  *
@@ -3498,65 +3138,6 @@ GLFWAPI void glfwGetWindowFrameSize(GLFWwindow* window, int* left, int* top, int
  */
 GLFWAPI void glfwGetWindowContentScale(GLFWwindow* window, float* xscale, float* yscale);
 
-/*! @brief Returns the opacity of the whole window.
- *
- *  This function returns the opacity of the window, including any decorations.
- *
- *  The opacity (or alpha) value is a positive finite number between zero and
- *  one, where zero is fully transparent and one is fully opaque.  If the system
- *  does not support whole window transparency, this function always returns one.
- *
- *  The initial opacity value for newly created windows is one.
- *
- *  @param[in] window The window to query.
- *  @return The opacity value of the specified window.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_PLATFORM_ERROR.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_transparency
- *  @sa @ref glfwSetWindowOpacity
- *
- *  @since Added in version 3.3.
- *
- *  @ingroup window
- */
-GLFWAPI float glfwGetWindowOpacity(GLFWwindow* window);
-
-/*! @brief Sets the opacity of the whole window.
- *
- *  This function sets the opacity of the window, including any decorations.
- *
- *  The opacity (or alpha) value is a positive finite number between zero and
- *  one, where zero is fully transparent and one is fully opaque.
- *
- *  The initial opacity value for newly created windows is one.
- *
- *  A window created with framebuffer transparency may not use whole window
- *  transparency.  The results of doing this are undefined.
- *
- *  @param[in] window The window to set the opacity for.
- *  @param[in] opacity The desired opacity of the specified window.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
- *  GLFW_PLATFORM_ERROR and @ref GLFW_FEATURE_UNAVAILABLE (see remarks).
- *
- *  @remark @wayland There is no way to set an opacity factor for a window.
- *  This function will emit @ref GLFW_FEATURE_UNAVAILABLE.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_transparency
- *  @sa @ref glfwGetWindowOpacity
- *
- *  @since Added in version 3.3.
- *
- *  @ingroup window
- */
-GLFWAPI void glfwSetWindowOpacity(GLFWwindow* window, float opacity);
-
 /*! @brief Iconifies the specified window.
  *
  *  This function iconifies (minimizes) the specified window if it was
@@ -3733,33 +3314,6 @@ GLFWAPI void glfwHideWindow(GLFWwindow* window);
  *  @ingroup window
  */
 GLFWAPI void glfwFocusWindow(GLFWwindow* window);
-
-/*! @brief Requests user attention to the specified window.
- *
- *  This function requests user attention to the specified window.  On
- *  platforms where this is not supported, attention is requested to the
- *  application as a whole.
- *
- *  Once the user has given attention, usually by focusing the window or
- *  application, the system will end the request automatically.
- *
- *  @param[in] window The window to request attention to.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_PLATFORM_ERROR.
- *
- *  @remark @macos Attention is requested to the application as a whole, not the
- *  specific window.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_attention
- *
- *  @since Added in version 3.3.
- *
- *  @ingroup window
- */
-GLFWAPI void glfwRequestWindowAttention(GLFWwindow* window);
 
 /*! @brief Returns the monitor that the window uses for full screen mode.
  *
@@ -4069,42 +3623,6 @@ GLFWAPI GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWwindow* window, GLFWwind
  */
 GLFWAPI GLFWwindowclosefun glfwSetWindowCloseCallback(GLFWwindow* window, GLFWwindowclosefun callback);
 
-/*! @brief Sets the refresh callback for the specified window.
- *
- *  This function sets the refresh callback of the specified window, which is
- *  called when the content area of the window needs to be redrawn, for example
- *  if the window has been exposed after having been covered by another window.
- *
- *  On compositing window systems such as Aero, Compiz, Aqua or Wayland, where
- *  the window contents are saved off-screen, this callback may be called only
- *  very infrequently or never at all.
- *
- *  @param[in] window The window whose callback to set.
- *  @param[in] callback The new callback, or `NULL` to remove the currently set
- *  callback.
- *  @return The previously set callback, or `NULL` if no callback was set or the
- *  library had not been [initialized](@ref intro_init).
- *
- *  @callback_signature
- *  @code
- *  void function_name(GLFWwindow* window);
- *  @endcode
- *  For more information about the callback parameters, see the
- *  [function pointer type](@ref GLFWwindowrefreshfun).
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_refresh
- *
- *  @since Added in version 2.5.
- *  @glfw3 Added window handle parameter and return value.
- *
- *  @ingroup window
- */
-GLFWAPI GLFWwindowrefreshfun glfwSetWindowRefreshCallback(GLFWwindow* window, GLFWwindowrefreshfun callback);
-
 /*! @brief Sets the focus callback for the specified window.
  *
  *  This function sets the focus callback of the specified window, which is
@@ -4299,120 +3817,6 @@ GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* 
  */
 GLFWAPI void glfwPollEvents(void);
 
-/*! @brief Waits until events are queued and processes them.
- *
- *  This function puts the calling thread to sleep until at least one event is
- *  available in the event queue.  Once one or more events are available,
- *  it behaves exactly like @ref glfwPollEvents, i.e. the events in the queue
- *  are processed and the function then returns immediately.  Processing events
- *  will cause the window and input callbacks associated with those events to be
- *  called.
- *
- *  Since not all events are associated with callbacks, this function may return
- *  without a callback having been called even if you are monitoring all
- *  callbacks.
- *
- *  On some platforms, a window move, resize or menu operation will cause event
- *  processing to block.  This is due to how event processing is designed on
- *  those platforms.  You can use the
- *  [window refresh callback](@ref window_refresh) to redraw the contents of
- *  your window when necessary during such operations.
- *
- *  Do not assume that callbacks you set will _only_ be called in response to
- *  event processing functions like this one.  While it is necessary to poll for
- *  events, window systems that require GLFW to register callbacks of its own
- *  can pass events to GLFW in response to many window system function calls.
- *  GLFW will pass those events on to the application callbacks before
- *  returning.
- *
- *  Event processing is not required for joystick input to work.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_PLATFORM_ERROR.
- *
- *  @reentrancy This function must not be called from a callback.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref events
- *  @sa @ref glfwPollEvents
- *  @sa @ref glfwWaitEventsTimeout
- *
- *  @since Added in version 2.5.
- *
- *  @ingroup window
- */
-GLFWAPI void glfwWaitEvents(void);
-
-/*! @brief Waits with timeout until events are queued and processes them.
- *
- *  This function puts the calling thread to sleep until at least one event is
- *  available in the event queue, or until the specified timeout is reached.  If
- *  one or more events are available, it behaves exactly like @ref
- *  glfwPollEvents, i.e. the events in the queue are processed and the function
- *  then returns immediately.  Processing events will cause the window and input
- *  callbacks associated with those events to be called.
- *
- *  The timeout value must be a positive finite number.
- *
- *  Since not all events are associated with callbacks, this function may return
- *  without a callback having been called even if you are monitoring all
- *  callbacks.
- *
- *  On some platforms, a window move, resize or menu operation will cause event
- *  processing to block.  This is due to how event processing is designed on
- *  those platforms.  You can use the
- *  [window refresh callback](@ref window_refresh) to redraw the contents of
- *  your window when necessary during such operations.
- *
- *  Do not assume that callbacks you set will _only_ be called in response to
- *  event processing functions like this one.  While it is necessary to poll for
- *  events, window systems that require GLFW to register callbacks of its own
- *  can pass events to GLFW in response to many window system function calls.
- *  GLFW will pass those events on to the application callbacks before
- *  returning.
- *
- *  Event processing is not required for joystick input to work.
- *
- *  @param[in] timeout The maximum amount of time, in seconds, to wait.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
- *  GLFW_INVALID_VALUE and @ref GLFW_PLATFORM_ERROR.
- *
- *  @reentrancy This function must not be called from a callback.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref events
- *  @sa @ref glfwPollEvents
- *  @sa @ref glfwWaitEvents
- *
- *  @since Added in version 3.2.
- *
- *  @ingroup window
- */
-GLFWAPI void glfwWaitEventsTimeout(double timeout);
-
-/*! @brief Posts an empty event to the event queue.
- *
- *  This function posts an empty event from the current thread to the event
- *  queue, causing @ref glfwWaitEvents or @ref glfwWaitEventsTimeout to return.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_PLATFORM_ERROR.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref events
- *  @sa @ref glfwWaitEvents
- *  @sa @ref glfwWaitEventsTimeout
- *
- *  @since Added in version 3.1.
- *
- *  @ingroup window
- */
-GLFWAPI void glfwPostEmptyEvent(void);
-
 /*! @brief Returns the value of an input option for the specified window.
  *
  *  This function returns the value of an input option for the specified window.
@@ -4536,74 +3940,6 @@ GLFWAPI void glfwSetInputMode(GLFWwindow* window, int mode, int value);
  *  @ingroup input
  */
 GLFWAPI int glfwRawMouseMotionSupported(void);
-
-/*! @brief Returns the layout-specific name of the specified printable key.
- *
- *  This function returns the name of the specified printable key, encoded as
- *  UTF-8.  This is typically the character that key would produce without any
- *  modifier keys, intended for displaying key bindings to the user.  For dead
- *  keys, it is typically the diacritic it would add to a character.
- *
- *  __Do not use this function__ for [text input](@ref input_char).  You will
- *  break text input for many languages even if it happens to work for yours.
- *
- *  If the key is `GLFW_KEY_UNKNOWN`, the scancode is used to identify the key,
- *  otherwise the scancode is ignored.  If you specify a non-printable key, or
- *  `GLFW_KEY_UNKNOWN` and a scancode that maps to a non-printable key, this
- *  function returns `NULL` but does not emit an error.
- *
- *  This behavior allows you to always pass in the arguments in the
- *  [key callback](@ref input_key) without modification.
- *
- *  The printable keys are:
- *  - `GLFW_KEY_APOSTROPHE`
- *  - `GLFW_KEY_COMMA`
- *  - `GLFW_KEY_MINUS`
- *  - `GLFW_KEY_PERIOD`
- *  - `GLFW_KEY_SLASH`
- *  - `GLFW_KEY_SEMICOLON`
- *  - `GLFW_KEY_EQUAL`
- *  - `GLFW_KEY_LEFT_BRACKET`
- *  - `GLFW_KEY_RIGHT_BRACKET`
- *  - `GLFW_KEY_BACKSLASH`
- *  - `GLFW_KEY_WORLD_1`
- *  - `GLFW_KEY_WORLD_2`
- *  - `GLFW_KEY_0` to `GLFW_KEY_9`
- *  - `GLFW_KEY_A` to `GLFW_KEY_Z`
- *  - `GLFW_KEY_KP_0` to `GLFW_KEY_KP_9`
- *  - `GLFW_KEY_KP_DECIMAL`
- *  - `GLFW_KEY_KP_DIVIDE`
- *  - `GLFW_KEY_KP_MULTIPLY`
- *  - `GLFW_KEY_KP_SUBTRACT`
- *  - `GLFW_KEY_KP_ADD`
- *  - `GLFW_KEY_KP_EQUAL`
- *
- *  Names for printable keys depend on keyboard layout, while names for
- *  non-printable keys are the same across layouts but depend on the application
- *  language and should be localized along with other user interface text.
- *
- *  @param[in] key The key to query, or `GLFW_KEY_UNKNOWN`.
- *  @param[in] scancode The scancode of the key to query.
- *  @return The UTF-8 encoded, layout-specific name of the key, or `NULL`.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
- *  GLFW_INVALID_VALUE, @ref GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR.
- *
- *  @remark The contents of the returned string may change when a keyboard
- *  layout change event is received.
- *
- *  @pointer_lifetime The returned string is allocated and freed by GLFW.  You
- *  should not free it yourself.  It is valid until the library is terminated.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref input_key_name
- *
- *  @since Added in version 3.2.
- *
- *  @ingroup input
- */
-GLFWAPI const char* glfwGetKeyName(int key, int scancode);
 
 /*! @brief Returns the platform-specific scancode of the specified key.
  *
@@ -5295,108 +4631,6 @@ GLFWAPI void glfwSetClipboardString(GLFWwindow* window, const char* string);
  */
 GLFWAPI const char* glfwGetClipboardString(GLFWwindow* window);
 
-/*! @brief Returns the GLFW time.
- *
- *  This function returns the current GLFW time, in seconds.  Unless the time
- *  has been set using @ref glfwSetTime it measures time elapsed since GLFW was
- *  initialized.
- *
- *  This function and @ref glfwSetTime are helper functions on top of @ref
- *  glfwGetTimerFrequency and @ref glfwGetTimerValue.
- *
- *  The resolution of the timer is system dependent, but is usually on the order
- *  of a few micro- or nanoseconds.  It uses the highest-resolution monotonic
- *  time source on each operating system.
- *
- *  @return The current time, in seconds, or zero if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.  Reading and
- *  writing of the internal base time is not atomic, so it needs to be
- *  externally synchronized with calls to @ref glfwSetTime.
- *
- *  @sa @ref time
- *
- *  @since Added in version 1.0.
- *
- *  @ingroup input
- */
-GLFWAPI double glfwGetTime(void);
-
-/*! @brief Sets the GLFW time.
- *
- *  This function sets the current GLFW time, in seconds.  The value must be
- *  a positive finite number less than or equal to 18446744073.0, which is
- *  approximately 584.5 years.
- *
- *  This function and @ref glfwGetTime are helper functions on top of @ref
- *  glfwGetTimerFrequency and @ref glfwGetTimerValue.
- *
- *  @param[in] time The new value, in seconds.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_INVALID_VALUE.
- *
- *  @remark The upper limit of GLFW time is calculated as
- *  floor((2<sup>64</sup> - 1) / 10<sup>9</sup>) and is due to implementations
- *  storing nanoseconds in 64 bits.  The limit may be increased in the future.
- *
- *  @thread_safety This function may be called from any thread.  Reading and
- *  writing of the internal base time is not atomic, so it needs to be
- *  externally synchronized with calls to @ref glfwGetTime.
- *
- *  @sa @ref time
- *
- *  @since Added in version 2.2.
- *
- *  @ingroup input
- */
-GLFWAPI void glfwSetTime(double time);
-
-/*! @brief Returns the current value of the raw timer.
- *
- *  This function returns the current value of the raw timer, measured in
- *  1&nbsp;/&nbsp;frequency seconds.  To get the frequency, call @ref
- *  glfwGetTimerFrequency.
- *
- *  @return The value of the timer, or zero if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref time
- *  @sa @ref glfwGetTimerFrequency
- *
- *  @since Added in version 3.2.
- *
- *  @ingroup input
- */
-GLFWAPI uint64_t glfwGetTimerValue(void);
-
-/*! @brief Returns the frequency, in Hz, of the raw timer.
- *
- *  This function returns the frequency, in Hz, of the raw timer.
- *
- *  @return The frequency of the timer, in Hz, or zero if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref time
- *  @sa @ref glfwGetTimerValue
- *
- *  @since Added in version 3.2.
- *
- *  @ingroup input
- */
-GLFWAPI uint64_t glfwGetTimerFrequency(void);
-
 /*! @brief Makes the context of the specified window current for the calling
  *  thread.
  *
@@ -5441,27 +4675,6 @@ GLFWAPI uint64_t glfwGetTimerFrequency(void);
  *  @ingroup context
  */
 GLFWAPI void glfwMakeContextCurrent(GLFWwindow* window);
-
-/*! @brief Returns the window whose context is current on the calling thread.
- *
- *  This function returns the window whose OpenGL or OpenGL ES context is
- *  current on the calling thread.
- *
- *  @return The window whose context is current, or `NULL` if no window's
- *  context is current.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref context_current
- *  @sa @ref glfwMakeContextCurrent
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup context
- */
-GLFWAPI GLFWwindow* glfwGetCurrentContext(void);
 
 /*! @brief Swaps the front and back buffers of the specified window.
  *
@@ -5623,229 +4836,6 @@ GLFWAPI int glfwExtensionSupported(const char* extension);
  */
 GLFWAPI GLFWglproc glfwGetProcAddress(const char* procname);
 
-/*! @brief Returns whether the Vulkan loader and an ICD have been found.
- *
- *  This function returns whether the Vulkan loader and any minimally functional
- *  ICD have been found.
- *
- *  The availability of a Vulkan loader and even an ICD does not by itself guarantee that
- *  surface creation or even instance creation is possible.  Call @ref
- *  glfwGetRequiredInstanceExtensions to check whether the extensions necessary for Vulkan
- *  surface creation are available and @ref glfwGetPhysicalDevicePresentationSupport to
- *  check whether a queue family of a physical device supports image presentation.
- *
- *  @return `GLFW_TRUE` if Vulkan is minimally available, or `GLFW_FALSE`
- *  otherwise.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref vulkan_support
- *
- *  @since Added in version 3.2.
- *
- *  @ingroup vulkan
- */
-GLFWAPI int glfwVulkanSupported(void);
-
-/*! @brief Returns the Vulkan instance extensions required by GLFW.
- *
- *  This function returns an array of names of Vulkan instance extensions required
- *  by GLFW for creating Vulkan surfaces for GLFW windows.  If successful, the
- *  list will always contain `VK_KHR_surface`, so if you don't require any
- *  additional extensions you can pass this list directly to the
- *  `VkInstanceCreateInfo` struct.
- *
- *  If Vulkan is not available on the machine, this function returns `NULL` and
- *  generates a @ref GLFW_API_UNAVAILABLE error.  Call @ref glfwVulkanSupported
- *  to check whether Vulkan is at least minimally available.
- *
- *  If Vulkan is available but no set of extensions allowing window surface
- *  creation was found, this function returns `NULL`.  You may still use Vulkan
- *  for off-screen rendering and compute work.
- *
- *  @param[out] count Where to store the number of extensions in the returned
- *  array.  This is set to zero if an error occurred.
- *  @return An array of ASCII encoded extension names, or `NULL` if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_API_UNAVAILABLE.
- *
- *  @remark Additional extensions may be required by future versions of GLFW.
- *  You should check if any extensions you wish to enable are already in the
- *  returned array, as it is an error to specify an extension more than once in
- *  the `VkInstanceCreateInfo` struct.
- *
- *  @pointer_lifetime The returned array is allocated and freed by GLFW.  You
- *  should not free it yourself.  It is guaranteed to be valid only until the
- *  library is terminated.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref vulkan_ext
- *  @sa @ref glfwCreateWindowSurface
- *
- *  @since Added in version 3.2.
- *
- *  @ingroup vulkan
- */
-GLFWAPI const char** glfwGetRequiredInstanceExtensions(uint32_t* count);
-
-#if defined(VK_VERSION_1_0)
-
-/*! @brief Returns the address of the specified Vulkan instance function.
- *
- *  This function returns the address of the specified Vulkan core or extension
- *  function for the specified instance.  If instance is set to `NULL` it can
- *  return any function exported from the Vulkan loader, including at least the
- *  following functions:
- *
- *  - `vkEnumerateInstanceExtensionProperties`
- *  - `vkEnumerateInstanceLayerProperties`
- *  - `vkCreateInstance`
- *  - `vkGetInstanceProcAddr`
- *
- *  If Vulkan is not available on the machine, this function returns `NULL` and
- *  generates a @ref GLFW_API_UNAVAILABLE error.  Call @ref glfwVulkanSupported
- *  to check whether Vulkan is at least minimally available.
- *
- *  This function is equivalent to calling `vkGetInstanceProcAddr` with
- *  a platform-specific query of the Vulkan loader as a fallback.
- *
- *  @param[in] instance The Vulkan instance to query, or `NULL` to retrieve
- *  functions related to instance creation.
- *  @param[in] procname The ASCII encoded name of the function.
- *  @return The address of the function, or `NULL` if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_API_UNAVAILABLE.
- *
- *  @pointer_lifetime The returned function pointer is valid until the library
- *  is terminated.
- *
- *  @thread_safety This function may be called from any thread.
- *
- *  @sa @ref vulkan_proc
- *
- *  @since Added in version 3.2.
- *
- *  @ingroup vulkan
- */
-GLFWAPI GLFWvkproc glfwGetInstanceProcAddress(VkInstance instance, const char* procname);
-
-/*! @brief Returns whether the specified queue family can present images.
- *
- *  This function returns whether the specified queue family of the specified
- *  physical device supports presentation to the platform GLFW was built for.
- *
- *  If Vulkan or the required window surface creation instance extensions are
- *  not available on the machine, or if the specified instance was not created
- *  with the required extensions, this function returns `GLFW_FALSE` and
- *  generates a @ref GLFW_API_UNAVAILABLE error.  Call @ref glfwVulkanSupported
- *  to check whether Vulkan is at least minimally available and @ref
- *  glfwGetRequiredInstanceExtensions to check what instance extensions are
- *  required.
- *
- *  @param[in] instance The instance that the physical device belongs to.
- *  @param[in] device The physical device that the queue family belongs to.
- *  @param[in] queuefamily The index of the queue family to query.
- *  @return `GLFW_TRUE` if the queue family supports presentation, or
- *  `GLFW_FALSE` otherwise.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
- *  GLFW_API_UNAVAILABLE and @ref GLFW_PLATFORM_ERROR.
- *
- *  @remark @macos This function currently always returns `GLFW_TRUE`, as the
- *  `VK_MVK_macos_surface` and `VK_EXT_metal_surface` extensions do not provide
- *  a `vkGetPhysicalDevice*PresentationSupport` type function.
- *
- *  @thread_safety This function may be called from any thread.  For
- *  synchronization details of Vulkan objects, see the Vulkan specification.
- *
- *  @sa @ref vulkan_present
- *
- *  @since Added in version 3.2.
- *
- *  @ingroup vulkan
- */
-GLFWAPI int glfwGetPhysicalDevicePresentationSupport(VkInstance instance, VkPhysicalDevice device, uint32_t queuefamily);
-
-/*! @brief Creates a Vulkan surface for the specified window.
- *
- *  This function creates a Vulkan surface for the specified window.
- *
- *  If the Vulkan loader or at least one minimally functional ICD were not found,
- *  this function returns `VK_ERROR_INITIALIZATION_FAILED` and generates a @ref
- *  GLFW_API_UNAVAILABLE error.  Call @ref glfwVulkanSupported to check whether
- *  Vulkan is at least minimally available.
- *
- *  If the required window surface creation instance extensions are not
- *  available or if the specified instance was not created with these extensions
- *  enabled, this function returns `VK_ERROR_EXTENSION_NOT_PRESENT` and
- *  generates a @ref GLFW_API_UNAVAILABLE error.  Call @ref
- *  glfwGetRequiredInstanceExtensions to check what instance extensions are
- *  required.
- *
- *  The window surface cannot be shared with another API so the window must
- *  have been created with the [client api hint](@ref GLFW_CLIENT_API_attrib)
- *  set to `GLFW_NO_API` otherwise it generates a @ref GLFW_INVALID_VALUE error
- *  and returns `VK_ERROR_NATIVE_WINDOW_IN_USE_KHR`.
- *
- *  The window surface must be destroyed before the specified Vulkan instance.
- *  It is the responsibility of the caller to destroy the window surface.  GLFW
- *  does not destroy it for you.  Call `vkDestroySurfaceKHR` to destroy the
- *  surface.
- *
- *  @param[in] instance The Vulkan instance to create the surface in.
- *  @param[in] window The window to create the surface for.
- *  @param[in] allocator The allocator to use, or `NULL` to use the default
- *  allocator.
- *  @param[out] surface Where to store the handle of the surface.  This is set
- *  to `VK_NULL_HANDLE` if an error occurred.
- *  @return `VK_SUCCESS` if successful, or a Vulkan error code if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
- *  GLFW_API_UNAVAILABLE, @ref GLFW_PLATFORM_ERROR and @ref GLFW_INVALID_VALUE
- *
- *  @remark If an error occurs before the creation call is made, GLFW returns
- *  the Vulkan error code most appropriate for the error.  Appropriate use of
- *  @ref glfwVulkanSupported and @ref glfwGetRequiredInstanceExtensions should
- *  eliminate almost all occurrences of these errors.
- *
- *  @remark @macos GLFW prefers the `VK_EXT_metal_surface` extension, with the
- *  `VK_MVK_macos_surface` extension as a fallback.  The name of the selected
- *  extension, if any, is included in the array returned by @ref
- *  glfwGetRequiredInstanceExtensions.
- *
- *  @remark @macos This function creates and sets a `CAMetalLayer` instance for
- *  the window content view, which is required for MoltenVK to function.
- *
- *  @remark @x11 By default GLFW prefers the `VK_KHR_xcb_surface` extension,
- *  with the `VK_KHR_xlib_surface` extension as a fallback.  You can make
- *  `VK_KHR_xlib_surface` the preferred extension by setting the
- *  [GLFW_X11_XCB_VULKAN_SURFACE](@ref GLFW_X11_XCB_VULKAN_SURFACE_hint) init
- *  hint.  The name of the selected extension, if any, is included in the array
- *  returned by @ref glfwGetRequiredInstanceExtensions.
- *
- *  @thread_safety This function may be called from any thread.  For
- *  synchronization details of Vulkan objects, see the Vulkan specification.
- *
- *  @sa @ref vulkan_surface
- *  @sa @ref glfwGetRequiredInstanceExtensions
- *
- *  @since Added in version 3.2.
- *
- *  @ingroup vulkan
- */
-GLFWAPI VkResult glfwCreateWindowSurface(VkInstance instance, GLFWwindow* window, const VkAllocationCallbacks* allocator, VkSurfaceKHR* surface);
-
-#endif /*VK_VERSION_1_0*/
-
-
 /*************************************************************************
  * Global definition cleanup
  *************************************************************************/
@@ -5872,10 +4862,8 @@ GLFWAPI VkResult glfwCreateWindowSurface(VkInstance instance, GLFWwindow* window
 
 /* -------------------- END SYSTEM/COMPILER SPECIFIC --------------------- */
 
-
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* _glfw3_h_ */
-

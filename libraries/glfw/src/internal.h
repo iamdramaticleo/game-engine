@@ -512,7 +512,6 @@ struct _GLFWwindow
         GLFWwindowposfun          pos;
         GLFWwindowsizefun         size;
         GLFWwindowclosefun        close;
-        GLFWwindowrefreshfun      refresh;
         GLFWwindowfocusfun        focus;
         GLFWwindowiconifyfun      iconify;
         GLFWwindowmaximizefun     maximize;
@@ -675,12 +674,6 @@ struct _GLFWlibrary
     _GLFWmutex          errorLock;
 
     struct {
-        uint64_t        offset;
-        // This is defined in platform.h
-        GLFW_PLATFORM_LIBRARY_TIMER_STATE
-    } timer;
-
-    struct {
         GLFWmonitorfun  monitor;
     } callbacks;
 
@@ -727,7 +720,6 @@ void _glfwInputWindowContentScale(_GLFWwindow* window,
                                   float xscale, float yscale);
 void _glfwInputWindowIconify(_GLFWwindow* window, GLFWbool iconified);
 void _glfwInputWindowMaximize(_GLFWwindow* window, GLFWbool maximized);
-void _glfwInputWindowDamage(_GLFWwindow* window);
 void _glfwInputWindowCloseRequest(_GLFWwindow* window);
 void _glfwInputWindowMonitor(_GLFWwindow* window, _GLFWmonitor* monitor);
 

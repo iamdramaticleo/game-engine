@@ -1086,12 +1086,6 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
             return 0;
         }
 
-        case WM_PAINT:
-        {
-            _glfwInputWindowDamage(window);
-            break;
-        }
-
         case WM_ERASEBKGND:
         {
             return TRUE;

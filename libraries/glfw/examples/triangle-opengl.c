@@ -69,11 +69,6 @@ static const char* fragment_shader_text =
 "    fragment = vec4(color, 1.0);\n"
 "}\n";
 
-static void error_callback(int error, const char* description)
-{
-    fprintf(stderr, "Error: %s\n", description);
-}
-
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -82,8 +77,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 int main(void)
 {
-    glfwSetErrorCallback(error_callback);
-
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
@@ -149,7 +142,6 @@ int main(void)
 
         mat4x4 m, p, mvp;
         mat4x4_identity(m);
-        mat4x4_rotate_Z(m, m, (float) glfwGetTime());
         mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
         mat4x4_mul(mvp, p, m);
 

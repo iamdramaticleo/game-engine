@@ -143,16 +143,6 @@ void _glfwInputWindowContentScale(_GLFWwindow* window, float xscale, float yscal
         window->callbacks.scale((GLFWwindow*) window, xscale, yscale);
 }
 
-// Notifies shared code that the window contents needs updating
-//
-void _glfwInputWindowDamage(_GLFWwindow* window)
-{
-    assert(window != NULL);
-
-    if (window->callbacks.refresh)
-        window->callbacks.refresh((GLFWwindow*) window);
-}
-
 // Notifies shared code that the user wishes to close a window
 //
 void _glfwInputWindowCloseRequest(_GLFWwindow* window)
@@ -1005,20 +995,7 @@ GLFWAPI GLFWwindowclosefun glfwSetWindowCloseCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWAPI GLFWwindowrefreshfun glfwSetWindowRefreshCallback(GLFWwindow* handle,
-                                                          GLFWwindowrefreshfun cbfun)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    _GLFW_SWAP(GLFWwindowrefreshfun, window->callbacks.refresh, cbfun);
-    return cbfun;
-}
-
-GLFWAPI GLFWwindowfocusfun glfwSetWindowFocusCallback(GLFWwindow* handle,
-                                                      GLFWwindowfocusfun cbfun)
+GLFWAPI GLFWwindowfocusfun glfwSetWindowFocusCallback(GLFWwindow* handle, GLFWwindowfocusfun cbfun)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 
@@ -1029,8 +1006,7 @@ GLFWAPI GLFWwindowfocusfun glfwSetWindowFocusCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWAPI GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWwindow* handle,
-                                                          GLFWwindowiconifyfun cbfun)
+GLFWAPI GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWwindow* handle, GLFWwindowiconifyfun cbfun)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 
@@ -1041,8 +1017,7 @@ GLFWAPI GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWAPI GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow* handle,
-                                                            GLFWwindowmaximizefun cbfun)
+GLFWAPI GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow* handle, GLFWwindowmaximizefun cbfun)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 
@@ -1053,8 +1028,7 @@ GLFWAPI GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWAPI GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* handle,
-                                                              GLFWframebuffersizefun cbfun)
+GLFWAPI GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* handle, GLFWframebuffersizefun cbfun)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 
@@ -1065,8 +1039,7 @@ GLFWAPI GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* handle
     return cbfun;
 }
 
-GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* handle,
-                                                                    GLFWwindowcontentscalefun cbfun)
+GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* handle, GLFWwindowcontentscalefun cbfun)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 
