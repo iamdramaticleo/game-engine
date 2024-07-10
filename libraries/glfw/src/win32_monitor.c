@@ -440,11 +440,7 @@ GLFWvidmode* _glfwGetVideoModesWin32(_GLFWmonitor* monitor, int* count)
         if (monitor->win32.modesPruned)
         {
             // Skip modes not supported by the connected displays
-            if (ChangeDisplaySettingsExW(monitor->win32.adapterName,
-                                         &dm,
-                                         NULL,
-                                         CDS_TEST,
-                                         NULL) != DISP_CHANGE_SUCCESSFUL)
+            if (ChangeDisplaySettingsExW(monitor->win32.adapterName,&dm,NULL,CDS_TEST,NULL) != DISP_CHANGE_SUCCESSFUL)
             {
                 continue;
             }
@@ -496,10 +492,9 @@ GLFWbool _glfwGetVideoModeWin32(_GLFWmonitor* monitor, GLFWvidmode* mode)
 
 GLFWbool _glfwGetGammaRampWin32(_GLFWmonitor* monitor, GLFWgammaramp* ramp)
 {
-    HDC dc;
     WORD values[3][256];
 
-    dc = CreateDCW(L"DISPLAY", monitor->win32.adapterName, NULL, NULL);
+    HDC dc = CreateDCW(L"DISPLAY", monitor->win32.adapterName, NULL, NULL);
     GetDeviceGammaRamp(dc, values);
     DeleteDC(dc);
 
@@ -514,7 +509,6 @@ GLFWbool _glfwGetGammaRampWin32(_GLFWmonitor* monitor, GLFWgammaramp* ramp)
 
 void _glfwSetGammaRampWin32(_GLFWmonitor* monitor, const GLFWgammaramp* ramp)
 {
-    HDC dc;
     WORD values[3][256];
 
     if (ramp->size != 256)
@@ -528,17 +522,16 @@ void _glfwSetGammaRampWin32(_GLFWmonitor* monitor, const GLFWgammaramp* ramp)
     memcpy(values[1], ramp->green, sizeof(values[1]));
     memcpy(values[2], ramp->blue,  sizeof(values[2]));
 
-    dc = CreateDCW(L"DISPLAY", monitor->win32.adapterName, NULL, NULL);
+    HDC dc = CreateDCW(L"DISPLAY", monitor->win32.adapterName, NULL, NULL);
     SetDeviceGammaRamp(dc, values);
     DeleteDC(dc);
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 //////                        GLFW native API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-GLFWAPI const char* glfwGetWin32Adapter(GLFWmonitor* handle)
+const char* glfwGetWin32Adapter(GLFWmonitor* handle)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 
@@ -554,7 +547,7 @@ GLFWAPI const char* glfwGetWin32Adapter(GLFWmonitor* handle)
     return monitor->win32.publicAdapterName;
 }
 
-GLFWAPI const char* glfwGetWin32Monitor(GLFWmonitor* handle)
+const char* glfwGetWin32Monitor(GLFWmonitor* handle)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 
@@ -571,4 +564,3 @@ GLFWAPI const char* glfwGetWin32Monitor(GLFWmonitor* handle)
 }
 
 #endif // _GLFW_WIN32
-

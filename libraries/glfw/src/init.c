@@ -358,7 +358,7 @@ void _glfwInputError(int code, const char* format, ...)
 //////                        GLFW public API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-GLFWAPI int glfwInit(void)
+int glfwInit()
 {
     if (_glfw.initialized)
         return GLFW_TRUE;
@@ -398,7 +398,7 @@ GLFWAPI int glfwInit(void)
     return GLFW_TRUE;
 }
 
-GLFWAPI void glfwTerminate(void)
+void glfwTerminate()
 {
     if (!_glfw.initialized)
         return;
@@ -406,7 +406,7 @@ GLFWAPI void glfwTerminate(void)
     terminate();
 }
 
-GLFWAPI void glfwInitHint(int hint, int value)
+void glfwInitHint(int hint, int value)
 {
     switch (hint)
     {
@@ -419,7 +419,7 @@ GLFWAPI void glfwInitHint(int hint, int value)
                     "Invalid init hint 0x%08X", hint);
 }
 
-GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator)
+void glfwInitAllocator(const GLFWallocator* allocator)
 {
     if (allocator)
     {
@@ -431,34 +431,3 @@ GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator)
     else
         memset(&_glfwInitAllocator, 0, sizeof(GLFWallocator));
 }
-
-GLFWAPI int glfwGetError(const char** description)
-{
-    _GLFWerror* error;
-    int code = GLFW_NO_ERROR;
-
-    if (description)
-        *description = NULL;
-
-    if (_glfw.initialized)
-        error = _glfwPlatformGetTls(&_glfw.errorSlot);
-    else
-        error = &_glfwMainThreadError;
-
-    if (error)
-    {
-        code = error->code;
-        error->code = GLFW_NO_ERROR;
-        if (description && code)
-            *description = error->description;
-    }
-
-    return code;
-}
-
-GLFWAPI GLFWerrorfun glfwSetErrorCallback(GLFWerrorfun cbfun)
-{
-    _GLFW_SWAP(GLFWerrorfun, _glfwErrorCallback, cbfun);
-    return cbfun;
-}
-

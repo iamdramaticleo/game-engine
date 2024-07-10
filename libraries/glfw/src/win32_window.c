@@ -1670,37 +1670,6 @@ void _glfwMaximizeWindowWin32(_GLFWwindow* window)
         maximizeWindowManually(window);
 }
 
-void _glfwShowWindowWin32(_GLFWwindow* window)
-{
-    int showCommand = SW_SHOWNA;
-
-    if (window->win32.showDefault)
-    {
-        // NOTE: GLFW windows currently do not seem to match the Windows 10 definition of
-        //       a main window, so even SW_SHOWDEFAULT does nothing
-        //       This definition is undocumented and can change (source: Raymond Chen)
-        // HACK: Apply the STARTUPINFO show command manually if available
-        STARTUPINFOW si = { sizeof(si) };
-        GetStartupInfoW(&si);
-        if (si.dwFlags & STARTF_USESHOWWINDOW)
-            showCommand = si.wShowWindow;
-
-        window->win32.showDefault = GLFW_FALSE;
-    }
-
-    ShowWindow(window->win32.handle, showCommand);
-}
-
-void _glfwHideWindowWin32(_GLFWwindow* window)
-{
-    ShowWindow(window->win32.handle, SW_HIDE);
-}
-
-void _glfwRequestWindowAttentionWin32(_GLFWwindow* window)
-{
-    FlashWindow(window->win32.handle, TRUE);
-}
-
 void _glfwFocusWindowWin32(_GLFWwindow* window)
 {
     BringWindowToTop(window->win32.handle);
@@ -1708,11 +1677,8 @@ void _glfwFocusWindowWin32(_GLFWwindow* window)
     SetFocus(window->win32.handle);
 }
 
-void _glfwSetWindowMonitorWin32(_GLFWwindow* window,
-                                _GLFWmonitor* monitor,
-                                int xpos, int ypos,
-                                int width, int height,
-                                int refreshRate)
+void _glfwSetWindowMonitorWin32(_GLFWwindow* window, _GLFWmonitor* monitor,
+                                int xpos, int ypos,int width, int height,int refreshRate)
 {
     if (window->monitor == monitor)
     {
@@ -1733,11 +1699,6 @@ void _glfwSetWindowMonitorWin32(_GLFWwindow* window,
                 AdjustWindowRectExForDpi(&rect, getWindowStyle(window),
                                          FALSE, getWindowExStyle(window),
                                          GetDpiForWindow(window->win32.handle));
-            }
-            else
-            {
-                AdjustWindowRectEx(&rect, getWindowStyle(window),
-                                   FALSE, getWindowExStyle(window));
             }
 
             SetWindowPos(window->win32.handle, HWND_TOP,
@@ -1804,11 +1765,6 @@ void _glfwSetWindowMonitorWin32(_GLFWwindow* window,
             AdjustWindowRectExForDpi(&rect, getWindowStyle(window),
                                      FALSE, getWindowExStyle(window),
                                      GetDpiForWindow(window->win32.handle));
-        }
-        else
-        {
-            AdjustWindowRectEx(&rect, getWindowStyle(window),
-                               FALSE, getWindowExStyle(window));
         }
 
         SetWindowPos(window->win32.handle, after,
@@ -2209,15 +2165,13 @@ void _glfwSetCursorWin32(_GLFWwindow* window, _GLFWcursor* cursor)
 
 void _glfwSetClipboardStringWin32(const char* string)
 {
-    int characterCount, tries = 0;
-    HANDLE object;
-    WCHAR* buffer;
+    int tries = 0;
 
-    characterCount = MultiByteToWideChar(CP_UTF8, 0, string, -1, NULL, 0);
+    int characterCount = MultiByteToWideChar(CP_UTF8, 0, string, -1, NULL, 0);
     if (!characterCount)
         return;
 
-    object = GlobalAlloc(GMEM_MOVEABLE, characterCount * sizeof(WCHAR));
+    HANDLE object = GlobalAlloc(GMEM_MOVEABLE, characterCount * sizeof(WCHAR));
     if (!object)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -2225,7 +2179,7 @@ void _glfwSetClipboardStringWin32(const char* string)
         return;
     }
 
-    buffer = GlobalLock(object);
+    WCHAR* buffer = GlobalLock(object);
     if (!buffer)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -2258,10 +2212,8 @@ void _glfwSetClipboardStringWin32(const char* string)
     CloseClipboard();
 }
 
-const char* _glfwGetClipboardStringWin32(void)
+const char* _glfwGetClipboardStringWin32()
 {
-    HANDLE object;
-    WCHAR* buffer;
     int tries = 0;
 
     // NOTE: Retry clipboard opening a few times as some other application may have it
@@ -2279,7 +2231,7 @@ const char* _glfwGetClipboardStringWin32(void)
         }
     }
 
-    object = GetClipboardData(CF_UNICODETEXT);
+    HANDLE object = GetClipboardData(CF_UNICODETEXT);
     if (!object)
     {
         _glfwInputErrorWin32(GLFW_FORMAT_UNAVAILABLE,
@@ -2288,7 +2240,7 @@ const char* _glfwGetClipboardStringWin32(void)
         return NULL;
     }
 
-    buffer = GlobalLock(object);
+    WCHAR* buffer = GlobalLock(object);
     if (!buffer)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -2306,7 +2258,7 @@ const char* _glfwGetClipboardStringWin32(void)
     return _glfw.win32.clipboardString;
 }
 
-GLFWAPI HWND glfwGetWin32Window(GLFWwindow* handle)
+HWND glfwGetWin32Window(GLFWwindow* handle)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 

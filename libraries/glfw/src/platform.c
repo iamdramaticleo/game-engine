@@ -47,15 +47,6 @@ static const struct
 #if defined(_GLFW_WIN32)
     { GLFW_PLATFORM_WIN32, _glfwConnectWin32 },
 #endif
-#if defined(_GLFW_COCOA)
-    { GLFW_PLATFORM_COCOA, _glfwConnectCocoa },
-#endif
-#if defined(_GLFW_WAYLAND)
-    { GLFW_PLATFORM_WAYLAND, _glfwConnectWayland },
-#endif
-#if defined(_GLFW_X11)
-    { GLFW_PLATFORM_X11, _glfwConnectX11 },
-#endif
 };
 
 GLFWbool _glfwSelectPlatform(int desiredID, _GLFWplatform* platform)
@@ -77,22 +68,6 @@ GLFWbool _glfwSelectPlatform(int desiredID, _GLFWplatform* platform)
         return GLFW_FALSE;
     }
 
-#if defined(_GLFW_WAYLAND) && defined(_GLFW_X11)
-    if (desiredID == GLFW_ANY_PLATFORM)
-    {
-        const char* const session = getenv("XDG_SESSION_TYPE");
-        if (session)
-        {
-            // Only follow XDG_SESSION_TYPE if it is set correctly and the
-            // environment looks plausble; otherwise fall back to detection
-            if (strcmp(session, "wayland") == 0 && getenv("WAYLAND_DISPLAY"))
-                desiredID = GLFW_PLATFORM_WAYLAND;
-            else if (strcmp(session, "x11") == 0 && getenv("DISPLAY"))
-                desiredID = GLFW_PLATFORM_X11;
-        }
-    }
-#endif
-
     if (desiredID == GLFW_ANY_PLATFORM)
     {
         // If there is exactly one platform available for auto-selection, let it emit the
@@ -108,49 +83,14 @@ GLFWbool _glfwSelectPlatform(int desiredID, _GLFWplatform* platform)
 
         _glfwInputError(GLFW_PLATFORM_UNAVAILABLE, "Failed to detect any supported platform");
     }
-    else
-    {
-        for (i = 0;  i < count;  i++)
-        {
-            if (supportedPlatforms[i].ID == desiredID)
-                return supportedPlatforms[i].connect(desiredID, platform);
-        }
 
-        _glfwInputError(GLFW_PLATFORM_UNAVAILABLE, "The requested platform is not supported");
+    for (i = 0;  i < count;  i++)
+    {
+        if (supportedPlatforms[i].ID == desiredID)
+            return supportedPlatforms[i].connect(desiredID, platform);
     }
 
-    return GLFW_FALSE;
-}
-
-//////////////////////////////////////////////////////////////////////////
-//////                        GLFW public API                       //////
-//////////////////////////////////////////////////////////////////////////
-
-GLFWAPI int glfwGetPlatform(void)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(0);
-    return _glfw.platform.platformID;
-}
-
-GLFWAPI int glfwPlatformSupported(int platformID)
-{
-    const size_t count = sizeof(supportedPlatforms) / sizeof(supportedPlatforms[0]);
-
-    if (platformID != GLFW_PLATFORM_WIN32 &&
-        platformID != GLFW_PLATFORM_NULL)
-    {
-        _glfwInputError(GLFW_INVALID_ENUM, "Invalid platform ID 0x%08X", platformID);
-        return GLFW_FALSE;
-    }
-
-    if (platformID == GLFW_PLATFORM_NULL)
-        return GLFW_TRUE;
-
-    for (size_t i = 0;  i < count;  i++)
-    {
-        if (platformID == supportedPlatforms[i].ID)
-            return GLFW_TRUE;
-    }
+    _glfwInputError(GLFW_PLATFORM_UNAVAILABLE, "The requested platform is not supported");
 
     return GLFW_FALSE;
 }

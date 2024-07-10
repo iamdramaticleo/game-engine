@@ -412,7 +412,6 @@ struct _GLFWctxconfig
     int           profile;
     int           robustness;
     int           release;
-    _GLFWwindow*  share;
 };
 
 // Framebuffer configuration
@@ -484,7 +483,6 @@ struct _GLFWwindow
     GLFWbool            focusOnShow;
     GLFWbool            mousePassthrough;
     GLFWbool            shouldClose;
-    void*               userPointer;
     GLFWbool            doublebuffer;
     GLFWvidmode         videoMode;
     _GLFWmonitor*       monitor;
@@ -534,7 +532,6 @@ struct _GLFWwindow
 struct _GLFWmonitor
 {
     char            name[128];
-    void*           userPointer;
 
     // Physical dimensions in millimeters.
     int             widthMM, heightMM;
@@ -626,9 +623,6 @@ struct _GLFWplatform
     void (*iconifyWindow)(_GLFWwindow*);
     void (*restoreWindow)(_GLFWwindow*);
     void (*maximizeWindow)(_GLFWwindow*);
-    void (*showWindow)(_GLFWwindow*);
-    void (*hideWindow)(_GLFWwindow*);
-    void (*requestWindowAttention)(_GLFWwindow*);
     void (*focusWindow)(_GLFWwindow*);
     void (*setWindowMonitor)(_GLFWwindow*,_GLFWmonitor*,int,int,int,int,int);
     GLFWbool (*windowFocused)(_GLFWwindow*);
@@ -640,7 +634,7 @@ struct _GLFWplatform
     void (*setWindowDecorated)(_GLFWwindow*,GLFWbool);
     void (*setWindowFloating)(_GLFWwindow*,GLFWbool);
     void (*setWindowMousePassthrough)(_GLFWwindow*,GLFWbool);
-    void (*pollEvents)(void);
+    void (*pollEvents)();
 };
 
 // Library global data
