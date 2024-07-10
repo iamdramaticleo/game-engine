@@ -66,8 +66,6 @@
 
 #include <wctype.h>
 #include <windows.h>
-#include <dinput.h>
-#include <xinput.h>
 #include <dbt.h>
 
 // HACK: Define macros that some windows.h variants don't
@@ -185,11 +183,6 @@ typedef enum
 #define _glfwIsWindows10Version1703OrGreaterWin32() \
     _glfwIsWindows10BuildOrGreaterWin32(15063)
 
-// HACK: Define macros that some dinput.h variants don't
-#ifndef DIDFT_OPTIONAL
- #define DIDFT_OPTIONAL 0x80000000
-#endif
-
 #define WGL_NUMBER_PIXEL_FORMATS_ARB 0x2000
 #define WGL_SUPPORT_OPENGL_ARB 0x2010
 #define WGL_DRAW_TO_WINDOW_ARB 0x2001
@@ -299,20 +292,6 @@ typedef BOOL (WINAPI * PFN_wglMakeCurrent)(HDC,HGLRC);
 #define wglGetCurrentContext _glfw.wgl.GetCurrentContext
 #define wglMakeCurrent _glfw.wgl.MakeCurrent
 
-typedef VkFlags VkWin32SurfaceCreateFlagsKHR;
-
-typedef struct VkWin32SurfaceCreateInfoKHR
-{
-    VkStructureType                 sType;
-    const void*                     pNext;
-    VkWin32SurfaceCreateFlagsKHR    flags;
-    HINSTANCE                       hinstance;
-    HWND                            hwnd;
-} VkWin32SurfaceCreateInfoKHR;
-
-typedef VkResult (APIENTRY *PFN_vkCreateWin32SurfaceKHR)(VkInstance,const VkWin32SurfaceCreateInfoKHR*,const VkAllocationCallbacks*,VkSurfaceKHR*);
-typedef VkBool32 (APIENTRY *PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR)(VkPhysicalDevice,uint32_t);
-
 #define GLFW_WIN32_WINDOW_STATE         _GLFWwindowWin32  win32;
 #define GLFW_WIN32_LIBRARY_WINDOW_STATE _GLFWlibraryWin32 win32;
 #define GLFW_WIN32_MONITOR_STATE        _GLFWmonitorWin32 win32;
@@ -320,7 +299,6 @@ typedef VkBool32 (APIENTRY *PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR)(
 
 #define GLFW_WGL_CONTEXT_STATE          _GLFWcontextWGL wgl;
 #define GLFW_WGL_LIBRARY_CONTEXT_STATE  _GLFWlibraryWGL wgl;
-
 
 // WGL-specific per-context data
 //
@@ -507,21 +485,15 @@ GLFWbool _glfwWindowIconifiedWin32(_GLFWwindow* window);
 GLFWbool _glfwWindowVisibleWin32(_GLFWwindow* window);
 GLFWbool _glfwWindowMaximizedWin32(_GLFWwindow* window);
 GLFWbool _glfwWindowHoveredWin32(_GLFWwindow* window);
-GLFWbool _glfwFramebufferTransparentWin32(_GLFWwindow* window);
 void _glfwSetWindowResizableWin32(_GLFWwindow* window, GLFWbool enabled);
 void _glfwSetWindowDecoratedWin32(_GLFWwindow* window, GLFWbool enabled);
 void _glfwSetWindowFloatingWin32(_GLFWwindow* window, GLFWbool enabled);
 void _glfwSetWindowMousePassthroughWin32(_GLFWwindow* window, GLFWbool enabled);
-float _glfwGetWindowOpacityWin32(_GLFWwindow* window);
-void _glfwSetWindowOpacityWin32(_GLFWwindow* window, float opacity);
 
 void _glfwSetRawMouseMotionWin32(_GLFWwindow *window, GLFWbool enabled);
 GLFWbool _glfwRawMouseMotionSupportedWin32(void);
 
 void _glfwPollEventsWin32(void);
-void _glfwWaitEventsWin32(void);
-void _glfwWaitEventsTimeoutWin32(double timeout);
-void _glfwPostEmptyEventWin32(void);
 
 void _glfwGetCursorPosWin32(_GLFWwindow* window, double* xpos, double* ypos);
 void _glfwSetCursorPosWin32(_GLFWwindow* window, double xpos, double ypos);
@@ -534,10 +506,6 @@ void _glfwDestroyCursorWin32(_GLFWcursor* cursor);
 void _glfwSetCursorWin32(_GLFWwindow* window, _GLFWcursor* cursor);
 void _glfwSetClipboardStringWin32(const char* string);
 const char* _glfwGetClipboardStringWin32(void);
-
-void _glfwGetRequiredInstanceExtensionsWin32(char** extensions);
-GLFWbool _glfwGetPhysicalDevicePresentationSupportWin32(VkInstance instance, VkPhysicalDevice device, uint32_t queuefamily);
-VkResult _glfwCreateWindowSurfaceWin32(VkInstance instance, _GLFWwindow* window, const VkAllocationCallbacks* allocator, VkSurfaceKHR* surface);
 
 void _glfwFreeMonitorWin32(_GLFWmonitor* monitor);
 void _glfwGetMonitorPosWin32(_GLFWmonitor* monitor, int* xpos, int* ypos);
@@ -553,4 +521,3 @@ void _glfwTerminateWGL(void);
 GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
                                const _GLFWctxconfig* ctxconfig,
                                const _GLFWfbconfig* fbconfig);
-
