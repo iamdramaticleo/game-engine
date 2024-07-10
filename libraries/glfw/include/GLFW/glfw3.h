@@ -1215,29 +1215,6 @@ typedef void (* GLFWdeallocatefun)(void* block, void* user);
  */
 typedef void (* GLFWerrorfun)(int error_code, const char* description);
 
-/*! @brief The function pointer type for window position callbacks.
- *
- *  This is the function pointer type for window position callbacks.  A window
- *  position callback function has the following signature:
- *  @code
- *  void callback_name(GLFWwindow* window, int xpos, int ypos)
- *  @endcode
- *
- *  @param[in] window The window that was moved.
- *  @param[in] xpos The new x-coordinate, in screen coordinates, of the
- *  upper-left corner of the content area of the window.
- *  @param[in] ypos The new y-coordinate, in screen coordinates, of the
- *  upper-left corner of the content area of the window.
- *
- *  @sa @ref window_pos
- *  @sa @ref glfwSetWindowPosCallback
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
-typedef void (* GLFWwindowposfun)(GLFWwindow* window, int xpos, int ypos);
-
 /*! @brief The function pointer type for window size callbacks.
  *
  *  This is the function pointer type for window size callbacks.  A window size
@@ -3423,41 +3400,6 @@ GLFWAPI void glfwSetWindowUserPointer(GLFWwindow* window, void* pointer);
  *  @ingroup window
  */
 GLFWAPI void* glfwGetWindowUserPointer(GLFWwindow* window);
-
-/*! @brief Sets the position callback for the specified window.
- *
- *  This function sets the position callback of the specified window, which is
- *  called when the window is moved.  The callback is provided with the
- *  position, in screen coordinates, of the upper-left corner of the content
- *  area of the window.
- *
- *  @param[in] window The window whose callback to set.
- *  @param[in] callback The new callback, or `NULL` to remove the currently set
- *  callback.
- *  @return The previously set callback, or `NULL` if no callback was set or the
- *  library had not been [initialized](@ref intro_init).
- *
- *  @callback_signature
- *  @code
- *  void function_name(GLFWwindow* window, int xpos, int ypos)
- *  @endcode
- *  For more information about the callback parameters, see the
- *  [function pointer type](@ref GLFWwindowposfun).
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @remark @wayland This callback will never be called, as there is no way for
- *  an application to know its global position.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_pos
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
-GLFWAPI GLFWwindowposfun glfwSetWindowPosCallback(GLFWwindow* window, GLFWwindowposfun callback);
 
 /*! @brief Sets the size callback for the specified window.
  *

@@ -44,13 +44,6 @@ target_include_directories(glfw PRIVATE
                            "${GLFW_BINARY_DIR}/src")
 target_link_libraries(glfw PRIVATE Threads::Threads)
 
-# Workaround for CMake not knowing about .m files before version 3.16
-if (CMAKE_VERSION VERSION_LESS "3.16" AND APPLE)
-    set_source_files_properties(cocoa_init.m cocoa_joystick.m cocoa_monitor.m
-                                cocoa_window.m nsgl_context.m PROPERTIES
-                                LANGUAGE C)
-endif()
-
 if (GLFW_BUILD_WIN32)
     list(APPEND glfw_PKG_LIBS "-lgdi32")
 endif()
@@ -68,16 +61,6 @@ endif()
 
 if (GLFW_BUILD_WIN32)
     target_compile_definitions(glfw PRIVATE UNICODE _UNICODE)
-endif()
-
-# Workaround for legacy MinGW not providing XInput and DirectInput
-if (MINGW)
-    include(CheckIncludeFile)
-    check_include_file(dinput.h DINPUT_H_FOUND)
-    check_include_file(xinput.h XINPUT_H_FOUND)
-    if (NOT DINPUT_H_FOUND OR NOT XINPUT_H_FOUND)
-        target_include_directories(glfw PRIVATE "${GLFW_SOURCE_DIR}/deps/mingw")
-    endif()
 endif()
 
 # Workaround for the MS CRT deprecating parts of the standard library

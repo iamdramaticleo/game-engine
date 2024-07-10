@@ -509,7 +509,6 @@ struct _GLFWwindow
     _GLFWcontext        context;
 
     struct {
-        GLFWwindowposfun          pos;
         GLFWwindowsizefun         size;
         GLFWwindowclosefun        close;
         GLFWwindowfocusfun        focus;
@@ -712,20 +711,16 @@ GLFWproc _glfwPlatformGetModuleSymbol(void* module, const char* name);
 //////////////////////////////////////////////////////////////////////////
 
 void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused);
-void _glfwInputWindowPos(_GLFWwindow* window, int xpos, int ypos);
 void _glfwInputWindowSize(_GLFWwindow* window, int width, int height);
 void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height);
-void _glfwInputWindowContentScale(_GLFWwindow* window,
-                                  float xscale, float yscale);
+void _glfwInputWindowContentScale(_GLFWwindow* window, float xscale, float yscale);
 void _glfwInputWindowIconify(_GLFWwindow* window, GLFWbool iconified);
 void _glfwInputWindowMaximize(_GLFWwindow* window, GLFWbool maximized);
 void _glfwInputWindowCloseRequest(_GLFWwindow* window);
 void _glfwInputWindowMonitor(_GLFWwindow* window, _GLFWmonitor* monitor);
 
-void _glfwInputKey(_GLFWwindow* window,
-                   int key, int scancode, int action, int mods);
-void _glfwInputChar(_GLFWwindow* window,
-                    uint32_t codepoint, int mods, GLFWbool plain);
+void _glfwInputKey(_GLFWwindow* window, int key, int scancode, int action, int mods);
+void _glfwInputChar(_GLFWwindow* window, uint32_t codepoint, int mods, GLFWbool plain);
 void _glfwInputScroll(_GLFWwindow* window, double xoffset, double yoffset);
 void _glfwInputMouseClick(_GLFWwindow* window, int button, int action, int mods);
 void _glfwInputCursorPos(_GLFWwindow* window, double xpos, double ypos);
@@ -734,12 +729,7 @@ void _glfwInputCursorEnter(_GLFWwindow* window, GLFWbool entered);
 void _glfwInputMonitor(_GLFWmonitor* monitor, int action, int placement);
 void _glfwInputMonitorWindow(_GLFWmonitor* monitor, _GLFWwindow* window);
 
-#if defined(__GNUC__)
-void _glfwInputError(int code, const char* format, ...)
-    __attribute__((format(printf, 2, 3)));
-#else
 void _glfwInputError(int code, const char* format, ...);
-#endif
 
 //////////////////////////////////////////////////////////////////////////
 //////                       GLFW internal API                      //////
@@ -751,12 +741,10 @@ GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions
 const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
                                          const _GLFWfbconfig* alternatives,
                                          unsigned int count);
-GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
-                                    const _GLFWctxconfig* ctxconfig);
+GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window, const _GLFWctxconfig* ctxconfig);
 GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig);
 
-const GLFWvidmode* _glfwChooseVideoMode(_GLFWmonitor* monitor,
-                                        const GLFWvidmode* desired);
+const GLFWvidmode* _glfwChooseVideoMode(_GLFWmonitor* monitor, const GLFWvidmode* desired);
 int _glfwCompareVideoModes(const GLFWvidmode* first, const GLFWvidmode* second);
 _GLFWmonitor* _glfwAllocMonitor(const char* name, int widthMM, int heightMM);
 void _glfwFreeMonitor(_GLFWmonitor* monitor);
@@ -764,9 +752,6 @@ void _glfwAllocGammaArrays(GLFWgammaramp* ramp, unsigned int size);
 void _glfwFreeGammaArrays(GLFWgammaramp* ramp);
 void _glfwSplitBPP(int bpp, int* red, int* green, int* blue);
 void _glfwCenterCursorInContentArea(_GLFWwindow* window);
-
-size_t _glfwEncodeUTF8(char* s, uint32_t codepoint);
-char** _glfwParseUriList(char* text, int* count);
 
 char* _glfw_strdup(const char* source);
 int _glfw_min(int a, int b);
