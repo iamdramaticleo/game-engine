@@ -181,18 +181,6 @@ void _glfwInputCursorEnter(_GLFWwindow* window, GLFWbool entered)
         window->callbacks.cursorEnter((GLFWwindow*) window, entered);
 }
 
-// Notifies shared code of files or directories dropped on a window
-//
-void _glfwInputDrop(_GLFWwindow* window, int count, const char** paths)
-{
-    assert(window != NULL);
-    assert(count > 0);
-    assert(paths != NULL);
-
-    if (window->callbacks.drop)
-        window->callbacks.drop((GLFWwindow*) window, count, paths);
-}
-
 //////////////////////////////////////////////////////////////////////////
 //////                       GLFW internal API                      //////
 //////////////////////////////////////////////////////////////////////////
@@ -683,17 +671,6 @@ GLFWAPI GLFWscrollfun glfwSetScrollCallback(GLFWwindow* handle,
     assert(window != NULL);
 
     _GLFW_SWAP(GLFWscrollfun, window->callbacks.scroll, cbfun);
-    return cbfun;
-}
-
-GLFWAPI GLFWdropfun glfwSetDropCallback(GLFWwindow* handle, GLFWdropfun cbfun)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    _GLFW_SWAP(GLFWdropfun, window->callbacks.drop, cbfun);
     return cbfun;
 }
 

@@ -94,9 +94,7 @@ int main(void)
     glfwSetKeyCallback(window, key_callback);
 
     glfwMakeContextCurrent(window);
-    gladLoadGL(glfwGetProcAddress);
-
-    // NOTE: OpenGL error checks have been omitted for brevity
+    gladLoadGL();
 
     GLuint vertex_buffer;
     glGenBuffers(1, &vertex_buffer);

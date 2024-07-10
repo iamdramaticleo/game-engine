@@ -642,22 +642,3 @@ GLFWAPI int glfwExtensionSupported(const char* extension)
     // Check if extension is in the platform-specific string
     return window->context.extensionSupported(extension);
 }
-
-GLFWAPI GLFWglproc glfwGetProcAddress(const char* procname)
-{
-    _GLFWwindow* window;
-    assert(procname != NULL);
-
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
-    window = _glfwPlatformGetTls(&_glfw.contextSlot);
-    if (!window)
-    {
-        _glfwInputError(GLFW_NO_CURRENT_CONTEXT,
-                        "Cannot query entry point without a current OpenGL or OpenGL ES context");
-        return NULL;
-    }
-
-    return window->context.getProcAddress(procname);
-}
-

@@ -12,19 +12,13 @@ if (MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
-if (WIN32)
-    set(ICON glfw.rc)
-elseif (APPLE)
-    set(ICON glfw.icns)
-endif()
-
 set(GLAD_GL "${GLFW_SOURCE_DIR}/deps/glad/gl.h")
 set(GETOPT "${GLFW_SOURCE_DIR}/deps/getopt.h"
            "${GLFW_SOURCE_DIR}/deps/getopt.c")
 set(TINYCTHREAD "${GLFW_SOURCE_DIR}/deps/tinycthread.h"
                 "${GLFW_SOURCE_DIR}/deps/tinycthread.c")
 
-add_executable(boing WIN32 MACOSX_BUNDLE boing.c ${ICON} ${GLAD_GL})
+add_executable(boing WIN32 MACOSX_BUNDLE boing.c ${GLAD_GL})
 add_executable(gears WIN32 MACOSX_BUNDLE gears.c ${ICON} ${GLAD_GL})
 add_executable(heightmap WIN32 MACOSX_BUNDLE heightmap.c ${ICON} ${GLAD_GL})
 add_executable(offscreen offscreen.c ${ICON} ${GLAD_GL})
