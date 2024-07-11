@@ -606,12 +606,6 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
             return 0;
         }
 
-        case WM_INPUTLANGCHANGE:
-        {
-            _glfwUpdateKeyNamesWin32();
-            break;
-        }
-
         case WM_CHAR:
         case WM_SYSCHAR:
         {
@@ -1403,7 +1397,6 @@ GLFWbool _glfwCreateWindowWin32(_GLFWwindow* window,
 
     if (window->monitor)
     {
-        _glfwShowWindowWin32(window);
         _glfwFocusWindowWin32(window);
         acquireMonitor(window);
         fitToMonitor(window);
@@ -1415,7 +1408,6 @@ GLFWbool _glfwCreateWindowWin32(_GLFWwindow* window,
     {
         if (wndconfig->visible)
         {
-            _glfwShowWindowWin32(window);
             if (wndconfig->focused)
                 _glfwFocusWindowWin32(window);
         }
