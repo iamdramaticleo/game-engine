@@ -36,37 +36,6 @@ static const GUID _glfw_GUID_DEVINTERFACE_HID =
 
 #define GUID_DEVINTERFACE_HID _glfw_GUID_DEVINTERFACE_HID
 
-#if defined(_GLFW_USE_HYBRID_HPG) || defined(_GLFW_USE_OPTIMUS_HPG)
-
-#if defined(_GLFW_BUILD_DLL)
- #pragma message("These symbols must be exported by the executable and have no effect in a DLL")
-#endif
-
-// Executables (but not DLLs) exporting this symbol with this value will be
-// automatically directed to the high-performance GPU on Nvidia Optimus systems
-// with up-to-date drivers
-//
-__declspec(dllexport) DWORD NvOptimusEnablement = 1;
-
-// Executables (but not DLLs) exporting this symbol with this value will be
-// automatically directed to the high-performance GPU on AMD PowerXpress systems
-// with up-to-date drivers
-//
-__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
-
-#endif // _GLFW_USE_HYBRID_HPG
-
-#if defined(_GLFW_BUILD_DLL)
-
-// GLFW DLL entry point
-//
-BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved)
-{
-    return TRUE;
-}
-
-#endif // _GLFW_BUILD_DLL
-
 // Load necessary libraries (DLLs)
 //
 static GLFWbool loadLibraries(void)
@@ -76,16 +45,14 @@ static GLFWbool loadLibraries(void)
                             (const WCHAR*) &_glfw,
                             (HMODULE*) &_glfw.win32.instance))
     {
-        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to retrieve own module handle");
+        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR, "Win32: Failed to retrieve own module handle");
         return GLFW_FALSE;
     }
 
     _glfw.win32.user32.instance = _glfwPlatformLoadModule("user32.dll");
     if (!_glfw.win32.user32.instance)
     {
-        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to load user32.dll");
+        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR, "Win32: Failed to load user32.dll");
         return GLFW_FALSE;
     }
 
@@ -138,7 +105,7 @@ static GLFWbool loadLibraries(void)
 
 // Unload used libraries (DLLs)
 //
-static void freeLibraries(void)
+static void freeLibraries()
 {
     if (_glfw.win32.user32.instance)
         _glfwPlatformFreeModule(_glfw.win32.user32.instance);
@@ -293,7 +260,7 @@ static LRESULT CALLBACK helperWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LP
 
 // Creates a dummy window for behind-the-scenes work
 //
-static GLFWbool createHelperWindow(void)
+static GLFWbool createHelperWindow()
 {
     MSG msg;
     WNDCLASSEXW wc = { sizeof(wc) };
@@ -363,10 +330,7 @@ static GLFWbool createHelperWindow(void)
 //
 WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source)
 {
-    WCHAR* target;
-    int count;
-
-    count = MultiByteToWideChar(CP_UTF8, 0, source, -1, NULL, 0);
+    int count = MultiByteToWideChar(CP_UTF8, 0, source, -1, NULL, 0);
     if (!count)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -374,7 +338,7 @@ WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source)
         return NULL;
     }
 
-    target = _glfw_calloc(count, sizeof(WCHAR));
+    WCHAR* target = _glfw_calloc(count, sizeof(WCHAR));
 
     if (!MultiByteToWideChar(CP_UTF8, 0, source, -1, target, count))
     {
@@ -391,10 +355,7 @@ WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source)
 //
 char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source)
 {
-    char* target;
-    int size;
-
-    size = WideCharToMultiByte(CP_UTF8, 0, source, -1, NULL, 0, NULL, NULL);
+    int size = WideCharToMultiByte(CP_UTF8, 0, source, -1, NULL, 0, NULL, NULL);
     if (!size)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -402,7 +363,7 @@ char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source)
         return NULL;
     }
 
-    target = _glfw_calloc(size, 1);
+    char* target = _glfw_calloc(size, 1);
 
     if (!WideCharToMultiByte(CP_UTF8, 0, source, -1, target, size, NULL, NULL))
     {
@@ -434,62 +395,6 @@ void _glfwInputErrorWin32(int error, const char* description)
     WideCharToMultiByte(CP_UTF8, 0, buffer, -1, message, sizeof(message), NULL, NULL);
 
     _glfwInputError(error, "%s: %s", description, message);
-}
-
-// Updates key names according to the current keyboard layout
-//
-void _glfwUpdateKeyNamesWin32(void)
-{
-    int key;
-    BYTE state[256] = {0};
-
-    memset(_glfw.win32.keynames, 0, sizeof(_glfw.win32.keynames));
-
-    for (key = GLFW_KEY_SPACE;  key <= GLFW_KEY_LAST;  key++)
-    {
-        UINT vk;
-        int scancode, length;
-        WCHAR chars[16];
-
-        scancode = _glfw.win32.scancodes[key];
-        if (scancode == -1)
-            continue;
-
-        if (key >= GLFW_KEY_KP_0 && key <= GLFW_KEY_KP_ADD)
-        {
-            const UINT vks[] = {
-                VK_NUMPAD0,  VK_NUMPAD1,  VK_NUMPAD2, VK_NUMPAD3,
-                VK_NUMPAD4,  VK_NUMPAD5,  VK_NUMPAD6, VK_NUMPAD7,
-                VK_NUMPAD8,  VK_NUMPAD9,  VK_DECIMAL, VK_DIVIDE,
-                VK_MULTIPLY, VK_SUBTRACT, VK_ADD
-            };
-
-            vk = vks[key - GLFW_KEY_KP_0];
-        }
-        else
-            vk = MapVirtualKeyW(scancode, MAPVK_VSC_TO_VK);
-
-        length = ToUnicode(vk, scancode, state,
-                           chars, sizeof(chars) / sizeof(WCHAR),
-                           0);
-
-        if (length == -1)
-        {
-            // This is a dead key, so we need a second simulated key press
-            // to make it output its own character (usually a diacritic)
-            length = ToUnicode(vk, scancode, state,
-                               chars, sizeof(chars) / sizeof(WCHAR),
-                               0);
-        }
-
-        if (length < 1)
-            continue;
-
-        WideCharToMultiByte(CP_UTF8, 0, chars, 1,
-                            _glfw.win32.keynames[key],
-                            sizeof(_glfw.win32.keynames[key]),
-                            NULL, NULL);
-    }
 }
 
 // Replacement for IsWindowsVersionOrGreater, as we cannot rely on the
@@ -591,7 +496,6 @@ int _glfwInitWin32(void)
         return GLFW_FALSE;
 
     createKeyTables();
-    _glfwUpdateKeyNamesWin32();
 
     if (_glfwIsWindows10Version1703OrGreaterWin32())
         SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
@@ -610,7 +514,7 @@ int _glfwInitWin32(void)
 void _glfwTerminateWin32(void)
 {
     if (_glfw.win32.blankCursor)
-        DestroyIcon((HICON) _glfw.win32.blankCursor);
+        DestroyIcon(_glfw.win32.blankCursor);
 
     if (_glfw.win32.deviceNotificationHandle)
         UnregisterDeviceNotification(_glfw.win32.deviceNotificationHandle);
@@ -631,4 +535,3 @@ void _glfwTerminateWin32(void)
 }
 
 #endif // _GLFW_WIN32
-

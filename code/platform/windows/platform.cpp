@@ -4,7 +4,7 @@ namespace win32
 {
     void Platform::init()
     {
-        if (!glfwInit())
+        if (glfwInit() == GLFW_FALSE)
         {
             std::exit(EXIT_FAILURE);
         }

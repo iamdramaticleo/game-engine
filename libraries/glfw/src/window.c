@@ -134,14 +134,12 @@ void _glfwInputWindowContentScale(_GLFWwindow* window, float xscale, float yscal
 
 // Notifies shared code that the user wishes to close a window
 //
-void _glfwInputWindowCloseRequest(_GLFWwindow* window)
+void _glfwInputWindowCloseRequest(const _GLFWwindow* window)
 {
     assert(window != NULL);
 
-    window->shouldClose = GLFW_TRUE;
-
     if (window->callbacks.close)
-        window->callbacks.close((GLFWwindow*) window);
+        window->callbacks.close();
 }
 
 // Notifies shared code that a window has changed its desired monitor
@@ -158,7 +156,7 @@ void _glfwInputWindowMonitor(_GLFWwindow* window, _GLFWmonitor* monitor)
 
 GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonitor* monitor)
 {
-    _GLFWfbconfig fbconfig;
+    _GLFWfbconfig  fbconfig;
     _GLFWctxconfig ctxconfig;
     _GLFWwndconfig wndconfig;
 
@@ -166,13 +164,9 @@ GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonit
     assert(width >= 0);
     assert(height >= 0);
 
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     if (width <= 0 || height <= 0)
     {
-        _glfwInputError(GLFW_INVALID_VALUE,
-                        "Invalid window size %ix%i",
-                        width, height);
+        _glfwInputError(GLFW_INVALID_VALUE, "Invalid window size %ix%i", width, height);
 
         return NULL;
     }
@@ -423,26 +417,6 @@ void glfwDestroyWindow(GLFWwindow* handle)
 
     _glfw_free(window->title);
     _glfw_free(window);
-}
-
-int glfwWindowShouldClose(GLFWwindow* handle)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(0);
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    return window->shouldClose;
-}
-
-void glfwSetWindowShouldClose(GLFWwindow* handle, int value)
-{
-    _GLFW_REQUIRE_INIT();
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    window->shouldClose = value;
 }
 
 const char* glfwGetWindowTitle(GLFWwindow* handle)
@@ -844,21 +818,16 @@ GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWwindow* handle, GLFWwindowsizefu
     return cbfun;
 }
 
-GLFWwindowclosefun glfwSetWindowCloseCallback(GLFWwindow* handle, GLFWwindowclosefun cbfun)
+void glfwSetCloseCallback(GLFWwindow* handle, GLFWwindowclosefun cbfun)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
     _GLFW_SWAP(GLFWwindowclosefun, window->callbacks.close, cbfun);
-    return cbfun;
 }
 
 GLFWwindowfocusfun glfwSetWindowFocusCallback(GLFWwindow* handle, GLFWwindowfocusfun cbfun)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -868,8 +837,6 @@ GLFWwindowfocusfun glfwSetWindowFocusCallback(GLFWwindow* handle, GLFWwindowfocu
 
 GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWwindow* handle, GLFWwindowiconifyfun cbfun)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -879,8 +846,6 @@ GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWwindow* handle, GLFWwindow
 
 GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow* handle, GLFWwindowmaximizefun cbfun)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -890,8 +855,6 @@ GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow* handle, GLFWwind
 
 GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* handle, GLFWframebuffersizefun cbfun)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 

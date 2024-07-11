@@ -1095,26 +1095,7 @@ typedef void (* GLFWerrorfun)(int error_code, const char* description);
  *  @ingroup window
  */
 typedef void (* GLFWwindowsizefun)(GLFWwindow* window, int width, int height);
-
-/*! @brief The function pointer type for window close callbacks.
- *
- *  This is the function pointer type for window close callbacks.  A window
- *  close callback function has the following signature:
- *  @code
- *  void function_name(GLFWwindow* window)
- *  @endcode
- *
- *  @param[in] window The window that the user attempted to close.
- *
- *  @sa @ref window_close
- *  @sa @ref glfwSetWindowCloseCallback
- *
- *  @since Added in version 2.5.
- *  @glfw3 Added window handle parameter.
- *
- *  @ingroup window
- */
-typedef void (* GLFWwindowclosefun)(GLFWwindow* window);
+typedef void (* GLFWwindowclosefun)();
 
 /*! @brief The function pointer type for window focus callbacks.
  *
@@ -1768,9 +1749,6 @@ void glfwWindowHint(int hint, int value);
 GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonitor* monitor);
 void        glfwDestroyWindow(GLFWwindow* window);
 
-int  glfwWindowShouldClose(GLFWwindow* window);
-void glfwSetWindowShouldClose(GLFWwindow* window, int value);
-
 void glfwSetWindowTitle(GLFWwindow* window, const char* title);
 void glfwSetWindowIcon(GLFWwindow* window, int count, const GLFWimage* images);
 
@@ -2321,45 +2299,7 @@ void* glfwGetWindowUserPointer(GLFWwindow* window);
  */
 GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWwindow* window, GLFWwindowsizefun callback);
 
-/*! @brief Sets the close callback for the specified window.
- *
- *  This function sets the close callback of the specified window, which is
- *  called when the user attempts to close the window, for example by clicking
- *  the close widget in the title bar.
- *
- *  The close flag is set before this callback is called, but you can modify it
- *  at any time with @ref glfwSetWindowShouldClose.
- *
- *  The close callback is not triggered by @ref glfwDestroyWindow.
- *
- *  @param[in] window The window whose callback to set.
- *  @param[in] callback The new callback, or `NULL` to remove the currently set
- *  callback.
- *  @return The previously set callback, or `NULL` if no callback was set or the
- *  library had not been [initialized](@ref intro_init).
- *
- *  @callback_signature
- *  @code
- *  void function_name(GLFWwindow* window)
- *  @endcode
- *  For more information about the callback parameters, see the
- *  [function pointer type](@ref GLFWwindowclosefun).
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @remark @macos Selecting Quit from the application menu will trigger the
- *  close callback for all windows.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_close
- *
- *  @since Added in version 2.5.
- *  @glfw3 Added window handle parameter and return value.
- *
- *  @ingroup window
- */
-GLFWwindowclosefun glfwSetWindowCloseCallback(GLFWwindow* window, GLFWwindowclosefun callback);
+void glfwSetCloseCallback(GLFWwindow* window, GLFWwindowclosefun callback);
 
 /*! @brief Sets the focus callback for the specified window.
  *

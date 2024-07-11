@@ -2252,16 +2252,13 @@ const char* _glfwGetClipboardStringWin32()
 
 HWND glfwGetWin32Window(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     if (_glfw.platform.platformID != GLFW_PLATFORM_WIN32)
     {
-        _glfwInputError(GLFW_PLATFORM_UNAVAILABLE,
-                        "Win32: Platform not initialized");
+        _glfwInputError(GLFW_PLATFORM_UNAVAILABLE,"Win32: Platform not initialized");
         return NULL;
     }
 
-    _GLFWwindow* window = (_GLFWwindow*) handle;
+    const _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
     return window->win32.handle;

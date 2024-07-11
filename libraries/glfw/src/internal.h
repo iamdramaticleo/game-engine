@@ -83,7 +83,6 @@ typedef const GLubyte* (APIENTRY * PFNGLGETSTRINGIPROC)(GLenum,GLuint);
 
 #include "platform.h"
 
-#define GLFW_NATIVE_INCLUDE_NONE
 #include "../include/GLFW/glfw3native.h"
 
 // Checks for whether the library has been initialized
@@ -243,7 +242,6 @@ struct _GLFWwindow
     GLFWbool            floating;
     GLFWbool            focusOnShow;
     GLFWbool            mousePassthrough;
-    GLFWbool            shouldClose;
     GLFWbool            doublebuffer;
     GLFWvidmode         videoMode;
     _GLFWmonitor*       monitor;
@@ -395,7 +393,7 @@ struct _GLFWplatform
     void (*setWindowDecorated)(_GLFWwindow*,GLFWbool);
     void (*setWindowFloating)(_GLFWwindow*,GLFWbool);
     void (*setWindowMousePassthrough)(_GLFWwindow*,GLFWbool);
-    void (*pollEvents)();
+    void (*pollEvents)(void);
 };
 
 // Library global data
@@ -471,7 +469,7 @@ void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height);
 void _glfwInputWindowContentScale(_GLFWwindow* window, float xscale, float yscale);
 void _glfwInputWindowIconify(_GLFWwindow* window, GLFWbool iconified);
 void _glfwInputWindowMaximize(_GLFWwindow* window, GLFWbool maximized);
-void _glfwInputWindowCloseRequest(_GLFWwindow* window);
+void _glfwInputWindowCloseRequest(const _GLFWwindow* window);
 void _glfwInputWindowMonitor(_GLFWwindow* window, _GLFWmonitor* monitor);
 
 void _glfwInputKey(_GLFWwindow* window, int key, int scancode, int action, int mods);

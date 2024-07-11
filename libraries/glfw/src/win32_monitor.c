@@ -527,40 +527,4 @@ void _glfwSetGammaRampWin32(_GLFWmonitor* monitor, const GLFWgammaramp* ramp)
     DeleteDC(dc);
 }
 
-//////////////////////////////////////////////////////////////////////////
-//////                        GLFW native API                       //////
-//////////////////////////////////////////////////////////////////////////
-
-const char* glfwGetWin32Adapter(GLFWmonitor* handle)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
-    if (_glfw.platform.platformID != GLFW_PLATFORM_WIN32)
-    {
-        _glfwInputError(GLFW_PLATFORM_UNAVAILABLE, "Win32: Platform not initialized");
-        return NULL;
-    }
-
-    _GLFWmonitor* monitor = (_GLFWmonitor*) handle;
-    assert(monitor != NULL);
-
-    return monitor->win32.publicAdapterName;
-}
-
-const char* glfwGetWin32Monitor(GLFWmonitor* handle)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
-    if (_glfw.platform.platformID != GLFW_PLATFORM_WIN32)
-    {
-        _glfwInputError(GLFW_PLATFORM_UNAVAILABLE, "Win32: Platform not initialized");
-        return NULL;
-    }
-
-    _GLFWmonitor* monitor = (_GLFWmonitor*) handle;
-    assert(monitor != NULL);
-
-    return monitor->win32.publicDisplayName;
-}
-
 #endif // _GLFW_WIN32
