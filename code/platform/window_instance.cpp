@@ -2,5 +2,4 @@
 
 void WindowInstance::create()
 {
-    //_size   = config.size;
 }

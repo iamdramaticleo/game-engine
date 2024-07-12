@@ -4,7 +4,7 @@ namespace win32
 {
     void Window::create(const window_config& config)
     {
-            _handle =  glfwCreateWindow(config.size.width, config.size.height, config.title.c_str(), nullptr);
+            _handle =  glfwCreateWindow(config.width, config.height, config.title.c_str(), nullptr);
         if (_handle == nullptr)
         {
             std::exit(EXIT_FAILURE);

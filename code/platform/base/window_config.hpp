@@ -1,9 +1,9 @@
 #pragma once
 
-#include "window_size.hpp"
-
 struct window_config
 {
     std::string title;
-    window_size size;
+
+    int32_t     width;
+    int32_t     height;
 };
