@@ -1,7 +1,7 @@
 #pragma once
 
-#include "base/window_size.hpp"
-#include "base/window_state.hpp"
+#include "window_size.hpp"
+#include "window_state.hpp"
 
 class WindowInstance
 {
