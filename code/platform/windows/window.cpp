@@ -2,10 +2,9 @@
 
 namespace win32
 {
-    void Window::create(const base::window_config& config)
+    void Window::create(const window_config& config)
     {
         _handle = glfwCreateWindow(config.size.width, config.size.height, config.title.c_str(), nullptr);
-        _size   = config.size;
 
         if (_handle == nullptr)
         {

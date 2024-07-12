@@ -1,10 +1,7 @@
 #pragma once
 
-namespace base
+struct window_size
 {
-    struct window_size
-    {
-        int32_t width  { };
-        int32_t height { };
-    };
-}
+    int32_t width  { };
+    int32_t height { };
+};
