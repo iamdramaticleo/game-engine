@@ -131,16 +131,14 @@ const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
                                          const _GLFWfbconfig* alternatives,
                                          unsigned int count)
 {
-    unsigned int i;
     unsigned int missing, leastMissing = UINT_MAX;
     unsigned int colorDiff, leastColorDiff = UINT_MAX;
     unsigned int extraDiff, leastExtraDiff = UINT_MAX;
-    const _GLFWfbconfig* current;
     const _GLFWfbconfig* closest = NULL;
 
-    for (i = 0;  i < count;  i++)
+    for (unsigned int i = 0;  i < count;  i++)
     {
-        current = alternatives + i;
+        const _GLFWfbconfig* current = alternatives + i;
 
         if (desired->stereo > 0 && current->stereo == 0)
         {
@@ -296,10 +294,8 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window, const _GLFWctxconfig* c
     if (_glfwPlatformGetTls(&_glfw.contextSlot) != window)
         return GLFW_FALSE;
 
-    window->context.GetIntegerv = (PFNGLGETINTEGERVPROC)
-        window->context.getProcAddress("glGetIntegerv");
-    window->context.GetString = (PFNGLGETSTRINGPROC)
-        window->context.getProcAddress("glGetString");
+    window->context.GetIntegerv = (PFNGLGETINTEGERVPROC)window->context.getProcAddress("glGetIntegerv");
+    window->context.GetString   = (PFNGLGETSTRINGPROC)window->context.getProcAddress("glGetString");
     if (!window->context.GetIntegerv || !window->context.GetString)
     {
         _glfwInputError(GLFW_PLATFORM_ERROR, "Entry point retrieval is broken");
@@ -312,33 +308,20 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window, const _GLFWctxconfig* c
     {
         if (ctxconfig->client == GLFW_OPENGL_API)
         {
-            _glfwInputError(GLFW_PLATFORM_ERROR,
-                            "OpenGL version string retrieval is broken");
-        }
-        else
-        {
-            _glfwInputError(GLFW_PLATFORM_ERROR,
-                            "OpenGL ES version string retrieval is broken");
+            _glfwInputError(GLFW_PLATFORM_ERROR,"OpenGL version string retrieval is broken");
         }
 
         glfwMakeContextCurrent((GLFWwindow*) previous);
         return GLFW_FALSE;
     }
 
-    if (!sscanf(version, "%d.%d.%d",
+    if (!sscanf(version, "%d.%d",
                 &window->context.major,
-                &window->context.minor,
-                &window->context.revision))
+                &window->context.minor))
     {
         if (window->context.client == GLFW_OPENGL_API)
         {
-            _glfwInputError(GLFW_PLATFORM_ERROR,
-                            "No version found in OpenGL version string");
-        }
-        else
-        {
-            _glfwInputError(GLFW_PLATFORM_ERROR,
-                            "No version found in OpenGL ES version string");
+            _glfwInputError(GLFW_PLATFORM_ERROR,"No version found in OpenGL version string");
         }
 
         glfwMakeContextCurrent((GLFWwindow*) previous);

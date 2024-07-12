@@ -294,8 +294,6 @@ extern "C" {
 #define GLFW_NO_CURRENT_CONTEXT     0x00010002
 /*! @brief One of the arguments to the function was an invalid enum value.
  *
- *  One of the arguments to the function was an invalid enum value, for example
- *  requesting @ref GLFW_RED_BITS with @ref glfwGetWindowAttrib.
  *
  *  @analysis Application programmer error.  Fix the offending call.
  */
@@ -615,30 +613,9 @@ extern "C" {
  */
 #define GLFW_DOUBLEBUFFER           0x00021010
 
-/*! @brief Context client API hint and attribute.
- *
- *  Context client API [hint](@ref GLFW_CLIENT_API_hint) and
- *  [attribute](@ref GLFW_CLIENT_API_attrib).
- */
 #define GLFW_CLIENT_API             0x00022001
-/*! @brief Context client API major version hint and attribute.
- *
- *  Context client API major version [hint](@ref GLFW_CONTEXT_VERSION_MAJOR_hint)
- *  and [attribute](@ref GLFW_CONTEXT_VERSION_MAJOR_attrib).
- */
 #define GLFW_CONTEXT_VERSION_MAJOR  0x00022002
-/*! @brief Context client API minor version hint and attribute.
- *
- *  Context client API minor version [hint](@ref GLFW_CONTEXT_VERSION_MINOR_hint)
- *  and [attribute](@ref GLFW_CONTEXT_VERSION_MINOR_attrib).
- */
 #define GLFW_CONTEXT_VERSION_MINOR  0x00022003
-/*! @brief Context client API revision number attribute.
- *
- *  Context client API revision number
- *  [attribute](@ref GLFW_CONTEXT_REVISION_attrib).
- */
-#define GLFW_CONTEXT_REVISION       0x00022004
 /*! @brief Context robustness hint and attribute.
  *
  *  Context client API revision number [hint](@ref GLFW_CONTEXT_ROBUSTNESS_hint)
@@ -2144,43 +2121,6 @@ GLFWmonitor* glfwGetWindowMonitor(GLFWwindow* window);
  */
 void glfwSetWindowMonitor(GLFWwindow* window, GLFWmonitor* monitor, int xpos, int ypos, int width, int height, int refreshRate);
 
-/*! @brief Returns an attribute of the specified window.
- *
- *  This function returns the value of an attribute of the specified window or
- *  its OpenGL or OpenGL ES context.
- *
- *  @param[in] window The window to query.
- *  @param[in] attrib The [window attribute](@ref window_attribs) whose value to
- *  return.
- *  @return The value of the attribute, or zero if an
- *  [error](@ref error_handling) occurred.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
- *  GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR.
- *
- *  @remark Framebuffer related hints are not window attributes.  See @ref
- *  window_attribs_fb for more information.
- *
- *  @remark Zero is a valid value for many window and context related
- *  attributes so you cannot use a return value of zero as an indication of
- *  errors.  However, this function should not fail as long as it is passed
- *  valid arguments and the library has been [initialized](@ref intro_init).
- *
- *  @remark @wayland The Wayland protocol provides no way to check whether a
- *  window is iconfied, so @ref GLFW_ICONIFIED always returns `GLFW_FALSE`.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_attribs
- *  @sa @ref glfwSetWindowAttrib
- *
- *  @since Added in version 3.0.  Replaces `glfwGetWindowParam` and
- *  `glfwGetGLVersion`.
- *
- *  @ingroup window
- */
-int glfwGetWindowAttrib(GLFWwindow* window, int attrib);
-
 /*! @brief Sets an attribute of the specified window.
  *
  *  This function sets the value of an attribute of the specified window.
@@ -2206,9 +2146,6 @@ int glfwGetWindowAttrib(GLFWwindow* window, int attrib);
  *  GLFW_INVALID_ENUM, @ref GLFW_INVALID_VALUE, @ref GLFW_PLATFORM_ERROR and @ref
  *  GLFW_FEATURE_UNAVAILABLE (see remarks).
  *
- *  @remark Calling @ref glfwGetWindowAttrib will always return the latest
- *  value, even if that value is ignored by the current mode of the window.
- *
  *  @remark @wayland The [GLFW_FLOATING](@ref GLFW_FLOATING_attrib) window attribute is
  *  not supported.  Setting this will emit @ref GLFW_FEATURE_UNAVAILABLE.
  *
@@ -2222,50 +2159,6 @@ int glfwGetWindowAttrib(GLFWwindow* window, int attrib);
  *  @ingroup window
  */
 void glfwSetWindowAttrib(GLFWwindow* window, int attrib, int value);
-
-/*! @brief Sets the user pointer of the specified window.
- *
- *  This function sets the user-defined pointer of the specified window.  The
- *  current value is retained until the window is destroyed.  The initial value
- *  is `NULL`.
- *
- *  @param[in] window The window whose pointer to set.
- *  @param[in] pointer The new value.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.  Access is not
- *  synchronized.
- *
- *  @sa @ref window_userptr
- *  @sa @ref glfwGetWindowUserPointer
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
-void glfwSetWindowUserPointer(GLFWwindow* window, void* pointer);
-
-/*! @brief Returns the user pointer of the specified window.
- *
- *  This function returns the current value of the user-defined pointer of the
- *  specified window.  The initial value is `NULL`.
- *
- *  @param[in] window The window whose pointer to return.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.  Access is not
- *  synchronized.
- *
- *  @sa @ref window_userptr
- *  @sa @ref glfwSetWindowUserPointer
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
-void* glfwGetWindowUserPointer(GLFWwindow* window);
 
 /*! @brief Sets the size callback for the specified window.
  *

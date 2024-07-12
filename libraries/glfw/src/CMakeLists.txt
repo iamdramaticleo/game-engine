@@ -1,4 +1,3 @@
-
 add_library(glfw ${GLFW_LIBRARY_TYPE}
                  "${GLFW_SOURCE_DIR}/include/GLFW/glfw3.h"
                  "${GLFW_SOURCE_DIR}/include/GLFW/glfw3native.h"
@@ -8,22 +7,18 @@ add_library(glfw ${GLFW_LIBRARY_TYPE}
 target_sources(glfw PRIVATE win32_thread.h win32_module.c win32_thread.c win32_platform.h win32_init.c win32_monitor.c
                             win32_window.c wgl_context.c)
 
-target_compile_definitions(glfw PRIVATE _GLFW_WIN32)
+target_include_directories(glfw PUBLIC "$<BUILD_INTERFACE:${GLFW_SOURCE_DIR}/include>"
+                                       "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+                               PRIVATE "${GLFW_SOURCE_DIR}/src"
+                                       "${GLFW_BINARY_DIR}/src")
 
-target_include_directories(glfw PUBLIC
-                           "$<BUILD_INTERFACE:${GLFW_SOURCE_DIR}/include>"
-                           "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
-target_include_directories(glfw PRIVATE
-                           "${GLFW_SOURCE_DIR}/src"
-                           "${GLFW_BINARY_DIR}/src")
 target_link_libraries(glfw PRIVATE Threads::Threads)
 
 if (GLFW_BUILD_WIN32)
     list(APPEND glfw_PKG_LIBS "-lgdi32")
 endif()
 
-target_compile_options(glfw PRIVATE "/W3")
-target_compile_definitions(glfw PRIVATE UNICODE _UNICODE)
+target_compile_definitions(glfw PRIVATE UNICODE _UNICODE _GLFW_WIN32)
 
 # Workaround for the MS CRT deprecating parts of the standard library
 if (MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
