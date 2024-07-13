@@ -1707,15 +1707,10 @@ static int find_extensionsGL(void) {
 	return 1;
 }
 
-static void find_coreGL(void) {
+static void find_coreGL(void)
+{
+    int major, minor;
 
-    /* Thank you @elmindreda
-     * https://github.com/elmindreda/greg/blob/master/templates/greg.c.in#L176
-     * https://github.com/glfw/glfw/blob/master/src/context.c#L36
-     */
-    int i, major, minor;
-
-    const char* version;
     const char* prefixes[] = {
         "OpenGL ES-CM ",
         "OpenGL ES-CL ",
@@ -1723,10 +1718,10 @@ static void find_coreGL(void) {
         NULL
     };
 
-    version = (const char*) glGetString(GL_VERSION);
+    const char* version = (const char*)glGetString(GL_VERSION);
     if (!version) return;
 
-    for (i = 0;  prefixes[i];  i++) {
+    for (int i = 0;  prefixes[i];  i++) {
         const size_t length = strlen(prefixes[i]);
         if (strncmp(version, prefixes[i], length) == 0) {
             version += length;
