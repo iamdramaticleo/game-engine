@@ -30,8 +30,6 @@
 #define GLFW_INCLUDE_NONE
 #include "../include/GLFW/glfw3.h"
 
-#include <stdbool.h>
-
 #define _GLFW_INSERT_FIRST      0
 #define _GLFW_INSERT_LAST       1
 
@@ -123,7 +121,7 @@ struct _GLFWerror
 //
 struct _GLFWinitconfig
 {
-    int           platformID;
+    int platformID;
 };
 
 // Window configuration

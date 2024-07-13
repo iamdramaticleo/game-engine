@@ -1644,11 +1644,6 @@ void _glfwGetWindowFrameSizeWin32(_GLFWwindow* window,
                                  FALSE, getWindowExStyle(window),
                                  GetDpiForWindow(window->win32.handle));
     }
-    else
-    {
-        AdjustWindowRectEx(&rect, getWindowStyle(window),
-                           FALSE, getWindowExStyle(window));
-    }
 
     if (left)
         *left = -rect.left;
@@ -1916,7 +1911,6 @@ GLFWbool _glfwRawMouseMotionSupportedWin32(void)
 void _glfwPollEventsWin32(void)
 {
     MSG msg;
-    HWND handle;
     _GLFWwindow* window;
 
     while (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
@@ -1948,7 +1942,7 @@ void _glfwPollEventsWin32(void)
     //       Other Win hotkeys are handled implicitly by _glfwInputWindowFocus
     //       because they change the input focus
     // NOTE: The other half of this is in the WM_*KEY* handler in windowProc
-    handle = GetActiveWindow();
+    HWND handle = GetActiveWindow();
     if (handle)
     {
         window = GetPropW(handle, L"GLFW");
@@ -1994,25 +1988,6 @@ void _glfwPollEventsWin32(void)
             _glfwSetCursorPosWin32(window, width / 2, height / 2);
         }
     }
-}
-
-void _glfwWaitEventsWin32(void)
-{
-    WaitMessage();
-
-    _glfwPollEventsWin32();
-}
-
-void _glfwWaitEventsTimeoutWin32(double timeout)
-{
-    MsgWaitForMultipleObjects(0, NULL, FALSE, (DWORD) (timeout * 1e3), QS_ALLINPUT);
-
-    _glfwPollEventsWin32();
-}
-
-void _glfwPostEmptyEventWin32(void)
-{
-    PostMessageW(_glfw.win32.helperWindowHandle, WM_NULL, 0, 0);
 }
 
 void _glfwGetCursorPosWin32(_GLFWwindow* window, double* xpos, double* ypos)

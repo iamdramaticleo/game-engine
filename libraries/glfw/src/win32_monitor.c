@@ -30,11 +30,8 @@
 #if defined(_GLFW_WIN32)
 
 #include <stdlib.h>
-#include <string.h>
 #include <limits.h>
 #include <wchar.h>
-#include <assert.h>
-
 
 // Callback for EnumDisplayMonitors in createMonitor
 //
@@ -59,13 +56,10 @@ static BOOL CALLBACK monitorCallback(HMONITOR handle,
 
 // Create monitor from an adapter and (optionally) a display
 //
-static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter,
-                                   DISPLAY_DEVICEW* display)
+static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter, DISPLAY_DEVICEW* display)
 {
-    _GLFWmonitor* monitor;
     int widthMM, heightMM;
     char* name;
-    HDC dc;
     DEVMODEW dm;
     RECT rect;
 
@@ -80,7 +74,7 @@ static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter,
     dm.dmSize = sizeof(dm);
     EnumDisplaySettingsW(adapter->DeviceName, ENUM_CURRENT_SETTINGS, &dm);
 
-    dc = CreateDCW(L"DISPLAY", adapter->DeviceName, NULL, NULL);
+    HDC dc = CreateDCW(L"DISPLAY", adapter->DeviceName, NULL, NULL);
 
     if (IsWindows8Point1OrGreater())
     {
@@ -95,7 +89,7 @@ static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter,
 
     DeleteDC(dc);
 
-    monitor = _glfwAllocMonitor(name, widthMM, heightMM);
+    _GLFWmonitor* monitor = _glfwAllocMonitor(name, widthMM, heightMM);
     _glfw_free(name);
 
     if (adapter->StateFlags & DISPLAY_DEVICE_MODESPRUNED)
@@ -136,13 +130,13 @@ static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter,
 //
 void _glfwPollMonitorsWin32(void)
 {
-    int i, disconnectedCount;
+    int i;
     _GLFWmonitor** disconnected = NULL;
-    DWORD adapterIndex, displayIndex;
+    DWORD displayIndex;
     DISPLAY_DEVICEW adapter, display;
     _GLFWmonitor* monitor;
 
-    disconnectedCount = _glfw.monitorCount;
+    int disconnectedCount = _glfw.monitorCount;
     if (disconnectedCount)
     {
         disconnected = _glfw_calloc(_glfw.monitorCount, sizeof(_GLFWmonitor*));
@@ -151,7 +145,7 @@ void _glfwPollMonitorsWin32(void)
                _glfw.monitorCount * sizeof(_GLFWmonitor*));
     }
 
-    for (adapterIndex = 0;  ;  adapterIndex++)
+    for (DWORD adapterIndex = 0;  ;  adapterIndex++)
     {
         int type = _GLFW_INSERT_LAST;
 
@@ -249,11 +243,9 @@ void _glfwPollMonitorsWin32(void)
 void _glfwSetVideoModeWin32(_GLFWmonitor* monitor, const GLFWvidmode* desired)
 {
     GLFWvidmode current;
-    const GLFWvidmode* best;
     DEVMODEW dm;
-    LONG result;
 
-    best = _glfwChooseVideoMode(monitor, desired);
+    const GLFWvidmode* best = _glfwChooseVideoMode(monitor, desired);
     _glfwGetVideoModeWin32(monitor, &current);
     if (_glfwCompareVideoModes(&current, best) == 0)
         return;
@@ -270,11 +262,11 @@ void _glfwSetVideoModeWin32(_GLFWmonitor* monitor, const GLFWvidmode* desired)
     if (dm.dmBitsPerPel < 15 || dm.dmBitsPerPel >= 24)
         dm.dmBitsPerPel = 32;
 
-    result = ChangeDisplaySettingsExW(monitor->win32.adapterName,
-                                      &dm,
-                                      NULL,
-                                      CDS_FULLSCREEN,
-                                      NULL);
+    LONG result = ChangeDisplaySettingsExW(monitor->win32.adapterName,
+                                           &dm,
+                                           NULL,
+                                           CDS_FULLSCREEN,
+                                           NULL);
     if (result == DISP_CHANGE_SUCCESSFUL)
         monitor->win32.modeChanged = GLFW_TRUE;
     else
@@ -350,10 +342,6 @@ void _glfwGetHMONITORContentScaleWin32(HMONITOR handle, float* xscale, float* ys
 //////                       GLFW platform API                      //////
 //////////////////////////////////////////////////////////////////////////
 
-void _glfwFreeMonitorWin32(_GLFWmonitor* monitor)
-{
-}
-
 void _glfwGetMonitorPosWin32(_GLFWmonitor* monitor, int* xpos, int* ypos)
 {
     DEVMODEW dm;
@@ -364,15 +352,13 @@ void _glfwGetMonitorPosWin32(_GLFWmonitor* monitor, int* xpos, int* ypos)
                            ENUM_CURRENT_SETTINGS,
                            &dm,
                            EDS_ROTATEDMODE);
-
     if (xpos)
         *xpos = dm.dmPosition.x;
     if (ypos)
         *ypos = dm.dmPosition.y;
 }
 
-void _glfwGetMonitorContentScaleWin32(_GLFWmonitor* monitor,
-                                      float* xscale, float* yscale)
+void _glfwGetMonitorContentScaleWin32(_GLFWmonitor* monitor, float* xscale, float* yscale)
 {
     _glfwGetHMONITORContentScaleWin32(monitor->win32.handle, xscale, yscale);
 }

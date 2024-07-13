@@ -508,7 +508,6 @@ GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
                                const _GLFWfbconfig* fbconfig)
 {
     int attribs[40];
-    int pixelFormat;
     PIXELFORMATDESCRIPTOR pfd;
 
     window->context.wgl.dc = GetDC(window->win32.handle);
@@ -519,7 +518,7 @@ GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
         return GLFW_FALSE;
     }
 
-    pixelFormat = choosePixelFormatWGL(window, ctxconfig, fbconfig);
+    int pixelFormat = choosePixelFormatWGL(window, ctxconfig, fbconfig);
     if (!pixelFormat)
         return GLFW_FALSE;
 

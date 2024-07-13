@@ -375,8 +375,6 @@ void glfwWindowHint(int hint, int value)
 
 void glfwDestroyWindow(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
 
     // Allow closing of NULL (to match the behavior of free)
@@ -421,8 +419,6 @@ void glfwSetWindowTitle(GLFWwindow* handle, const char* title)
 {
     assert(title != NULL);
 
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -437,8 +433,6 @@ void glfwSetWindowIcon(GLFWwindow* handle, int count, const GLFWimage* images)
 {
     assert(count >= 0);
     assert(count == 0 || images != NULL);
-
-    _GLFW_REQUIRE_INIT();
 
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -481,8 +475,6 @@ void glfwSetWindowSize(GLFWwindow* handle, int width, int height)
 
 void glfwSetWindowSizeLimits(GLFWwindow* handle, int minwidth, int minheight, int maxwidth, int maxheight)
 {
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -490,9 +482,7 @@ void glfwSetWindowSizeLimits(GLFWwindow* handle, int minwidth, int minheight, in
     {
         if (minwidth < 0 || minheight < 0)
         {
-            _glfwInputError(GLFW_INVALID_VALUE,
-                            "Invalid window minimum size %ix%i",
-                            minwidth, minheight);
+            _glfwInputError(GLFW_INVALID_VALUE, "Invalid window minimum size %ix%i", minwidth, minheight);
             return;
         }
     }
@@ -502,9 +492,7 @@ void glfwSetWindowSizeLimits(GLFWwindow* handle, int minwidth, int minheight, in
         if (maxwidth < 0 || maxheight < 0 ||
             maxwidth < minwidth || maxheight < minheight)
         {
-            _glfwInputError(GLFW_INVALID_VALUE,
-                            "Invalid window maximum size %ix%i",
-                            maxwidth, maxheight);
+            _glfwInputError(GLFW_INVALID_VALUE, "Invalid window maximum size %ix%i", maxwidth, maxheight);
             return;
         }
     }
@@ -524,8 +512,6 @@ void glfwSetWindowSizeLimits(GLFWwindow* handle, int minwidth, int minheight, in
 {
     assert(numer != 0);
     assert(denom != 0);
-
-    _GLFW_REQUIRE_INIT();
 
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -557,17 +543,13 @@ void glfwGetFramebufferSize(GLFWwindow* handle, int* width, int* height)
     if (height)
         *height = 0;
 
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
     _glfw.platform.getFramebufferSize(window, width, height);
 }
 
-void glfwGetWindowFrameSize(GLFWwindow* handle,
-                                    int* left, int* top,
-                                    int* right, int* bottom)
+void glfwGetWindowFrameSize(GLFWwindow* handle,int* left, int* top,int* right, int* bottom)
 {
     if (left)
         *left = 0;
@@ -577,8 +559,6 @@ void glfwGetWindowFrameSize(GLFWwindow* handle,
         *right = 0;
     if (bottom)
         *bottom = 0;
-
-    _GLFW_REQUIRE_INIT();
 
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -603,8 +583,6 @@ void glfwGetWindowContentScale(GLFWwindow* handle, float* xscale, float* yscale)
 
 void glfwIconifyWindow(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -613,8 +591,6 @@ void glfwIconifyWindow(GLFWwindow* handle)
 
 void glfwRestoreWindow(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -636,8 +612,6 @@ void glfwMaximizeWindow(GLFWwindow* handle)
 
 void glfwFocusWindow(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
