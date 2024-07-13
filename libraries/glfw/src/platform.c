@@ -27,12 +27,7 @@
 
 #include "internal.h"
 
-#include <string.h>
 #include <stdlib.h>
-
-// These construct a string literal from individual numeric constants
-#define _GLFW_CONCAT_VERSION(m, n, r) #m "." #n "." #r
-#define _GLFW_MAKE_VERSION(m, n, r) _GLFW_CONCAT_VERSION(m, n, r)
 
 //////////////////////////////////////////////////////////////////////////
 //////                       GLFW internal API                      //////
@@ -55,8 +50,7 @@ GLFWbool _glfwSelectPlatform(int desiredID, _GLFWplatform* platform)
     size_t i;
 
     if (desiredID != GLFW_ANY_PLATFORM &&
-        desiredID != GLFW_PLATFORM_WIN32 &&
-        desiredID != GLFW_PLATFORM_NULL)
+        desiredID != GLFW_PLATFORM_WIN32)
     {
         _glfwInputError(GLFW_INVALID_ENUM, "Invalid platform ID 0x%08X", desiredID);
         return GLFW_FALSE;

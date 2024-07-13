@@ -3,7 +3,7 @@
 
 namespace win32
 {
-    void Window::create(const window_config& config)
+    void Window::create(const base::window_config& config)
     {
         if (glfwInit() == 0)
         {
@@ -17,7 +17,7 @@ namespace win32
 
         glfwSetCloseCallback(_handle, []
         {
-            WindowInstance::instance().close();
+            core::WindowInstance::instance().close();
         });
 
         glfwMakeContextCurrent(_handle);

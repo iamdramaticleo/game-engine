@@ -318,8 +318,6 @@ extern "C" {
 #define GLFW_PLATFORM               0x00050003
 #define GLFW_ANY_PLATFORM           0x00060000
 #define GLFW_PLATFORM_WIN32         0x00060001
-#define GLFW_PLATFORM_NULL          0x00060005
-/*! @} */
 
 #define GLFW_DONT_CARE              -1
 
@@ -327,15 +325,6 @@ extern "C" {
  * GLFW API types
  *************************************************************************/
 
-/*! @brief Client API function pointer type.
- *
- *  Generic function pointer used for returning client API function pointers
- *  without forcing a cast from a regular pointer.
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup context
- */
 typedef void (*GLFWglproc)(void);
 
 typedef struct GLFWmonitor GLFWmonitor;

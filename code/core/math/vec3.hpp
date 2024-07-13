@@ -1,8 +1,11 @@
 #pragma once
 
-struct vec3
+namespace core
 {
-    float x;
-    float y;
-    float z;
-};
+    struct vec3
+    {
+        float x;
+        float y;
+        float z;
+    };
+}

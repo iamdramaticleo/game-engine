@@ -1,7 +1,10 @@
 #pragma once
 
-enum class window_state
+namespace base
 {
-    active,
-    closed
-};
+    enum class window_state
+    {
+        active,
+        closed
+    };
+}
