@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include "window_instance.hpp"
 
 namespace win32
 {
@@ -16,6 +17,7 @@ namespace win32
 
         glfwSetCloseCallback(_handle, []
         {
+            WindowInstance::instance().close();
         });
 
         glfwMakeContextCurrent(_handle);

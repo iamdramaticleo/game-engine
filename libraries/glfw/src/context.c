@@ -519,8 +519,6 @@ void glfwMakeContextCurrent(GLFWwindow* handle)
 
 void glfwSwapBuffers(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 

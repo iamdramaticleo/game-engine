@@ -1370,6 +1370,27 @@ static int createNativeWindow(_GLFWwindow* window,
     return GLFW_TRUE;
 }
 
+void _glfwShowWindowWin32(_GLFWwindow* window)
+{
+    int showCommand = SW_SHOWNA;
+
+    if (window->win32.showDefault)
+    {
+        // NOTE: GLFW windows currently do not seem to match the Windows 10 definition of
+        //       a main window, so even SW_SHOWDEFAULT does nothing
+        //       This definition is undocumented and can change (source: Raymond Chen)
+        // HACK: Apply the STARTUPINFO show command manually if available
+        STARTUPINFOW si = { sizeof(si) };
+        GetStartupInfoW(&si);
+        if (si.dwFlags & STARTF_USESHOWWINDOW)
+            showCommand = si.wShowWindow;
+
+        window->win32.showDefault = GLFW_FALSE;
+    }
+
+    ShowWindow(window->win32.handle, showCommand);
+}
+
 GLFWbool _glfwCreateWindowWin32(_GLFWwindow* window,
                                 const _GLFWwndconfig* wndconfig,
                                 const _GLFWctxconfig* ctxconfig,
@@ -1397,6 +1418,7 @@ GLFWbool _glfwCreateWindowWin32(_GLFWwindow* window,
 
     if (window->monitor)
     {
+        _glfwShowWindowWin32(window);
         _glfwFocusWindowWin32(window);
         acquireMonitor(window);
         fitToMonitor(window);
@@ -1408,6 +1430,7 @@ GLFWbool _glfwCreateWindowWin32(_GLFWwindow* window,
     {
         if (wndconfig->visible)
         {
+            _glfwShowWindowWin32(window);
             if (wndconfig->focused)
                 _glfwFocusWindowWin32(window);
         }
