@@ -130,12 +130,7 @@ typedef void (APIENTRY *GLDEBUGPROC)(GLenum source,GLenum type,GLuint id,GLenum 
 typedef void (APIENTRY *GLDEBUGPROCARB)(GLenum source,GLenum type,GLuint id,GLenum severity,GLsizei length,const GLchar *message,const void *userParam);
 typedef void (APIENTRY *GLDEBUGPROCKHR)(GLenum source,GLenum type,GLuint id,GLenum severity,GLsizei length,const GLchar *message,const void *userParam);
 typedef void (APIENTRY *GLDEBUGPROCAMD)(GLuint id,GLenum category,GLenum severity,GLsizei length,const GLchar *message,void *userParam);
-typedef unsigned short GLhalfNV;
-typedef GLintptr GLvdpauSurfaceNV;
-typedef void (APIENTRY *GLVULKANPROCNV)(void);
-#define GL_DEPTH_BUFFER_BIT 0x00000100
 #define GL_STENCIL_BUFFER_BIT 0x00000400
-#define GL_COLOR_BUFFER_BIT 0x00004000
 #define GL_FALSE 0
 #define GL_TRUE 1
 #define GL_POINTS 0x0000
@@ -194,7 +189,6 @@ typedef void (APIENTRY *GLVULKANPROCNV)(void);
 #define GL_CULL_FACE_MODE 0x0B45
 #define GL_FRONT_FACE 0x0B46
 #define GL_DEPTH_RANGE 0x0B70
-#define GL_DEPTH_TEST 0x0B71
 #define GL_DEPTH_WRITEMASK 0x0B72
 #define GL_DEPTH_CLEAR_VALUE 0x0B73
 #define GL_DEPTH_FUNC 0x0B74
@@ -402,7 +396,6 @@ typedef void (APIENTRY *GLVULKANPROCNV)(void);
 #define GL_TEXTURE30 0x84DE
 #define GL_TEXTURE31 0x84DF
 #define GL_ACTIVE_TEXTURE 0x84E0
-#define GL_MULTISAMPLE 0x809D
 #define GL_SAMPLE_ALPHA_TO_COVERAGE 0x809E
 #define GL_SAMPLE_ALPHA_TO_ONE 0x809F
 #define GL_SAMPLE_COVERAGE 0x80A0
