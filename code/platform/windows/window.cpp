@@ -5,7 +5,7 @@ namespace win32
 {
     void Window::create(const window_config& config)
     {
-        if (glfwInit() == GLFW_FALSE)
+        if (glfwInit() == 0)
         {
             std::exit(EXIT_FAILURE);
         }
