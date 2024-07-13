@@ -441,14 +441,11 @@ GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions
 
     for (;;)
     {
-        const char* where;
-        const char* terminator;
-
-        where = strstr(start, string);
+        const char* where = strstr(start, string);
         if (!where)
             return GLFW_FALSE;
 
-        terminator = where + strlen(string);
+        const char* terminator = where + strlen(string);
         if (where == start || *(where - 1) == ' ')
         {
             if (*terminator == ' ' || *terminator == '\0')
@@ -461,7 +458,6 @@ GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions
     return GLFW_TRUE;
 }
 
-
 //////////////////////////////////////////////////////////////////////////
 //////                        GLFW public API                       //////
 //////////////////////////////////////////////////////////////////////////
@@ -471,9 +467,7 @@ void glfwMakeContextCurrent(GLFWwindow* handle)
     _GLFW_REQUIRE_INIT();
 
     _GLFWwindow* window = (_GLFWwindow*) handle;
-    _GLFWwindow* previous;
-
-    previous = _glfwPlatformGetTls(&_glfw.contextSlot);
+    _GLFWwindow* previous = _glfwPlatformGetTls(&_glfw.contextSlot);
 
     if (window && window->context.client == GLFW_NO_API)
     {
@@ -530,17 +524,15 @@ int glfwExtensionSupported(const char* extension)
 
     if (window->context.major >= 3)
     {
-        int i;
         GLint count;
 
         // Check if extension is in the modern OpenGL extensions string list
 
         window->context.GetIntegerv(GL_NUM_EXTENSIONS, &count);
 
-        for (i = 0;  i < count;  i++)
+        for (int i = 0;  i < count;  i++)
         {
-            const char* en = (const char*)
-                window->context.GetStringi(GL_EXTENSIONS, i);
+            const char* en = (const char*)window->context.GetStringi(GL_EXTENSIONS, i);
             if (!en)
             {
                 _glfwInputError(GLFW_PLATFORM_ERROR,
@@ -556,8 +548,7 @@ int glfwExtensionSupported(const char* extension)
     {
         // Check if extension is in the old style OpenGL extensions string
 
-        const char* extensions = (const char*)
-            window->context.GetString(GL_EXTENSIONS);
+        const char* extensions = (const char*)window->context.GetString(GL_EXTENSIONS);
         if (!extensions)
         {
             _glfwInputError(GLFW_PLATFORM_ERROR,
