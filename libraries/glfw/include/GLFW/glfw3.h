@@ -338,315 +338,22 @@ extern "C" {
  */
 typedef void (*GLFWglproc)(void);
 
-/*! @brief Vulkan API function pointer type.
- *
- *  Generic function pointer used for returning Vulkan API function pointers
- *  without forcing a cast from a regular pointer.
- *
- *  @sa @ref vulkan_proc
- *  @sa @ref glfwGetInstanceProcAddress
- *
- *  @since Added in version 3.2.
- *
- *  @ingroup vulkan
- */
-typedef void (*GLFWvkproc)(void);
-
-/*! @brief Opaque monitor object.
- *
- *  Opaque monitor object.
- *
- *  @see @ref monitor_object
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup monitor
- */
 typedef struct GLFWmonitor GLFWmonitor;
-
-/*! @brief Opaque window object.
- *
- *  Opaque window object.
- *
- *  @see @ref window_object
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
 typedef struct GLFWwindow GLFWwindow;
-
-/*! @brief Opaque cursor object.
- *
- *  Opaque cursor object.
- *
- *  @see @ref cursor_object
- *
- *  @since Added in version 3.1.
- *
- *  @ingroup input
- */
 typedef struct GLFWcursor GLFWcursor;
 
-/*! @brief The function pointer type for memory allocation callbacks.
- *
- *  This is the function pointer type for memory allocation callbacks.  A memory
- *  allocation callback function has the following signature:
- *  @code
- *  void* function_name(size_t size, void* user)
- *  @endcode
- *
- *  This function must return either a memory block at least `size` bytes long,
- *  or `NULL` if allocation failed.  Note that not all parts of GLFW handle allocation
- *  failures gracefully yet.
- *
- *  This function must support being called during @ref glfwInit but before the library is
- *  flagged as initialized, as well as during @ref glfwTerminate after the library is no
- *  longer flagged as initialized.
- *
- *  Any memory allocated via this function will be deallocated via the same allocator
- *  during library termination or earlier.
- *
- *  Any memory allocated via this function must be suitably aligned for any object type.
- *  If you are using C99 or earlier, this alignment is platform-dependent but will be the
- *  same as what `malloc` provides.  If you are using C11 or later, this is the value of
- *  `alignof(max_align_t)`.
- *
- *  The size will always be greater than zero.  Allocations of size zero are filtered out
- *  before reaching the custom allocator.
- *
- *  If this function returns `NULL`, GLFW will emit @ref GLFW_OUT_OF_MEMORY.
- *
- *  This function must not call any GLFW function.
- *
- *  @param[in] size The minimum size, in bytes, of the memory block.
- *  @param[in] user The user-defined pointer from the allocator.
- *  @return The address of the newly allocated memory block, or `NULL` if an
- *  error occurred.
- *
- *  @pointer_lifetime The returned memory block must be valid at least until it
- *  is deallocated.
- *
- *  @reentrancy This function should not call any GLFW function.
- *
- *  @thread_safety This function must support being called from any thread that calls GLFW
- *  functions.
- *
- *  @sa @ref init_allocator
- *  @sa @ref GLFWallocator
- *
- *  @since Added in version 3.4.
- *
- *  @ingroup init
- */
 typedef void* (* GLFWallocatefun)(size_t size, void* user);
-
-/*! @brief The function pointer type for memory reallocation callbacks.
- *
- *  This is the function pointer type for memory reallocation callbacks.
- *  A memory reallocation callback function has the following signature:
- *  @code
- *  void* function_name(void* block, size_t size, void* user)
- *  @endcode
- *
- *  This function must return a memory block at least `size` bytes long, or
- *  `NULL` if allocation failed.  Note that not all parts of GLFW handle allocation
- *  failures gracefully yet.
- *
- *  This function must support being called during @ref glfwInit but before the library is
- *  flagged as initialized, as well as during @ref glfwTerminate after the library is no
- *  longer flagged as initialized.
- *
- *  Any memory allocated via this function will be deallocated via the same allocator
- *  during library termination or earlier.
- *
- *  Any memory allocated via this function must be suitably aligned for any object type.
- *  If you are using C99 or earlier, this alignment is platform-dependent but will be the
- *  same as what `realloc` provides.  If you are using C11 or later, this is the value of
- *  `alignof(max_align_t)`.
- *
- *  The block address will never be `NULL` and the size will always be greater than zero.
- *  Reallocations of a block to size zero are converted into deallocations before reaching
- *  the custom allocator.  Reallocations of `NULL` to a non-zero size are converted into
- *  regular allocations before reaching the custom allocator.
- *
- *  If this function returns `NULL`, GLFW will emit @ref GLFW_OUT_OF_MEMORY.
- *
- *  This function must not call any GLFW function.
- *
- *  @param[in] block The address of the memory block to reallocate.
- *  @param[in] size The new minimum size, in bytes, of the memory block.
- *  @param[in] user The user-defined pointer from the allocator.
- *  @return The address of the newly allocated or resized memory block, or
- *  `NULL` if an error occurred.
- *
- *  @pointer_lifetime The returned memory block must be valid at least until it
- *  is deallocated.
- *
- *  @reentrancy This function should not call any GLFW function.
- *
- *  @thread_safety This function must support being called from any thread that calls GLFW
- *  functions.
- *
- *  @sa @ref init_allocator
- *  @sa @ref GLFWallocator
- *
- *  @since Added in version 3.4.
- *
- *  @ingroup init
- */
 typedef void* (* GLFWreallocatefun)(void* block, size_t size, void* user);
-
-/*! @brief The function pointer type for memory deallocation callbacks.
- *
- *  This is the function pointer type for memory deallocation callbacks.
- *  A memory deallocation callback function has the following signature:
- *  @code
- *  void function_name(void* block, void* user)
- *  @endcode
- *
- *  This function may deallocate the specified memory block.  This memory block
- *  will have been allocated with the same allocator.
- *
- *  This function must support being called during @ref glfwInit but before the library is
- *  flagged as initialized, as well as during @ref glfwTerminate after the library is no
- *  longer flagged as initialized.
- *
- *  The block address will never be `NULL`.  Deallocations of `NULL` are filtered out
- *  before reaching the custom allocator.
- *
- *  If this function returns `NULL`, GLFW will emit @ref GLFW_OUT_OF_MEMORY.
- *
- *  This function must not call any GLFW function.
- *
- *  @param[in] block The address of the memory block to deallocate.
- *  @param[in] user The user-defined pointer from the allocator.
- *
- *  @pointer_lifetime The specified memory block will not be accessed by GLFW
- *  after this function is called.
- *
- *  @reentrancy This function should not call any GLFW function.
- *
- *  @thread_safety This function must support being called from any thread that calls GLFW
- *  functions.
- *
- *  @sa @ref init_allocator
- *  @sa @ref GLFWallocator
- *
- *  @since Added in version 3.4.
- *
- *  @ingroup init
- */
 typedef void (* GLFWdeallocatefun)(void* block, void* user);
 
-/*! @brief The function pointer type for error callbacks.
- *
- *  This is the function pointer type for error callbacks.  An error callback
- *  function has the following signature:
- *  @code
- *  void callback_name(int error_code, const char* description)
- *  @endcode
- *
- *  @param[in] error_code An [error code](@ref errors).  Future releases may add
- *  more error codes.
- *  @param[in] description A UTF-8 encoded string describing the error.
- *
- *  @pointer_lifetime The error description string is valid until the callback
- *  function returns.
- *
- *  @sa @ref error_handling
- *  @sa @ref glfwSetErrorCallback
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup init
- */
 typedef void (* GLFWerrorfun)(int error_code, const char* description);
 
-/*! @brief The function pointer type for window size callbacks.
- *
- *  This is the function pointer type for window size callbacks.  A window size
- *  callback function has the following signature:
- *  @code
- *  void callback_name(GLFWwindow* window, int width, int height)
- *  @endcode
- *
- *  @param[in] window The window that was resized.
- *  @param[in] width The new width, in screen coordinates, of the window.
- *  @param[in] height The new height, in screen coordinates, of the window.
- *
- *  @sa @ref window_size
- *  @sa @ref glfwSetWindowSizeCallback
- *
- *  @since Added in version 1.0.
- *  @glfw3 Added window handle parameter.
- *
- *  @ingroup window
- */
 typedef void (* GLFWwindowsizefun)(GLFWwindow* window, int width, int height);
 typedef void (* GLFWwindowclosefun)();
 
-/*! @brief The function pointer type for window focus callbacks.
- *
- *  This is the function pointer type for window focus callbacks.  A window
- *  focus callback function has the following signature:
- *  @code
- *  void function_name(GLFWwindow* window, int focused)
- *  @endcode
- *
- *  @param[in] window The window that gained or lost input focus.
- *  @param[in] focused `GLFW_TRUE` if the window was given input focus, or
- *  `GLFW_FALSE` if it lost it.
- *
- *  @sa @ref window_focus
- *  @sa @ref glfwSetWindowFocusCallback
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
 typedef void (* GLFWwindowfocusfun)(GLFWwindow* window, int focused);
-
-/*! @brief The function pointer type for window iconify callbacks.
- *
- *  This is the function pointer type for window iconify callbacks.  A window
- *  iconify callback function has the following signature:
- *  @code
- *  void function_name(GLFWwindow* window, int iconified)
- *  @endcode
- *
- *  @param[in] window The window that was iconified or restored.
- *  @param[in] iconified `GLFW_TRUE` if the window was iconified, or
- *  `GLFW_FALSE` if it was restored.
- *
- *  @sa @ref window_iconify
- *  @sa @ref glfwSetWindowIconifyCallback
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
 typedef void (* GLFWwindowiconifyfun)(GLFWwindow* window, int iconified);
 
-/*! @brief The function pointer type for window maximize callbacks.
- *
- *  This is the function pointer type for window maximize callbacks.  A window
- *  maximize callback function has the following signature:
- *  @code
- *  void function_name(GLFWwindow* window, int maximized)
- *  @endcode
- *
- *  @param[in] window The window that was maximized or restored.
- *  @param[in] maximized `GLFW_TRUE` if the window was maximized, or
- *  `GLFW_FALSE` if it was restored.
- *
- *  @sa @ref window_maximize
- *  @sa glfwSetWindowMaximizeCallback
- *
- *  @since Added in version 3.3.
- *
- *  @ingroup window
- */
 typedef void (* GLFWwindowmaximizefun)(GLFWwindow* window, int maximized);
 
 /*! @brief The function pointer type for framebuffer size callbacks.
@@ -877,19 +584,6 @@ typedef void (* GLFWcharmodsfun)(GLFWwindow* window, unsigned int codepoint, int
  */
 typedef void (* GLFWmonitorfun)(GLFWmonitor* monitor, int event);
 
-/*! @brief Video mode type.
- *
- *  This describes a single video mode.
- *
- *  @sa @ref monitor_modes
- *  @sa @ref glfwGetVideoMode
- *  @sa @ref glfwGetVideoModes
- *
- *  @since Added in version 1.0.
- *  @glfw3 Added refresh rate member.
- *
- *  @ingroup monitor
- */
 typedef struct GLFWvidmode
 {
     /*! The width, in screen coordinates, of the video mode.
@@ -912,18 +606,6 @@ typedef struct GLFWvidmode
     int refreshRate;
 } GLFWvidmode;
 
-/*! @brief Gamma ramp.
- *
- *  This describes the gamma ramp for a monitor.
- *
- *  @sa @ref monitor_gamma
- *  @sa @ref glfwGetGammaRamp
- *  @sa @ref glfwSetGammaRamp
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup monitor
- */
 typedef struct GLFWgammaramp
 {
     /*! An array of value describing the response of the red channel.
@@ -940,19 +622,6 @@ typedef struct GLFWgammaramp
     unsigned int size;
 } GLFWgammaramp;
 
-/*! @brief Image data.
- *
- *  This describes a single 2D image.  See the documentation for each related
- *  function what the expected pixel format is.
- *
- *  @sa @ref cursor_custom
- *  @sa @ref window_icon
- *
- *  @since Added in version 2.1.
- *  @glfw3 Removed format and bytes-per-pixel members.
- *
- *  @ingroup window
- */
 typedef struct GLFWimage
 {
     /*! The width, in pixels, of this image.
@@ -966,18 +635,6 @@ typedef struct GLFWimage
     unsigned char* pixels;
 } GLFWimage;
 
-/*! @brief Custom heap memory allocator.
- *
- *  This describes a custom heap memory allocator for GLFW.  To set an allocator, pass it
- *  to @ref glfwInitAllocator before initializing the library.
- *
- *  @sa @ref init_allocator
- *  @sa @ref glfwInitAllocator
- *
- *  @since Added in version 3.4.
- *
- *  @ingroup init
- */
 typedef struct GLFWallocator
 {
     /*! The memory allocation function.  See @ref GLFWallocatefun for details about
