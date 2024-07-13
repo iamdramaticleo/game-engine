@@ -694,15 +694,6 @@ GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* handle, GLFWfr
     return cbfun;
 }
 
-GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* handle, GLFWwindowcontentscalefun cbfun)
-{
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    _GLFW_SWAP(GLFWwindowcontentscalefun, window->callbacks.scale, cbfun);
-    return cbfun;
-}
-
 void glfwPollEvents()
 {
     _glfw.platform.pollEvents();
