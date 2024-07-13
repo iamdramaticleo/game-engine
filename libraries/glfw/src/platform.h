@@ -27,8 +27,7 @@
 
 #pragma once
 
-#if defined(GLFW_BUILD_WIN32_TIMER) || \
-    defined(GLFW_BUILD_WIN32_MODULE) || \
+#if defined(GLFW_BUILD_WIN32_MODULE) || \
     defined(GLFW_BUILD_WIN32_THREAD)
  #error "You must not define these; define zero or more _GLFW_<platform> macros instead"
 #endif
