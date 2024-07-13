@@ -266,7 +266,6 @@ struct _GLFWwindow
         GLFWwindowiconifyfun      iconify;
         GLFWwindowmaximizefun     maximize;
         GLFWframebuffersizefun    fbsize;
-        GLFWwindowcontentscalefun scale;
         GLFWmousebuttonfun        mouseButton;
         GLFWcursorposfun          cursorPos;
         GLFWcursorenterfun        cursorEnter;
@@ -369,9 +368,6 @@ struct _GLFWplatform
     void (*setWindowSize)(_GLFWwindow*,int,int);
     void (*setWindowSizeLimits)(_GLFWwindow*,int,int,int,int);
     void (*setWindowAspectRatio)(_GLFWwindow*,int,int);
-    void (*getFramebufferSize)(_GLFWwindow*,int*,int*);
-    void (*getWindowFrameSize)(_GLFWwindow*,int*,int*,int*,int*);
-    void (*getWindowContentScale)(_GLFWwindow*,float*,float*);
     void (*iconifyWindow)(_GLFWwindow*);
     void (*restoreWindow)(_GLFWwindow*);
     void (*maximizeWindow)(_GLFWwindow*);
@@ -455,7 +451,6 @@ GLFWproc _glfwPlatformGetModuleSymbol(void* module, const char* name);
 void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused);
 void _glfwInputWindowSize(_GLFWwindow* window, int width, int height);
 void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height);
-void _glfwInputWindowContentScale(_GLFWwindow* window, float xscale, float yscale);
 void _glfwInputWindowIconify(_GLFWwindow* window, GLFWbool iconified);
 void _glfwInputWindowMaximize(_GLFWwindow* window, GLFWbool maximized);
 void _glfwInputWindowCloseRequest(const _GLFWwindow* window);

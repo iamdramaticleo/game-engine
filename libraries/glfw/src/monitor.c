@@ -34,7 +34,6 @@
 #include <stdlib.h>
 #include <limits.h>
 
-
 // Lexically compare video modes, used by qsort
 //
 static int compareVideoModes(const void* fp, const void* sp)
@@ -67,12 +66,11 @@ static int compareVideoModes(const void* fp, const void* sp)
 static GLFWbool refreshVideoModes(_GLFWmonitor* monitor)
 {
     int modeCount;
-    GLFWvidmode* modes;
 
     if (monitor->modes)
         return GLFW_TRUE;
 
-    modes = _glfw.platform.getVideoModes(monitor, &modeCount);
+    GLFWvidmode* modes = _glfw.platform.getVideoModes(monitor, &modeCount);
     if (!modes)
         return GLFW_FALSE;
 
@@ -84,7 +82,6 @@ static GLFWbool refreshVideoModes(_GLFWmonitor* monitor)
 
     return GLFW_TRUE;
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 //////                         GLFW event API                       //////
@@ -117,22 +114,17 @@ void _glfwInputMonitor(_GLFWmonitor* monitor, int action, int placement)
     }
     else if (action == GLFW_DISCONNECTED)
     {
-        int i;
-        _GLFWwindow* window;
-
-        for (window = _glfw.windowListHead;  window;  window = window->next)
+        for (_GLFWwindow* window = _glfw.windowListHead;  window;  window = window->next)
         {
             if (window->monitor == monitor)
             {
-                int width, height, xoff, yoff;
+                int width, height;
                 _glfw.platform.getWindowSize(window, &width, &height);
                 _glfw.platform.setWindowMonitor(window, NULL, 0, 0, width, height, 0);
-                _glfw.platform.getWindowFrameSize(window, &xoff, &yoff, NULL, NULL);
-                _glfw.platform.setWindowPos(window, xoff, yoff);
             }
         }
 
-        for (i = 0;  i < _glfw.monitorCount;  i++)
+        for (int i = 0;  i < _glfw.monitorCount;  i++)
         {
             if (_glfw.monitors[i] == monitor)
             {

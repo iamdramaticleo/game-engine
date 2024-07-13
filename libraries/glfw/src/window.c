@@ -33,7 +33,6 @@
 #include <stdlib.h>
 #include <float.h>
 
-
 //////////////////////////////////////////////////////////////////////////
 //////                         GLFW event API                       //////
 //////////////////////////////////////////////////////////////////////////
@@ -50,9 +49,7 @@ void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused)
 
     if (!focused)
     {
-        int key, button;
-
-        for (key = 0;  key <= GLFW_KEY_LAST;  key++)
+        for (int key = 0;  key <= GLFW_KEY_LAST;  key++)
         {
             if (window->keys[key] == GLFW_PRESS)
             {
@@ -61,7 +58,7 @@ void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused)
             }
         }
 
-        for (button = 0;  button <= GLFW_MOUSE_BUTTON_LAST;  button++)
+        for (int button = 0;  button <= GLFW_MOUSE_BUTTON_LAST;  button++)
         {
             if (window->mouseButtons[button] == GLFW_PRESS)
                 _glfwInputMouseClick(window, button, GLFW_RELEASE, 0);
@@ -115,21 +112,6 @@ void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height)
 
     if (window->callbacks.fbsize)
         window->callbacks.fbsize((GLFWwindow*) window, width, height);
-}
-
-// Notifies shared code that a window content scale has changed
-// The scale is specified as the ratio between the current and default DPI
-//
-void _glfwInputWindowContentScale(_GLFWwindow* window, float xscale, float yscale)
-{
-    assert(window != NULL);
-    assert(xscale > 0.f);
-    assert(xscale < FLT_MAX);
-    assert(yscale > 0.f);
-    assert(yscale < FLT_MAX);
-
-    if (window->callbacks.scale)
-        window->callbacks.scale((GLFWwindow*) window, xscale, yscale);
 }
 
 // Notifies shared code that the user wishes to close a window
@@ -534,51 +516,6 @@ void glfwSetWindowSizeLimits(GLFWwindow* handle, int minwidth, int minheight, in
         return;
 
     _glfw.platform.setWindowAspectRatio(window, numer, denom);
-}
-
-void glfwGetFramebufferSize(GLFWwindow* handle, int* width, int* height)
-{
-    if (width)
-        *width = 0;
-    if (height)
-        *height = 0;
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    _glfw.platform.getFramebufferSize(window, width, height);
-}
-
-void glfwGetWindowFrameSize(GLFWwindow* handle,int* left, int* top,int* right, int* bottom)
-{
-    if (left)
-        *left = 0;
-    if (top)
-        *top = 0;
-    if (right)
-        *right = 0;
-    if (bottom)
-        *bottom = 0;
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    _glfw.platform.getWindowFrameSize(window, left, top, right, bottom);
-}
-
-void glfwGetWindowContentScale(GLFWwindow* handle, float* xscale, float* yscale)
-{
-    if (xscale)
-        *xscale = 0.f;
-    if (yscale)
-        *yscale = 0.f;
-
-    _GLFW_REQUIRE_INIT();
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    _glfw.platform.getWindowContentScale(window, xscale, yscale);
 }
 
 void glfwIconifyWindow(GLFWwindow* handle)

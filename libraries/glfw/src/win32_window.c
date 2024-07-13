@@ -1139,7 +1139,6 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
                              SWP_NOACTIVATE | SWP_NOZORDER);
             }
 
-            _glfwInputWindowContentScale(window, xscale, yscale);
             break;
         }
 
@@ -1577,11 +1576,6 @@ void _glfwSetWindowSizeWin32(_GLFWwindow* window, int width, int height)
                                      FALSE, getWindowExStyle(window),
                                      GetDpiForWindow(window->win32.handle));
         }
-        else
-        {
-            AdjustWindowRectEx(&rect, getWindowStyle(window),
-                               FALSE, getWindowExStyle(window));
-        }
 
         SetWindowPos(window->win32.handle, HWND_TOP,
                      0, 0, rect.right - rect.left, rect.bottom - rect.top,
@@ -1621,45 +1615,6 @@ void _glfwSetWindowAspectRatioWin32(_GLFWwindow* window, int numer, int denom)
                area.left, area.top,
                area.right - area.left,
                area.bottom - area.top, TRUE);
-}
-
-void _glfwGetFramebufferSizeWin32(_GLFWwindow* window, int* width, int* height)
-{
-    _glfwGetWindowSizeWin32(window, width, height);
-}
-
-void _glfwGetWindowFrameSizeWin32(_GLFWwindow* window,
-                                  int* left, int* top,
-                                  int* right, int* bottom)
-{
-    RECT rect;
-    int width, height;
-
-    _glfwGetWindowSizeWin32(window, &width, &height);
-    SetRect(&rect, 0, 0, width, height);
-
-    if (_glfwIsWindows10Version1607OrGreaterWin32())
-    {
-        AdjustWindowRectExForDpi(&rect, getWindowStyle(window),
-                                 FALSE, getWindowExStyle(window),
-                                 GetDpiForWindow(window->win32.handle));
-    }
-
-    if (left)
-        *left = -rect.left;
-    if (top)
-        *top = -rect.top;
-    if (right)
-        *right = rect.right - width;
-    if (bottom)
-        *bottom = rect.bottom - height;
-}
-
-void _glfwGetWindowContentScaleWin32(_GLFWwindow* window, float* xscale, float* yscale)
-{
-    const HANDLE handle = MonitorFromWindow(window->win32.handle,
-                                            MONITOR_DEFAULTTONEAREST);
-    _glfwGetHMONITORContentScaleWin32(handle, xscale, yscale);
 }
 
 void _glfwIconifyWindowWin32(_GLFWwindow* window)
