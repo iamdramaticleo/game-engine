@@ -38,9 +38,6 @@
  #define WIN32_LEAN_AND_MEAN
 #endif
 
-// This is a workaround for the fact that glfw3.h needs to export APIENTRY (for
-// example to allow applications to correctly declare a GL_KHR_debug callback)
-// but windows.h assumes no one will define APIENTRY before it does
 #undef APIENTRY
 
 // GLFW on Windows is Unicode only and does not work in MBCS mode
@@ -64,7 +61,6 @@
 // GLFW uses OEM cursor resources
 #define OEMRESOURCE
 
-#include <wctype.h>
 #include <windows.h>
 #include <dbt.h>
 

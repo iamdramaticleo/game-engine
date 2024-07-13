@@ -25,9 +25,6 @@
 //
 //========================================================================
 
-// This is a workaround for the fact that glfw3.h needs to export APIENTRY (for
-// example to allow applications to correctly declare a GL_KHR_debug callback)
-// but windows.h assumes no one will define APIENTRY before it does
 #undef APIENTRY
 
 #include <windows.h>
