@@ -190,10 +190,6 @@ struct _GLFWfbconfig
     int         alphaBits;
     int         depthBits;
     int         stencilBits;
-    int         accumRedBits;
-    int         accumGreenBits;
-    int         accumBlueBits;
-    int         accumAlphaBits;
     int         auxBuffers;
     GLFWbool    stereo;
     int         samples;

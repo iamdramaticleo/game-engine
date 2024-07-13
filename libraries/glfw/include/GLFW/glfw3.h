@@ -249,91 +249,23 @@ extern "C" {
 #define GLFW_ALPHA_BITS             0x00021004
 #define GLFW_DEPTH_BITS             0x00021005
 #define GLFW_STENCIL_BITS           0x00021006
-#define GLFW_ACCUM_RED_BITS         0x00021007
-/*! @brief Framebuffer bit depth hint.
- *
- *  Framebuffer bit depth [hint](@ref GLFW_ACCUM_GREEN_BITS).
- */
-#define GLFW_ACCUM_GREEN_BITS       0x00021008
-/*! @brief Framebuffer bit depth hint.
- *
- *  Framebuffer bit depth [hint](@ref GLFW_ACCUM_BLUE_BITS).
- */
-#define GLFW_ACCUM_BLUE_BITS        0x00021009
-/*! @brief Framebuffer bit depth hint.
- *
- *  Framebuffer bit depth [hint](@ref GLFW_ACCUM_ALPHA_BITS).
- */
-#define GLFW_ACCUM_ALPHA_BITS       0x0002100A
-/*! @brief Framebuffer auxiliary buffer hint.
- *
- *  Framebuffer auxiliary buffer [hint](@ref GLFW_AUX_BUFFERS).
- */
 #define GLFW_AUX_BUFFERS            0x0002100B
-/*! @brief OpenGL stereoscopic rendering hint.
- *
- *  OpenGL stereoscopic rendering [hint](@ref GLFW_STEREO).
- */
 #define GLFW_STEREO                 0x0002100C
-/*! @brief Framebuffer MSAA samples hint.
- *
- *  Framebuffer MSAA samples [hint](@ref GLFW_SAMPLES).
- */
 #define GLFW_SAMPLES                0x0002100D
-/*! @brief Framebuffer sRGB hint.
- *
- *  Framebuffer sRGB [hint](@ref GLFW_SRGB_CAPABLE).
- */
 #define GLFW_SRGB_CAPABLE           0x0002100E
-/*! @brief Monitor refresh rate hint.
- *
- *  Monitor refresh rate [hint](@ref GLFW_REFRESH_RATE).
- */
 #define GLFW_REFRESH_RATE           0x0002100F
-/*! @brief Framebuffer double buffering hint and attribute.
- *
- *  Framebuffer double buffering [hint](@ref GLFW_DOUBLEBUFFER_hint) and
- *  [attribute](@ref GLFW_DOUBLEBUFFER_attrib).
- */
 #define GLFW_DOUBLEBUFFER           0x00021010
 
 #define GLFW_CLIENT_API             0x00022001
 #define GLFW_CONTEXT_VERSION_MAJOR  0x00022002
 #define GLFW_CONTEXT_VERSION_MINOR  0x00022003
-/*! @brief Context robustness hint and attribute.
- *
- *  Context client API revision number [hint](@ref GLFW_CONTEXT_ROBUSTNESS_hint)
- *  and [attribute](@ref GLFW_CONTEXT_ROBUSTNESS_attrib).
- */
+
 #define GLFW_CONTEXT_ROBUSTNESS     0x00022005
-/*! @brief OpenGL profile hint and attribute.
- *
- *  OpenGL profile [hint](@ref GLFW_OPENGL_PROFILE_hint) and
- *  [attribute](@ref GLFW_OPENGL_PROFILE_attrib).
- */
 #define GLFW_OPENGL_PROFILE         0x00022008
-/*! @brief Context flush-on-release hint and attribute.
- *
- *  Context flush-on-release [hint](@ref GLFW_CONTEXT_RELEASE_BEHAVIOR_hint) and
- *  [attribute](@ref GLFW_CONTEXT_RELEASE_BEHAVIOR_attrib).
- */
 #define GLFW_CONTEXT_RELEASE_BEHAVIOR 0x00022009
-/*! @brief Context error suppression hint and attribute.
- *
- *  Context error suppression [hint](@ref GLFW_CONTEXT_NO_ERROR_hint) and
- *  [attribute](@ref GLFW_CONTEXT_NO_ERROR_attrib).
- */
 #define GLFW_CONTEXT_NO_ERROR       0x0002200A
-/*! @brief Window content area scaling window
- *  [window hint](@ref GLFW_SCALE_TO_MONITOR).
- */
 #define GLFW_SCALE_TO_MONITOR       0x0002200C
-/*! @brief Window framebuffer scaling
- *  [window hint](@ref GLFW_SCALE_FRAMEBUFFER_hint).
- */
 #define GLFW_SCALE_FRAMEBUFFER      0x0002200D
-/*! @brief Win32 specific [window hint](@ref GLFW_WIN32_SHOWDEFAULT_hint).
- */
 #define GLFW_WIN32_SHOWDEFAULT      0x00025002
 
 #define GLFW_NO_API                          0
@@ -366,134 +298,30 @@ extern "C" {
 
 #define GLFW_ANY_POSITION           0x80000000
 
-/*! @defgroup shapes Standard cursor shapes
- *  @brief Standard system cursor shapes.
- *
- *  These are the [standard cursor shapes](@ref cursor_standard) that can be
- *  requested from the platform (window system).
- *
- *  @ingroup input
- *  @{ */
-
-/*! @brief The regular arrow cursor shape.
- *
- *  The regular arrow cursor shape.
- */
 #define GLFW_ARROW_CURSOR           0x00036001
-/*! @brief The text input I-beam cursor shape.
- *
- *  The text input I-beam cursor shape.
- */
 #define GLFW_IBEAM_CURSOR           0x00036002
-/*! @brief The crosshair cursor shape.
- *
- *  The crosshair cursor shape.
- */
 #define GLFW_CROSSHAIR_CURSOR       0x00036003
-/*! @brief The pointing hand cursor shape.
- *
- *  The pointing hand cursor shape.
- */
 #define GLFW_POINTING_HAND_CURSOR   0x00036004
-/*! @brief The horizontal resize/move arrow shape.
- *
- *  The horizontal resize/move arrow shape.  This is usually a horizontal
- *  double-headed arrow.
- */
 #define GLFW_RESIZE_EW_CURSOR       0x00036005
-/*! @brief The vertical resize/move arrow shape.
- *
- *  The vertical resize/move shape.  This is usually a vertical double-headed
- *  arrow.
- */
 #define GLFW_RESIZE_NS_CURSOR       0x00036006
-/*! @brief The top-left to bottom-right diagonal resize/move arrow shape.
- *
- *  The top-left to bottom-right diagonal resize/move shape.  This is usually
- *  a diagonal double-headed arrow.
- *
- *  @note @macos This shape is provided by a private system API and may fail
- *  with @ref GLFW_CURSOR_UNAVAILABLE in the future.
- *
- *  @note @wayland This shape is provided by a newer standard not supported by
- *  all cursor themes.
- *
- *  @note @x11 This shape is provided by a newer standard not supported by all
- *  cursor themes.
- */
 #define GLFW_RESIZE_NWSE_CURSOR     0x00036007
-/*! @brief The top-right to bottom-left diagonal resize/move arrow shape.
- *
- *  The top-right to bottom-left diagonal resize/move shape.  This is usually
- *  a diagonal double-headed arrow.
- *
- *  @note @macos This shape is provided by a private system API and may fail
- *  with @ref GLFW_CURSOR_UNAVAILABLE in the future.
- *
- *  @note @wayland This shape is provided by a newer standard not supported by
- *  all cursor themes.
- *
- *  @note @x11 This shape is provided by a newer standard not supported by all
- *  cursor themes.
- */
 #define GLFW_RESIZE_NESW_CURSOR     0x00036008
-/*! @brief The omni-directional resize/move cursor shape.
- *
- *  The omni-directional resize cursor/move shape.  This is usually either
- *  a combined horizontal and vertical double-headed arrow or a grabbing hand.
- */
 #define GLFW_RESIZE_ALL_CURSOR      0x00036009
-/*! @brief The operation-not-allowed shape.
- *
- *  The operation-not-allowed shape.  This is usually a circle with a diagonal
- *  line through it.
- *
- *  @note @wayland This shape is provided by a newer standard not supported by
- *  all cursor themes.
- *
- *  @note @x11 This shape is provided by a newer standard not supported by all
- *  cursor themes.
- */
 #define GLFW_NOT_ALLOWED_CURSOR     0x0003600A
-/*! @brief Legacy name for compatibility.
- *
- *  This is an alias for compatibility with earlier versions.
- */
 #define GLFW_HRESIZE_CURSOR         GLFW_RESIZE_EW_CURSOR
-/*! @brief Legacy name for compatibility.
- *
- *  This is an alias for compatibility with earlier versions.
- */
 #define GLFW_VRESIZE_CURSOR         GLFW_RESIZE_NS_CURSOR
-/*! @brief Legacy name for compatibility.
- *
- *  This is an alias for compatibility with earlier versions.
- */
 #define GLFW_HAND_CURSOR            GLFW_POINTING_HAND_CURSOR
-/*! @} */
 
 #define GLFW_CONNECTED              0x00040001
 #define GLFW_DISCONNECTED           0x00040002
 
-/*! @brief Platform selection init hint.
- *
- *  Platform selection [init hint](@ref GLFW_PLATFORM).
- */
 #define GLFW_PLATFORM               0x00050003
-
-/*! @addtogroup init
- *  @{ */
-/*! @brief Hint value that enables automatic platform selection.
- *
- *  Hint value for @ref GLFW_PLATFORM that enables automatic platform selection.
- */
 #define GLFW_ANY_PLATFORM           0x00060000
 #define GLFW_PLATFORM_WIN32         0x00060001
 #define GLFW_PLATFORM_NULL          0x00060005
 /*! @} */
 
 #define GLFW_DONT_CARE              -1
-
 
 /*************************************************************************
  * GLFW API types

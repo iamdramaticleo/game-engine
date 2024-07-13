@@ -194,11 +194,6 @@ typedef enum
 #define WGL_BLUE_SHIFT_ARB 0x201a
 #define WGL_ALPHA_BITS_ARB 0x201b
 #define WGL_ALPHA_SHIFT_ARB 0x201c
-#define WGL_ACCUM_BITS_ARB 0x201d
-#define WGL_ACCUM_RED_BITS_ARB 0x201e
-#define WGL_ACCUM_GREEN_BITS_ARB 0x201f
-#define WGL_ACCUM_BLUE_BITS_ARB 0x2020
-#define WGL_ACCUM_ALPHA_BITS_ARB 0x2021
 #define WGL_DEPTH_BITS_ARB 0x2022
 #define WGL_STENCIL_BITS_ARB 0x2023
 #define WGL_AUX_BUFFERS_ARB 0x2024
@@ -330,7 +325,6 @@ typedef struct _GLFWlibraryWGL
     GLFWbool                            ARB_pixel_format;
     GLFWbool                            ARB_create_context;
     GLFWbool                            ARB_create_context_profile;
-    GLFWbool                            EXT_create_context_es2_profile;
     GLFWbool                            ARB_create_context_robustness;
     GLFWbool                            ARB_create_context_no_error;
     GLFWbool                            ARB_context_flush_control;
