@@ -76,16 +76,14 @@ static DWORD getWindowExStyle(const _GLFWwindow* window)
 
 // Returns the image whose area most closely matches the desired one
 //
-static const GLFWimage* chooseImage(int count, const GLFWimage* images,
-                                    int width, int height)
+static const GLFWimage* chooseImage(int count, const GLFWimage* images, int width, int height)
 {
-    int i, leastDiff = INT_MAX;
+    int leastDiff = INT_MAX;
     const GLFWimage* closest = NULL;
 
-    for (i = 0;  i < count;  i++)
+    for (int i = 0;  i < count;  i++)
     {
-        const int currDiff = abs(images[i].width * images[i].height -
-                                 width * height);
+        const int currDiff = abs(images[i].width * images[i].height - width * height);
         if (currDiff < leastDiff)
         {
             closest = images + i;
@@ -100,10 +98,6 @@ static const GLFWimage* chooseImage(int count, const GLFWimage* images,
 //
 static HICON createIcon(const GLFWimage* image, int xhot, int yhot, GLFWbool icon)
 {
-    int i;
-    HDC dc;
-    HICON handle;
-    HBITMAP color, mask;
     BITMAPV5HEADER bi;
     ICONINFO ii;
     unsigned char* target = NULL;
@@ -121,13 +115,13 @@ static HICON createIcon(const GLFWimage* image, int xhot, int yhot, GLFWbool ico
     bi.bV5BlueMask    = 0x000000ff;
     bi.bV5AlphaMask   = 0xff000000;
 
-    dc = GetDC(NULL);
-    color = CreateDIBSection(dc,
-                             (BITMAPINFO*) &bi,
-                             DIB_RGB_COLORS,
-                             (void**) &target,
-                             NULL,
-                             (DWORD) 0);
+    HDC dc = GetDC(NULL);
+    HBITMAP color = CreateDIBSection(dc,
+                                     (BITMAPINFO*)&bi,
+                                     DIB_RGB_COLORS,
+                                     (void**)&target,
+                                     NULL,
+                                     (DWORD)0);
     ReleaseDC(NULL, dc);
 
     if (!color)
@@ -137,7 +131,7 @@ static HICON createIcon(const GLFWimage* image, int xhot, int yhot, GLFWbool ico
         return NULL;
     }
 
-    mask = CreateBitmap(image->width, image->height, 1, 1, NULL);
+    HBITMAP mask = CreateBitmap(image->width, image->height, 1, 1, NULL);
     if (!mask)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -146,7 +140,7 @@ static HICON createIcon(const GLFWimage* image, int xhot, int yhot, GLFWbool ico
         return NULL;
     }
 
-    for (i = 0;  i < image->width * image->height;  i++)
+    for (int i = 0;  i < image->width * image->height;  i++)
     {
         target[0] = source[2];
         target[1] = source[1];
@@ -163,7 +157,7 @@ static HICON createIcon(const GLFWimage* image, int xhot, int yhot, GLFWbool ico
     ii.hbmMask  = mask;
     ii.hbmColor = color;
 
-    handle = CreateIconIndirect(&ii);
+    HICON handle = CreateIconIndirect(&ii);
 
     DeleteObject(color);
     DeleteObject(mask);
@@ -199,8 +193,6 @@ static void applyAspectRatio(_GLFWwindow* window, int edge, RECT* area)
         AdjustWindowRectExForDpi(&frame, style, FALSE, exStyle,
                                  GetDpiForWindow(window->win32.handle));
     }
-    else
-        AdjustWindowRectEx(&frame, style, FALSE, exStyle);
 
     if (edge == WMSZ_LEFT  || edge == WMSZ_BOTTOMLEFT ||
         edge == WMSZ_RIGHT || edge == WMSZ_BOTTOMRIGHT)
@@ -282,8 +274,7 @@ static void disableRawMouseMotion(_GLFWwindow* window)
 
     if (!RegisterRawInputDevices(&rid, 1, sizeof(rid)))
     {
-        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to remove raw input device");
+        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR, "Win32: Failed to remove raw input device");
     }
 }
 
@@ -355,8 +346,6 @@ static void updateWindowStyles(const _GLFWwindow* window)
                                  getWindowExStyle(window),
                                  GetDpiForWindow(window->win32.handle));
     }
-    else
-        AdjustWindowRectEx(&rect, style, FALSE, getWindowExStyle(window));
 
     ClientToScreen(window->win32.handle, (POINT*) &rect.left);
     ClientToScreen(window->win32.handle, (POINT*) &rect.right);
@@ -369,7 +358,7 @@ static void updateWindowStyles(const _GLFWwindow* window)
 
 // Retrieves and translates modifier keys
 //
-static int getKeyMods(void)
+static int getKeyMods()
 {
     int mods = 0;
 
@@ -447,7 +436,6 @@ static void releaseMonitor(_GLFWwindow* window)
 static void maximizeWindowManually(_GLFWwindow* window)
 {
     RECT rect;
-    DWORD style;
     MONITORINFO mi = { sizeof(mi) };
 
     GetMonitorInfoW(MonitorFromWindow(window->win32.handle,
@@ -461,7 +449,7 @@ static void maximizeWindowManually(_GLFWwindow* window)
         rect.bottom = _glfw_min(rect.bottom, rect.top + window->maxheight);
     }
 
-    style = GetWindowLongW(window->win32.handle, GWL_STYLE);
+    DWORD style = GetWindowLongW(window->win32.handle, GWL_STYLE);
     style |= WS_MAXIMIZE;
     SetWindowLongW(window->win32.handle, GWL_STYLE, style);
 

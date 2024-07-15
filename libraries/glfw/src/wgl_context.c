@@ -39,9 +39,7 @@ static int findPixelFormatAttribValueWGL(const int* attribs,
                                          const int* values,
                                          int attrib)
 {
-    int i;
-
-    for (i = 0;  i < attribCount;  i++)
+    for (int i = 0;  i < attribCount;  i++)
     {
         if (attribs[i] == attrib)
             return values[i];
@@ -383,9 +381,7 @@ static void destroyContextWGL(_GLFWwindow* window)
     }
 }
 
-// Initialize WGL
-//
-GLFWbool _glfwInitWGL(void)
+GLFWbool _glfwInitWGL()
 {
     PIXELFORMATDESCRIPTOR pfd;
 
@@ -486,8 +482,6 @@ GLFWbool _glfwInitWGL(void)
     return GLFW_TRUE;
 }
 
-// Terminate WGL
-//
 void _glfwTerminateWGL(void)
 {
     if (_glfw.wgl.instance)
