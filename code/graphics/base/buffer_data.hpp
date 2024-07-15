@@ -4,5 +4,7 @@ namespace base
 {
     class buffer_data
     {
+    public:
+        
     };
 }

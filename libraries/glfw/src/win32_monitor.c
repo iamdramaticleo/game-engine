@@ -35,10 +35,7 @@
 
 // Callback for EnumDisplayMonitors in createMonitor
 //
-static BOOL CALLBACK monitorCallback(HMONITOR handle,
-                                     HDC dc,
-                                     RECT* rect,
-                                     LPARAM data)
+static BOOL CALLBACK monitorCallback(HMONITOR handle, HDC dc, RECT* rect, LPARAM data)
 {
     MONITORINFOEXW mi;
     ZeroMemory(&mi, sizeof(mi));
