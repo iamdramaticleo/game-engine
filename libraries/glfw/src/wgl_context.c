@@ -64,15 +64,14 @@ static int choosePixelFormatWGL(_GLFWwindow* window,
                                 const _GLFWctxconfig* ctxconfig,
                                 const _GLFWfbconfig* fbconfig)
 {
-    _GLFWfbconfig* usableConfigs;
-    int pixelFormat, nativeCount, usableCount = 0, attribCount = 0;
+    int pixelFormat, usableCount = 0, attribCount = 0;
     int attribs[40];
     int values[sizeof(attribs) / sizeof(attribs[0])];
 
-    nativeCount = DescribePixelFormat(window->context.wgl.dc,
-                                      1,
-                                      sizeof(PIXELFORMATDESCRIPTOR),
-                                      NULL);
+    int nativeCount = DescribePixelFormat(window->context.wgl.dc,
+                                          1,
+                                          sizeof(PIXELFORMATDESCRIPTOR),
+                                          NULL);
 
     if (_glfw.wgl.ARB_pixel_format)
     {
@@ -126,7 +125,7 @@ static int choosePixelFormatWGL(_GLFWwindow* window,
         nativeCount = _glfw_min(nativeCount, extensionCount);
     }
 
-    usableConfigs = _glfw_calloc(nativeCount, sizeof(_GLFWfbconfig));
+    _GLFWfbconfig* usableConfigs = _glfw_calloc(nativeCount, sizeof(_GLFWfbconfig));
 
     for (int i = 0;  i < nativeCount;  i++)
     {
@@ -501,7 +500,6 @@ GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
                                const _GLFWctxconfig* ctxconfig,
                                const _GLFWfbconfig* fbconfig)
 {
-    int attribs[40];
     PIXELFORMATDESCRIPTOR pfd;
 
     window->context.wgl.dc = GetDC(window->win32.handle);
@@ -551,6 +549,7 @@ GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
 
     if (_glfw.wgl.ARB_create_context)
     {
+        int attribs[40];
         int index = 0, mask = 0, flags = 0;
 
         if (ctxconfig->client == GLFW_OPENGL_API)

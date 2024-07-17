@@ -1109,14 +1109,10 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 
         case WM_DPICHANGED:
         {
-            const float xscale = HIWORD(wParam) / (float) USER_DEFAULT_SCREEN_DPI;
-            const float yscale = LOWORD(wParam) / (float) USER_DEFAULT_SCREEN_DPI;
-
             // Resize windowed mode windows that either permit rescaling or that
             // need it to compensate for non-client area scaling
             if (!window->monitor &&
-                (window->win32.scaleToMonitor ||
-                 _glfwIsWindows10Version1703OrGreaterWin32()))
+                (window->win32.scaleToMonitor || _glfwIsWindows10Version1703OrGreaterWin32()))
             {
                 RECT* suggested = (RECT*) lParam;
                 SetWindowPos(window->win32.handle, HWND_TOP,
@@ -1891,7 +1887,6 @@ void _glfwPollEventsWin32(void)
         window = GetPropW(handle, L"GLFW");
         if (window)
         {
-            int i;
             const int keys[4][2] =
             {
                 { VK_LSHIFT, GLFW_KEY_LEFT_SHIFT },
@@ -1900,7 +1895,7 @@ void _glfwPollEventsWin32(void)
                 { VK_RWIN, GLFW_KEY_RIGHT_SUPER }
             };
 
-            for (i = 0;  i < 4;  i++)
+            for (int i = 0;  i < 4;  i++)
             {
                 const int vk = keys[i][0];
                 const int key = keys[i][1];

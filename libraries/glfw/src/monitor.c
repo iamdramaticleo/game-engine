@@ -211,21 +211,19 @@ void _glfwFreeGammaArrays(GLFWgammaramp* ramp)
 const GLFWvidmode* _glfwChooseVideoMode(_GLFWmonitor* monitor,
                                         const GLFWvidmode* desired)
 {
-    int i;
-    unsigned int sizeDiff, leastSizeDiff = UINT_MAX;
+    unsigned int leastSizeDiff = UINT_MAX;
     unsigned int rateDiff, leastRateDiff = UINT_MAX;
-    unsigned int colorDiff, leastColorDiff = UINT_MAX;
-    const GLFWvidmode* current;
+    unsigned int leastColorDiff = UINT_MAX;
     const GLFWvidmode* closest = NULL;
 
     if (!refreshVideoModes(monitor))
         return NULL;
 
-    for (i = 0;  i < monitor->modeCount;  i++)
+    for (int i = 0;  i < monitor->modeCount;  i++)
     {
-        current = monitor->modes + i;
+        const GLFWvidmode* current = monitor->modes + i;
 
-        colorDiff = 0;
+        unsigned int colorDiff = 0;
 
         if (desired->redBits != GLFW_DONT_CARE)
             colorDiff += abs(current->redBits - desired->redBits);
@@ -234,10 +232,10 @@ const GLFWvidmode* _glfwChooseVideoMode(_GLFWmonitor* monitor,
         if (desired->blueBits != GLFW_DONT_CARE)
             colorDiff += abs(current->blueBits - desired->blueBits);
 
-        sizeDiff = abs((current->width - desired->width) *
-                       (current->width - desired->width) +
-                       (current->height - desired->height) *
-                       (current->height - desired->height));
+        unsigned int sizeDiff = abs((current->width - desired->width) *
+            (current->width - desired->width) +
+            (current->height - desired->height) *
+            (current->height - desired->height));
 
         if (desired->refreshRate != GLFW_DONT_CARE)
             rateDiff = abs(current->refreshRate - desired->refreshRate);
@@ -430,10 +428,7 @@ const GLFWvidmode* glfwGetVideoMode(GLFWmonitor* handle)
 
 void glfwSetGamma(GLFWmonitor* handle, float gamma)
 {
-    unsigned int i;
-    unsigned short* values;
     GLFWgammaramp ramp;
-    const GLFWgammaramp* original;
     assert(gamma > 0.f);
     assert(gamma <= FLT_MAX);
 
@@ -447,18 +442,16 @@ void glfwSetGamma(GLFWmonitor* handle, float gamma)
         return;
     }
 
-    original = glfwGetGammaRamp(handle);
+    const GLFWgammaramp* original = glfwGetGammaRamp(handle);
     if (!original)
         return;
 
-    values = _glfw_calloc(original->size, sizeof(unsigned short));
+    unsigned short* values = _glfw_calloc(original->size, sizeof(unsigned short));
 
-    for (i = 0;  i < original->size;  i++)
+    for (unsigned int i = 0;  i < original->size;  i++)
     {
-        float value;
-
         // Calculate intensity
-        value = i / (float) (original->size - 1);
+        float value = i / (float)(original->size - 1);
         // Apply gamma curve
         value = powf(value, 1.f / gamma) * 65535.f + 0.5f;
         // Clamp to value range

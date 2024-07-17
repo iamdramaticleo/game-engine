@@ -33,14 +33,13 @@ static PFNWGLGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;
 #endif
 
 static
-int open_gl(void) {
+int open_gl() {
 #ifndef IS_UWP
     libGL = LoadLibraryW(L"opengl32.dll");
-    if(libGL != NULL) {
-        void (* tmp)(void);
-        tmp = (void(*)(void)) GetProcAddress(libGL, "wglGetProcAddress");
+    if(libGL != nullptr) {
+        auto tmp = (void(*)(void))GetProcAddress(libGL, "wglGetProcAddress");
         gladGetProcAddressPtr = (PFNWGLGETPROCADDRESSPROC_PRIVATE) tmp;
-        return gladGetProcAddressPtr != NULL;
+        return gladGetProcAddressPtr != nullptr;
     }
 #endif
 
@@ -48,10 +47,10 @@ int open_gl(void) {
 }
 
 static
-void close_gl(void) {
-    if(libGL != NULL) {
-        FreeLibrary((HMODULE) libGL);
-        libGL = NULL;
+void close_gl() {
+    if(libGL != nullptr) {
+        FreeLibrary(libGL);
+        libGL = nullptr;
     }
 }
 #else
@@ -184,8 +183,7 @@ static int get_exts(void) {
 
 static void free_exts(void) {
     if (exts_i != NULL) {
-        int index;
-        for(index = 0; index < num_exts_i; index++) {
+	    for(int index = 0; index < num_exts_i; index++) {
             free((char *)exts_i[index]);
         }
         free((void *)exts_i);
@@ -197,21 +195,18 @@ static int has_ext(const char *ext) {
 #ifdef _GLAD_IS_SOME_NEW_VERSION
     if(max_loaded_major < 3) {
 #endif
-        const char *extensions;
-        const char *loc;
-        const char *terminator;
-        extensions = exts;
+        const char* extensions = exts;
         if(extensions == NULL || ext == NULL) {
             return 0;
         }
 
-        while(1) {
-            loc = strstr(extensions, ext);
+        while(true) {
+            const char* loc = strstr(extensions, ext);
             if(loc == NULL) {
                 return 0;
             }
 
-            terminator = loc + strlen(ext);
+            const char* terminator = loc + strlen(ext);
             if((loc == extensions || *(loc - 1) == ' ') &&
                 (*terminator == ' ' || *terminator == '\0')) {
                 return 1;

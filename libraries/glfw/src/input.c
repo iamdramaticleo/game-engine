@@ -265,10 +265,8 @@ void glfwSetInputMode(GLFWwindow* handle, int mode, int value)
 
             if (!value)
             {
-                int i;
-
                 // Release all sticky keys
-                for (i = 0;  i <= GLFW_KEY_LAST;  i++)
+                for (int i = 0;  i <= GLFW_KEY_LAST;  i++)
                 {
                     if (window->keys[i] == _GLFW_STICK)
                         window->keys[i] = GLFW_RELEASE;
@@ -287,10 +285,8 @@ void glfwSetInputMode(GLFWwindow* handle, int mode, int value)
 
             if (!value)
             {
-                int i;
-
                 // Release all sticky mouse buttons
-                for (i = 0;  i <= GLFW_MOUSE_BUTTON_LAST;  i++)
+                for (int i = 0;  i <= GLFW_MOUSE_BUTTON_LAST;  i++)
                 {
                     if (window->mouseButtons[i] == _GLFW_STICK)
                         window->mouseButtons[i] = GLFW_RELEASE;
@@ -457,8 +453,6 @@ void glfwSetCursorPos(GLFWwindow* handle, double xpos, double ypos)
 
 GLFWcursor* glfwCreateCursor(const GLFWimage* image, int xhot, int yhot)
 {
-    _GLFWcursor* cursor;
-
     assert(image != NULL);
     assert(image->pixels != NULL);
 
@@ -470,7 +464,7 @@ GLFWcursor* glfwCreateCursor(const GLFWimage* image, int xhot, int yhot)
         return NULL;
     }
 
-    cursor = _glfw_calloc(1, sizeof(_GLFWcursor));
+    _GLFWcursor* cursor = _glfw_calloc(1, sizeof(_GLFWcursor));
     cursor->next = _glfw.cursorListHead;
     _glfw.cursorListHead = cursor;
 
@@ -485,8 +479,6 @@ GLFWcursor* glfwCreateCursor(const GLFWimage* image, int xhot, int yhot)
 
 GLFWcursor* glfwCreateStandardCursor(int shape)
 {
-    _GLFWcursor* cursor;
-
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 
     if (shape != GLFW_ARROW_CURSOR &&
@@ -504,7 +496,7 @@ GLFWcursor* glfwCreateStandardCursor(int shape)
         return NULL;
     }
 
-    cursor = _glfw_calloc(1, sizeof(_GLFWcursor));
+    _GLFWcursor* cursor = _glfw_calloc(1, sizeof(_GLFWcursor));
     cursor->next = _glfw.cursorListHead;
     _glfw.cursorListHead = cursor;
 
@@ -528,9 +520,7 @@ void glfwDestroyCursor(GLFWcursor* handle)
 
     // Make sure the cursor is not being used by any window
     {
-        _GLFWwindow* window;
-
-        for (window = _glfw.windowListHead;  window;  window = window->next)
+        for (_GLFWwindow* window = _glfw.windowListHead;  window;  window = window->next)
         {
             if (window->cursor == cursor)
                 glfwSetCursor((GLFWwindow*) window, NULL);
