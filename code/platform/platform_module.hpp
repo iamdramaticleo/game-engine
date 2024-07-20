@@ -2,11 +2,8 @@
 
 #include "base/platform_factory.hpp"
 
-namespace core
+class PlatformModule
 {
-    class PlatformModule
-    {
-    public:
-        static std::shared_ptr<base::PlatformFactory> create_factory();
-    };
-}
+public:
+    static std::shared_ptr<base::PlatformFactory> create_factory();
+};

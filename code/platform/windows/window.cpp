@@ -17,7 +17,7 @@ namespace win32
 
         glfwSetCloseCallback(_handle, []
         {
-            core::WindowInstance::instance().close();
+            WindowInstance::instance().close();
         });
 
         glfwMakeContextCurrent(_handle);

@@ -1,11 +1,8 @@
 #pragma once
 
-namespace core
+struct rgb
 {
-    struct rgb
-    {
-        float r;
-        float g;
-        float b;
-    };
-}
+    float r;
+    float g;
+    float b;
+};
