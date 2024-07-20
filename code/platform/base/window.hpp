@@ -6,14 +6,12 @@ namespace base
 {
     class Window
     {
+    public:
         enum class state
         {
             active,
             closed
         };
-
-    public:
-        friend class WindowInstance;
 
         virtual void create(const window_config& config) = 0;
         virtual void destroy()                           = 0;
@@ -22,7 +20,19 @@ namespace base
         virtual std::any handle()                  const = 0;
         virtual         ~Window() = default;
 
+        void switch_state(const state state)
+        {
+            _state = state;
+        }
+        bool    has_state(const state state) const
+        {
+            return _state == state;
+        }
+
     private:
-        state _state { };
+        int32_t _width  { };
+        int32_t _height { };
+
+        state   _state  { };
     };
 }

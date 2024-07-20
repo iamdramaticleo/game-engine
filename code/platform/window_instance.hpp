@@ -1,6 +1,5 @@
 #pragma once
 
-#include "base/window_state.hpp"
 #include "base/platform_factory.hpp"
 
 class WindowInstance
@@ -10,7 +9,7 @@ public:
     void destroy()    const;
     void update()     const;
 
-    void close();
+    void close() const;
 
     [[nodiscard]] bool is_active() const;
 
@@ -20,11 +19,7 @@ public:
     static WindowInstance& instance();
 
 private:
-    WindowInstance() = default;
-
     std::unique_ptr<base::Window> _window;
 
-    base::window_state _state  { };
-    int32_t            _width  { };
-    int32_t            _height { };
+    WindowInstance() = default;
 };

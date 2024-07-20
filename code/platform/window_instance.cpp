@@ -16,14 +16,14 @@ void WindowInstance::update() const
     _window->update();
 }
 
-void WindowInstance::close()
+void WindowInstance::close() const
 {
-    _state = base::window_state::closed;
+    _window->switch_state(base::Window::state::closed);
 }
 
 bool WindowInstance::is_active() const
 {
-    return _state == base::window_state::active;
+    return _window->has_state(base::Window::state::active);
 }
 
 WindowInstance& WindowInstance::instance()
