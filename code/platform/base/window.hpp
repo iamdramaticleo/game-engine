@@ -32,7 +32,6 @@ namespace base
     private:
         int32_t _width  { };
         int32_t _height { };
-
         state   _state  { };
     };
 }
