@@ -1,5 +1,3 @@
-project(glfw VERSION 3.5.0 LANGUAGES C)
-
-find_package(Threads REQUIRED)
+project(glfw)
 
 add_subdirectory(src)
