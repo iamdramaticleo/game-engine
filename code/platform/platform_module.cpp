@@ -1,7 +1,7 @@
 #include "platform_module.hpp"
 
 #ifdef WIN32
-#include "windows/platform_factory.hpp"
+#include "windows/factory.hpp"
 #endif
 
 namespace core

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base/platform_factory.hpp"
+#include "base/factory.hpp"
 
 namespace core
 {

@@ -1,4 +1,4 @@
-#include "platform_factory.hpp"
+#include "factory.hpp"
 #include "window.hpp"
 
 namespace win32
