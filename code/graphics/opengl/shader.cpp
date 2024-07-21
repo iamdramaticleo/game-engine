@@ -27,12 +27,12 @@ namespace gl
         glLinkProgram(_handle);
     }
 
-    void Shader::uniform_mat4(const int32_t location, const float* data) const
+    void Shader::push_mat4(const int32_t location, const float* data) const
     {
         glProgramUniformMatrix4fv(_handle, location, 1, 0, data);
     }
 
-    void Shader::uniform_vec3(const int32_t location, const float* data) const
+    void Shader::push_rgb(const int32_t location, const float* data) const
     {
         glProgramUniform3fv(_handle, location, 1, data);
     }

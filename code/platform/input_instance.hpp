@@ -1,5 +1,8 @@
 #pragma once
 
-class InputInstance
+namespace core
 {
-};
+    class InputInstance
+    {
+    };
+}

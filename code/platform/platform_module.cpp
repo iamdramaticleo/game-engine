@@ -4,9 +4,12 @@
 #include "windows/platform_factory.hpp"
 #endif
 
-#ifdef WIN32
-std::shared_ptr<base::PlatformFactory> PlatformModule::create_factory()
+namespace core
 {
-    return std::make_shared<win32::PlatformFactory>();
+    #ifdef WIN32
+    std::shared_ptr<base::PlatformFactory> PlatformModule::create_factory()
+    {
+        return std::make_shared<win32::PlatformFactory>();
+    }
+    #endif
 }
-#endif
