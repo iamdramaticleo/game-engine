@@ -2,6 +2,8 @@
 
 #include "shader_stage.hpp"
 
+#include "rgb.hpp"
+
 namespace gl
 {
     class Shader final : public Object
@@ -15,7 +17,7 @@ namespace gl
         void bind() const;
         void link() const;
 
-        void push_mat4(int32_t location, const float* data) const;
-        void push_rgb(int32_t  location, const float* data) const;
+        void push(int32_t location, const float* data)    const;
+        void push(int32_t location, const core::rgb& rgb) const;
     };
 }
