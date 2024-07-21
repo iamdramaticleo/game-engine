@@ -20,11 +20,11 @@ namespace base
         virtual std::any handle()                  const = 0;
         virtual         ~Window() = default;
 
-        void switch_state(const state state)
+        void set_state(const state state)
         {
             _state = state;
         }
-        bool    has_state(const state state) const
+        bool has_state(const state state) const
         {
             return _state == state;
         }

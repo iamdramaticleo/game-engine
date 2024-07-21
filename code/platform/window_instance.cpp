@@ -18,7 +18,7 @@ void WindowInstance::update() const
 
 void WindowInstance::close() const
 {
-    _window->switch_state(base::Window::state::closed);
+    _window->set_state(base::Window::state::closed);
 }
 
 bool WindowInstance::is_active() const
