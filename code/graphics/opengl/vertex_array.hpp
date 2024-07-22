@@ -12,7 +12,7 @@ namespace gl
         void create()  override;
         void destroy() override;
 
-        void attribute(const base::vertex_attribute& attribute, int32_t stride) const;
+        void attribute(const core::vertex_attribute& attribute, int32_t stride) const;
         void bind()    const;
     };
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace base
+namespace core
 {
     struct vertex_attribute
     {
