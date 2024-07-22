@@ -1,4 +1,4 @@
-project(assets)
+project(resources)
 
 add_library(${PROJECT_NAME})
 
