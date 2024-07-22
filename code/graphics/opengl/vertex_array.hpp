@@ -1,8 +1,8 @@
 #pragma once
 
-#include "object.hpp"
+#include "vertex_attribute.hpp"
 
-#include "base/vertex_attribute.hpp"
+#include "object.hpp"
 
 namespace gl
 {
