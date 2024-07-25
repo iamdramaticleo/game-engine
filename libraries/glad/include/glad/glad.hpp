@@ -408,7 +408,6 @@ typedef struct __GLsync *GLsync;
 #define GL_STREAM_COPY 0x88E2
 #define GL_STATIC_READ 0x88E5
 #define GL_STATIC_COPY 0x88E6
-#define GL_DYNAMIC_DRAW 0x88E8
 #define GL_DYNAMIC_READ 0x88E9
 #define GL_DYNAMIC_COPY 0x88EA
 #define GL_SAMPLES_PASSED 0x8914

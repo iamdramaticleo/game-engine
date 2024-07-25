@@ -17,7 +17,7 @@ namespace core::gl
         void bind() const;
         void link() const;
 
-        void push(int32_t location, const float* data) const;
-        void push(int32_t location, const   rgb&  rgb) const;
+        [[maybe_unused]] void push(int32_t location, const float* data) const;
+        [[maybe_unused]] void push(int32_t location, const   rgb&  rgb) const;
     };
 }
