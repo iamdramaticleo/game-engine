@@ -2,7 +2,7 @@
 
 #include "window_config.hpp"
 
-namespace base
+namespace core::base
 {
     class Window
     {

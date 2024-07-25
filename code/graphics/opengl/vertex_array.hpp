@@ -4,7 +4,7 @@
 
 #include "object.hpp"
 
-namespace gl
+namespace core::gl
 {
     class VertexArray final : public Object
     {
@@ -12,7 +12,7 @@ namespace gl
         void create()  override;
         void destroy() override;
 
-        void attribute(const core::vertex_attribute& attribute, int32_t stride) const;
+        void attribute(const vertex_attribute& attribute, int32_t stride) const;
         void bind()    const;
     };
 }

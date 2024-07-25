@@ -1,7 +1,7 @@
 #include "commands.hpp"
 #include "macros.hpp"
 
-namespace gl
+namespace core::gl
 {
     void Commands::clear(const float r, const float g, const float b)
     {

@@ -1,7 +1,7 @@
 #include "shader_stage.hpp"
 #include "macros.hpp"
 
-namespace gl
+namespace core::gl
 {
     ShaderStage::ShaderStage(const uint32_t type)
         : _type { type }

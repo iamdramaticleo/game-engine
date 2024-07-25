@@ -1,7 +1,7 @@
 #include "buffer.hpp"
 #include "macros.hpp"
 
-namespace gl
+namespace core::gl
 {
     void Buffer::create()
     {

@@ -1,15 +1,15 @@
 #pragma once
 
-namespace base
+namespace core::base
 {
     class buffer_data
     {
     public:
-        template <typename buffer_t>  static buffer_data create_from_buffer(const std::vector<buffer_t>& buffer)
+        template <typename buffer_t> static buffer_data create_from_buffer(const std::vector<buffer_t>& buffer)
         {
             return { buffer.data(), static_cast<uint32_t>(buffer.size() * sizeof(buffer_t)) };
         }
-        template <typename buffer_t>  static buffer_data create_from_data(const   buffer_t* data)
+        template <typename buffer_t> static buffer_data create_from_data(const buffer_t* data)
         {
             return { data, sizeof(buffer_t) };
         }

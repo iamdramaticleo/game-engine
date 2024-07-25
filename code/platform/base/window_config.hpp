@@ -1,6 +1,6 @@
 #pragma once
 
-namespace base
+namespace core::base
 {
     struct window_config
     {

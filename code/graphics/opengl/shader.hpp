@@ -4,7 +4,7 @@
 
 #include "rgb.hpp"
 
-namespace gl
+namespace core::gl
 {
     class Shader final : public Object
     {
@@ -17,7 +17,7 @@ namespace gl
         void bind() const;
         void link() const;
 
-        void push(int32_t location, const float* data)    const;
-        void push(int32_t location, const core::rgb& rgb) const;
+        void push(int32_t location, const float* data) const;
+        void push(int32_t location, const   rgb&  rgb) const;
     };
 }

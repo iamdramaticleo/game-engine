@@ -1,7 +1,7 @@
 #include "window.hpp"
 #include "window_instance.hpp"
 
-namespace win32
+namespace core::win32
 {
     void Window::create(const base::window_config& config)
     {
@@ -17,7 +17,7 @@ namespace win32
 
         glfwSetCloseCallback(_handle, []
         {
-            core::WindowInstance::instance().close();
+            WindowInstance::instance().close();
         });
 
         glfwMakeContextCurrent(_handle);

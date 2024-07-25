@@ -1,6 +1,6 @@
 #include "functions.hpp"
 
-namespace gl
+namespace core::gl
 {
     void Functions::load()
     {

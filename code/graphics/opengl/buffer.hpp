@@ -5,7 +5,7 @@
 #include "base/buffer_data.hpp"
 #include "base/buffer_location.hpp"
 
-namespace gl
+namespace core::gl
 {
     class Buffer final : public Object
     {

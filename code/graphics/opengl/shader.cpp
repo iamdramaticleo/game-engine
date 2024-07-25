@@ -1,6 +1,6 @@
 #include "shader.hpp"
 
-namespace gl
+namespace core::gl
 {
     void Shader::create()
     {
@@ -32,7 +32,7 @@ namespace gl
         glProgramUniformMatrix4fv(_handle, location, 1, 0, data);
     }
 
-    void Shader::push(const int32_t location, const core::rgb& rgb) const
+    void Shader::push(const int32_t location, const rgb& rgb) const
     {
         glProgramUniform3fv(_handle, location, 1, &rgb.r);
     }

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace base
+namespace core::base
 {
     enum class buffer_location
     {

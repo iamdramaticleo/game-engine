@@ -1,6 +1,6 @@
 #pragma once
 
-namespace gl
+namespace core::gl
 {
     constexpr uint32_t shader_binary_format = 0x9551;
 
