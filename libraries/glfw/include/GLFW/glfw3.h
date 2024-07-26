@@ -1263,9 +1263,6 @@ void glfwSetWindowMonitor(GLFWwindow* window, GLFWmonitor* monitor, int xpos, in
  *
  *  @thread_safety This function must only be called from the main thread.
  *
- *  @sa @ref window_attribs
- *  @sa @ref glfwGetWindowAttrib
- *
  *  @since Added in version 3.3.
  *
  *  @ingroup window

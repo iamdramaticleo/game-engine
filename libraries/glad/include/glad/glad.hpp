@@ -76,7 +76,6 @@ typedef khronos_uint64_t GLuint64EXT;
 typedef struct __GLsync *GLsync;
 #define GL_STENCIL_BUFFER_BIT 0x00000400
 #define GL_TRUE 1
-#define GL_POINTS 0x0000
 #define GL_LINES 0x0001
 #define GL_LINE_LOOP 0x0002
 #define GL_LINE_STRIP 0x0003

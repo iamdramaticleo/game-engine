@@ -201,12 +201,10 @@ struct _GLFWcontext
 
     void (*makeCurrent)(_GLFWwindow*);
     void (*swapBuffers)(_GLFWwindow*);
-    void (*swapInterval)(int);
     int (*extensionSupported)(const char*);
     GLFWglproc (*getProcAddress)(const char*);
     void (*destroy)(_GLFWwindow*);
 
-    // This is defined in platform.h
     GLFW_PLATFORM_CONTEXT_STATE
 };
 

@@ -1068,17 +1068,6 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
             return TRUE;
         }
 
-        case WM_NCACTIVATE:
-        case WM_NCPAINT:
-        {
-            // Prevent title bar from being drawn after restoring a minimized
-            // undecorated window
-            if (!window->decorated)
-                return TRUE;
-
-            break;
-        }
-
         case WM_GETDPISCALEDSIZE:
         {
             if (window->win32.scaleToMonitor)
@@ -1182,34 +1171,6 @@ static int createNativeWindow(_GLFWwindow* window,
             _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
                                  "Win32: Failed to register window class");
             return GLFW_FALSE;
-        }
-    }
-
-    if (GetSystemMetrics(SM_REMOTESESSION))
-    {
-        // NOTE: On Remote Desktop, setting the cursor to NULL does not hide it
-        // HACK: Create a transparent cursor and always set that instead of NULL
-        //       When not on Remote Desktop, this handle is NULL and normal hiding is used
-        if (!_glfw.win32.blankCursor)
-        {
-            const int cursorWidth = GetSystemMetrics(SM_CXCURSOR);
-            const int cursorHeight = GetSystemMetrics(SM_CYCURSOR);
-
-            unsigned char* cursorPixels = _glfw_calloc(cursorWidth * cursorHeight, 4);
-            if (!cursorPixels)
-                return GLFW_FALSE;
-
-            // NOTE: Windows checks whether the image is fully transparent and if so
-            //       just ignores the alpha channel and makes the whole cursor opaque
-            // HACK: Make one pixel slightly less transparent
-            cursorPixels[3] = 1;
-
-            const GLFWimage cursorImage = { cursorWidth, cursorHeight, cursorPixels };
-            _glfw.win32.blankCursor = createIcon(&cursorImage, 0, 0, FALSE);
-            _glfw_free(cursorPixels);
-
-            if (!_glfw.win32.blankCursor)
-                return GLFW_FALSE;
         }
     }
 
@@ -1770,42 +1731,6 @@ void _glfwSetWindowMousePassthroughWin32(_GLFWwindow* window, GLFWbool enabled)
 
     if (enabled)
         SetLayeredWindowAttributes(window->win32.handle, key, alpha, flags);
-}
-
-float _glfwGetWindowOpacityWin32(_GLFWwindow* window)
-{
-    BYTE alpha;
-    DWORD flags;
-
-    if ((GetWindowLongW(window->win32.handle, GWL_EXSTYLE) & WS_EX_LAYERED) &&
-        GetLayeredWindowAttributes(window->win32.handle, NULL, &alpha, &flags))
-    {
-        if (flags & LWA_ALPHA)
-            return alpha / 255.f;
-    }
-
-    return 1.f;
-}
-
-void _glfwSetWindowOpacityWin32(_GLFWwindow* window, float opacity)
-{
-    LONG exStyle = GetWindowLongW(window->win32.handle, GWL_EXSTYLE);
-    if (opacity < 1.f || (exStyle & WS_EX_TRANSPARENT))
-    {
-        const BYTE alpha = (BYTE) (255 * opacity);
-        exStyle |= WS_EX_LAYERED;
-        SetWindowLongW(window->win32.handle, GWL_EXSTYLE, exStyle);
-        SetLayeredWindowAttributes(window->win32.handle, 0, alpha, LWA_ALPHA);
-    }
-    else if (exStyle & WS_EX_TRANSPARENT)
-    {
-        SetLayeredWindowAttributes(window->win32.handle, 0, 0, 0);
-    }
-    else
-    {
-        exStyle &= ~WS_EX_LAYERED;
-        SetWindowLongW(window->win32.handle, GWL_EXSTYLE, exStyle);
-    }
 }
 
 void _glfwSetRawMouseMotionWin32(_GLFWwindow *window, GLFWbool enabled)
