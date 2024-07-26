@@ -388,18 +388,6 @@ void glfwTerminate()
     terminate();
 }
 
-void glfwInitHint(int hint, int value)
-{
-    switch (hint)
-    {
-        case GLFW_PLATFORM:
-            _glfwInitHints.platformID = value;
-            return;
-    }
-
-    _glfwInputError(GLFW_INVALID_ENUM,"Invalid init hint 0x%08X", hint);
-}
-
 void glfwInitAllocator(const GLFWallocator* allocator)
 {
     if (allocator)

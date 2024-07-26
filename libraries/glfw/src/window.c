@@ -205,8 +205,6 @@ GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonit
 
 void glfwDefaultWindowHints()
 {
-    _GLFW_REQUIRE_INIT();
-
     // The default is OpenGL with minimum version 1.0
     memset(&_glfw.hints.context, 0, sizeof(_glfw.hints.context));
     _glfw.hints.context.client  = 0;

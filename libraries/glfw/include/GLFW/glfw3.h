@@ -625,8 +625,6 @@ typedef struct GLFWallocator
 int  glfwInit();
 void glfwTerminate();
 
-void glfwInitHint(int hint, int value);
-
 void glfwInitAllocator(const GLFWallocator* allocator);
 
 GLFWmonitor** glfwGetMonitors(int* count);
@@ -835,23 +833,6 @@ const GLFWgammaramp* glfwGetGammaRamp(GLFWmonitor* monitor);
  */
 void glfwSetGammaRamp(GLFWmonitor* monitor, const GLFWgammaramp* ramp);
 
-/*! @brief Resets all window hints to their default values.
- *
- *  This function resets all window hints to their
- *  [default values](@ref window_hints_values).
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_hints
- *  @sa @ref glfwWindowHint
- *  @sa @ref glfwWindowHintString
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup window
- */
 void glfwDefaultWindowHints();
 void glfwWindowHint(int hint, int value);
 
