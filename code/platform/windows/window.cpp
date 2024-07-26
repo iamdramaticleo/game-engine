@@ -7,8 +7,11 @@ namespace core::win32
     {
         if (glfwInit() == 0)
         {
-            std::exit(EXIT_FAILURE);
+             std::exit(EXIT_FAILURE);
         }
+
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+
             _handle =  glfwCreateWindow(_size.width, _size.height, title.c_str(), nullptr);
         if (_handle == nullptr)
         {

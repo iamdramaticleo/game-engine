@@ -203,16 +203,16 @@ GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonit
     return (GLFWwindow*) window;
 }
 
-void glfwDefaultWindowHints(void)
+void glfwDefaultWindowHints()
 {
     _GLFW_REQUIRE_INIT();
 
     // The default is OpenGL with minimum version 1.0
     memset(&_glfw.hints.context, 0, sizeof(_glfw.hints.context));
-    _glfw.hints.context.client = GLFW_OPENGL_API;
+    _glfw.hints.context.client = 0;
     _glfw.hints.context.source = GLFW_NATIVE_CONTEXT_API;
-    _glfw.hints.context.major  = 1;
-    _glfw.hints.context.minor  = 0;
+    _glfw.hints.context.major  = 4;
+    _glfw.hints.context.minor  = 6;
 
     // The default is a focused, visible, resizable window with decorations
     memset(&_glfw.hints.window, 0, sizeof(_glfw.hints.window));
@@ -329,12 +329,6 @@ void glfwWindowHint(int hint, int value)
         case GLFW_CLIENT_API:
             _glfw.hints.context.client = value;
             return;
-        case GLFW_CONTEXT_VERSION_MAJOR:
-            _glfw.hints.context.major = value;
-            return;
-        case GLFW_CONTEXT_VERSION_MINOR:
-            _glfw.hints.context.minor = value;
-            return;
         case GLFW_CONTEXT_ROBUSTNESS:
             _glfw.hints.context.robustness = value;
             return;
@@ -385,16 +379,6 @@ void glfwDestroyWindow(GLFWwindow* handle)
 
     _glfw_free(window->title);
     _glfw_free(window);
-}
-
-const char* glfwGetWindowTitle(GLFWwindow* handle)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    return window->title;
 }
 
 void glfwSetWindowTitle(GLFWwindow* handle, const char* title)

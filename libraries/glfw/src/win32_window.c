@@ -1374,15 +1374,12 @@ void _glfwShowWindowWin32(_GLFWwindow* window)
     ShowWindow(window->win32.handle, showCommand);
 }
 
-GLFWbool _glfwCreateWindowWin32(_GLFWwindow* window,
-                                const _GLFWwndconfig* wndconfig,
-                                const _GLFWctxconfig* ctxconfig,
-                                const _GLFWfbconfig* fbconfig)
+GLFWbool _glfwCreateWindowWin32(_GLFWwindow* window, const _GLFWwndconfig* wndconfig, const _GLFWctxconfig* ctxconfig, const _GLFWfbconfig* fbconfig)
 {
     if (!createNativeWindow(window, wndconfig, fbconfig))
         return GLFW_FALSE;
 
-    if (ctxconfig->client != GLFW_NO_API)
+    if (ctxconfig->client == GLFW_OPENGL_API)
     {
         if (ctxconfig->source == GLFW_NATIVE_CONTEXT_API)
         {

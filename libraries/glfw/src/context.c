@@ -40,13 +40,11 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
 {
     if (ctxconfig->source != GLFW_NATIVE_CONTEXT_API)
     {
-        _glfwInputError(GLFW_INVALID_ENUM,
-                        "Invalid context creation API 0x%08X", ctxconfig->source);
+        _glfwInputError(GLFW_INVALID_ENUM,"Invalid context creation API 0x%08X", ctxconfig->source);
         return GLFW_FALSE;
     }
 
-    if (ctxconfig->client != GLFW_NO_API &&
-        ctxconfig->client != GLFW_OPENGL_API)
+    if (ctxconfig->client != GLFW_OPENGL_API)
     {
         _glfwInputError(GLFW_INVALID_ENUM, "Invalid client API 0x%08X", ctxconfig->client);
         return GLFW_FALSE;
@@ -458,15 +456,12 @@ GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions
 
 void glfwMakeContextCurrent(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     const _GLFWwindow* previous = _glfwPlatformGetTls(&_glfw.contextSlot);
 
-    if (window && window->context.client == GLFW_NO_API)
+    if (window && window->context.client != GLFW_OPENGL_API)
     {
-        _glfwInputError(GLFW_NO_WINDOW_CONTEXT,
-                        "Cannot make current with a window that has no OpenGL or OpenGL ES context");
+        _glfwInputError(GLFW_NO_WINDOW_CONTEXT, "Cannot make current with a window that has no OpenGL or OpenGL ES context");
         return;
     }
 
@@ -485,10 +480,9 @@ void glfwSwapBuffers(GLFWwindow* handle)
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
-    if (window->context.client == GLFW_NO_API)
+    if (window->context.client != GLFW_OPENGL_API)
     {
-        _glfwInputError(GLFW_NO_WINDOW_CONTEXT,
-                        "Cannot swap buffers of a window that has no OpenGL or OpenGL ES context");
+        _glfwInputError(GLFW_NO_WINDOW_CONTEXT, "Cannot swap buffers of a window that has no OpenGL or OpenGL ES context");
         return;
     }
 
@@ -498,8 +492,6 @@ void glfwSwapBuffers(GLFWwindow* handle)
 int glfwExtensionSupported(const char* extension)
 {
     assert(extension != NULL);
-
-    _GLFW_REQUIRE_INIT_OR_RETURN(GLFW_FALSE);
 
     _GLFWwindow* window = _glfwPlatformGetTls(&_glfw.contextSlot);
     if (!window)

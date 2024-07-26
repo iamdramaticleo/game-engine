@@ -257,8 +257,6 @@ extern "C" {
 #define GLFW_DOUBLEBUFFER           0x00021010
 
 #define GLFW_CLIENT_API             0x00022001
-#define GLFW_CONTEXT_VERSION_MAJOR  0x00022002
-#define GLFW_CONTEXT_VERSION_MINOR  0x00022003
 
 #define GLFW_CONTEXT_ROBUSTNESS     0x00022005
 #define GLFW_OPENGL_PROFILE         0x00022008
@@ -268,7 +266,6 @@ extern "C" {
 #define GLFW_SCALE_FRAMEBUFFER      0x0002200D
 #define GLFW_WIN32_SHOWDEFAULT      0x00025002
 
-#define GLFW_NO_API                          0
 #define GLFW_OPENGL_API             0x00030001
 
 #define GLFW_NO_ROBUSTNESS                   0

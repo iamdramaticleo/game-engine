@@ -486,7 +486,7 @@ GLFWbool _glfwConnectWin32(int platformID, _GLFWplatform* platform)
     return GLFW_TRUE;
 }
 
-int _glfwInitWin32(void)
+int _glfwInitWin32()
 {
     if (!loadLibraries())
         return GLFW_FALSE;
