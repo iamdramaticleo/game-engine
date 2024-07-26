@@ -72,8 +72,7 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
         {
             if (ctxconfig->profile != GLFW_OPENGL_CORE_PROFILE)
             {
-                _glfwInputError(GLFW_INVALID_ENUM,
-                                "Invalid OpenGL profile 0x%08X", ctxconfig->profile);
+                _glfwInputError(GLFW_INVALID_ENUM,"Invalid OpenGL profile 0x%08X", ctxconfig->profile);
                 return GLFW_FALSE;
             }
 

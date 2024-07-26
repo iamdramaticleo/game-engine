@@ -209,10 +209,11 @@ void glfwDefaultWindowHints()
 
     // The default is OpenGL with minimum version 1.0
     memset(&_glfw.hints.context, 0, sizeof(_glfw.hints.context));
-    _glfw.hints.context.client = 0;
-    _glfw.hints.context.source = GLFW_NATIVE_CONTEXT_API;
-    _glfw.hints.context.major  = 4;
-    _glfw.hints.context.minor  = 6;
+    _glfw.hints.context.client  = 0;
+    _glfw.hints.context.source  = GLFW_NATIVE_CONTEXT_API;
+    _glfw.hints.context.major   = 4;
+    _glfw.hints.context.minor   = 6;
+    _glfw.hints.context.profile = GLFW_OPENGL_CORE_PROFILE;
 
     // The default is a focused, visible, resizable window with decorations
     memset(&_glfw.hints.window, 0, sizeof(_glfw.hints.window));
@@ -244,8 +245,6 @@ void glfwDefaultWindowHints()
 
 void glfwWindowHint(int hint, int value)
 {
-    _GLFW_REQUIRE_INIT();
-
     switch (hint)
     {
         case GLFW_RED_BITS:
@@ -334,9 +333,6 @@ void glfwWindowHint(int hint, int value)
             return;
         case GLFW_CONTEXT_NO_ERROR:
             _glfw.hints.context.noerror = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
-        case GLFW_OPENGL_PROFILE:
-            _glfw.hints.context.profile = value;
             return;
         case GLFW_CONTEXT_RELEASE_BEHAVIOR:
             _glfw.hints.context.release = value;
