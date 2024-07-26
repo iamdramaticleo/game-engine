@@ -1,8 +1,8 @@
 #pragma once
 
-#include "shader_stage.hpp"
-
 #include "math/rgb.hpp"
+
+#include "stage.hpp"
 
 namespace core::gl
 {
@@ -12,7 +12,7 @@ namespace core::gl
         void create()  override;
         void destroy() override;
 
-        void attach(const ShaderStage& stage) const;
+        void attach(const Stage& stage) const;
 
         void bind() const;
         void link() const;

@@ -12,7 +12,7 @@ namespace core::gl
         glDeleteProgram(_handle);
     }
 
-    void Shader::attach(const ShaderStage& stage) const
+    void Shader::attach(const Stage& stage) const
     {
         glAttachShader(_handle, stage.handle());
     }

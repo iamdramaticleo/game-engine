@@ -4,10 +4,11 @@
 
 namespace core::gl
 {
-    class ShaderStage final : public Object
+    class Stage final : public Object
     {
     public:
-    explicit ShaderStage(uint32_t type);
+    explicit Stage(uint32_t type);
+
         void create()    override;
         void destroy()   override;
 
