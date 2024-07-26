@@ -39,7 +39,6 @@ typedef int GLFWbool;
 typedef void (*GLFWproc)(void);
 
 typedef struct _GLFWerror       _GLFWerror;
-typedef struct _GLFWinitconfig  _GLFWinitconfig;
 typedef struct _GLFWwndconfig   _GLFWwndconfig;
 typedef struct _GLFWctxconfig   _GLFWctxconfig;
 typedef struct _GLFWfbconfig    _GLFWfbconfig;
@@ -113,15 +112,6 @@ struct _GLFWerror
     _GLFWerror*     next;
     int             code;
     char            description[_GLFW_MESSAGE_SIZE];
-};
-
-// Initialization configuration
-//
-// Parameters relating to the initialization of the library
-//
-struct _GLFWinitconfig
-{
-    int platformID;
 };
 
 // Window configuration
@@ -395,7 +385,6 @@ struct _GLFWlibrary
     _GLFWplatform       platform;
 
     struct {
-        _GLFWinitconfig init;
         _GLFWfbconfig   framebuffer;
         _GLFWwndconfig  window;
         _GLFWctxconfig  context;

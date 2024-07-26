@@ -45,10 +45,6 @@ _GLFWlibrary _glfw = { GLFW_FALSE };
 static _GLFWerror _glfwMainThreadError;
 static GLFWerrorfun _glfwErrorCallback;
 static GLFWallocator _glfwInitAllocator;
-static _GLFWinitconfig _glfwInitHints =
-{
-    .platformID = GLFW_ANY_PLATFORM
-};
 
 // The allocation function used when no custom allocator is set
 //
@@ -349,7 +345,6 @@ int glfwInit()
         return GLFW_TRUE;
 
     memset(&_glfw, 0, sizeof(_glfw));
-    _glfw.hints.init = _glfwInitHints;
 
     _glfw.allocator = _glfwInitAllocator;
     if (!_glfw.allocator.allocate)
@@ -359,7 +354,7 @@ int glfwInit()
         _glfw.allocator.deallocate = defaultDeallocate;
     }
 
-    if (!_glfwSelectPlatform(_glfw.hints.init.platformID, &_glfw.platform))
+    if (!_glfwSelectPlatform(GLFW_PLATFORM_WIN32, &_glfw.platform))
         return GLFW_FALSE;
 
     if (!_glfw.platform.init())
