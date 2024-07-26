@@ -1,6 +1,6 @@
 #pragma once
 
-namespace core
+namespace core::math
 {
     struct vec3
     {

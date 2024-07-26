@@ -1,6 +1,6 @@
 #include "vec3.hpp"
 
-namespace core
+namespace core::math
 {
     vec3 vec3::normalize() const
     {

@@ -32,7 +32,7 @@ namespace core::gl
         glProgramUniformMatrix4fv(_handle, location, 1, 0, data);
     }
 
-    void Shader::push(const int32_t location, const rgb& rgb) const
+    void Shader::push(const int32_t location, const math::rgb& rgb) const
     {
         glProgramUniform3fv(_handle, location, 1, &rgb.r);
     }

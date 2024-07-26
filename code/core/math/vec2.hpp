@@ -2,7 +2,7 @@
 
 namespace core
 {
-    struct vec2
+    struct vec2::math
     {
         float x;
         float y;
