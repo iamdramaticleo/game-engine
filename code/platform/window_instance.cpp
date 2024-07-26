@@ -5,7 +5,9 @@ namespace core
     void WindowInstance::create(const std::shared_ptr<base::PlatformFactory>& factory, const base::window_config& config)
     {
         _window = factory->create_window();
-        _window->create(config);
+
+        _window->size(config.size);
+        _window->create(config.title);
     }
 
     void WindowInstance::destroy() const
@@ -20,12 +22,22 @@ namespace core
 
     void WindowInstance::close() const
     {
-        _window->set_state(base::Window::state::closed);
+        _window->state(base::window_state::closed);
+    }
+
+    int32_t WindowInstance::width() const
+    {
+        return _window->size().width;
+    }
+
+    int32_t WindowInstance::height() const
+    {
+        return _window->size().height;
     }
 
     bool WindowInstance::is_active() const
     {
-        return _window->has_state(base::Window::state::active);
+        return _window->state() == base::window_state::active;
     }
 
     WindowInstance& WindowInstance::instance()

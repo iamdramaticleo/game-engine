@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base/factory.hpp"
+#include "base/window_config.hpp"
 
 namespace core
 {
@@ -11,6 +12,9 @@ namespace core
         void destroy()    const;
         void update()     const;
         void close()      const;
+
+        [[nodiscard]] int32_t width()  const;
+        [[nodiscard]] int32_t height() const;
 
         [[nodiscard]] bool is_active() const;
 

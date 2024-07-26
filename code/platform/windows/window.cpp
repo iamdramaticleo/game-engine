@@ -3,13 +3,13 @@
 
 namespace core::win32
 {
-    void Window::create(const base::window_config& config)
+    void Window::create(const std::string& title)
     {
         if (glfwInit() == 0)
         {
             std::exit(EXIT_FAILURE);
         }
-            _handle =  glfwCreateWindow(config.width, config.height, config.title.c_str(), nullptr);
+            _handle =  glfwCreateWindow(_size.width, _size.height, title.c_str(), nullptr);
         if (_handle == nullptr)
         {
             std::exit(EXIT_FAILURE);

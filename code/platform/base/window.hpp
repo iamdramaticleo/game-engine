@@ -1,37 +1,40 @@
 #pragma once
 
-#include "window_config.hpp"
+#include "window_state.hpp"
+#include "window_size.hpp"
 
 namespace core::base
 {
     class Window
     {
     public:
-        enum class state
-        {
-            active,
-            closed
-        };
+        virtual void create(const std::string& title) = 0;
+        virtual void destroy()                        = 0;
+        virtual void update()                   const = 0;
 
-        virtual void create(const window_config& config) = 0;
-        virtual void destroy()                           = 0;
-        virtual void update()                      const = 0;
-
-        virtual std::any handle()                  const = 0;
+        virtual std::any handle()               const = 0;
         virtual         ~Window() = default;
 
-        void set_state(const state state)
+        void state(const window_state state)
         {
             _state = state;
         }
-        bool has_state(const state state) const
+        void size(const  window_size& size)
         {
-            return _state == state;
+            _size = size;
         }
 
-    private:
-        int32_t _width  { };
-        int32_t _height { };
-        state   _state  { };
+        const window_size& size()  const
+        {
+            return _size;
+        }
+              window_state state() const
+        {
+            return _state;
+        }
+
+    protected:
+        window_state _state { };
+        window_size  _size  { };
     };
 }
