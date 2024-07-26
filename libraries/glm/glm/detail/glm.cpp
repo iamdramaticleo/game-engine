@@ -2,7 +2,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #endif
 
-#include <glm/gtc/vec1.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/ext/scalar_int_sized.hpp>
 #include <glm/ext/scalar_uint_sized.hpp>
