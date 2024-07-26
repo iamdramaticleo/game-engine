@@ -2,7 +2,7 @@
 
 namespace core::gl
 {
-    void VertexArray::attribute(const vertex::attribute& attribute, const int32_t stride) const
+    void VertexArray::attribute(const vertex_attribute& attribute, const int32_t stride) const
     {
         glEnableVertexArrayAttrib(_handle, attribute.index);
         glVertexAttribPointer(attribute.index,  attribute.size, attribute.type, 0, stride,

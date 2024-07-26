@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vertex/attribute.hpp"
+#include "vertex_attribute.hpp"
 
 #include "object.hpp"
 
@@ -12,7 +12,7 @@ namespace core::gl
         void create()  override;
         void destroy() override;
 
-        void attribute(const vertex::attribute& attribute, int32_t stride) const;
+        void attribute(const vertex_attribute& attribute, int32_t stride) const;
         void bind()    const;
     };
 }

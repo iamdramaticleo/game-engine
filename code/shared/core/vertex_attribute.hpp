@@ -1,8 +1,8 @@
 #pragma once
 
-namespace core::vertex
+namespace core
 {
-    struct attribute
+    struct vertex_attribute
     {
         uint32_t index;
 
