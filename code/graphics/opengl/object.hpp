@@ -8,6 +8,11 @@ namespace core::gl
         virtual void create()  = 0;
         virtual void destroy() = 0;
 
+        [[nodiscard, maybe_unused]] uint32_t handle() const
+        {
+            return _handle;
+        }
+
     protected:
         virtual  ~Object() = default;
 

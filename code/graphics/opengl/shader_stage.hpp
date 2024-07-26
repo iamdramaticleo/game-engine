@@ -7,8 +7,6 @@ namespace core::gl
     class ShaderStage final : public Object
     {
     public:
-        friend class Shader;
-
     explicit ShaderStage(uint32_t type);
         void create()    override;
         void destroy()   override;

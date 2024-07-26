@@ -14,7 +14,7 @@ namespace core::gl
 
     void Shader::attach(const ShaderStage& stage) const
     {
-        glAttachShader(_handle, stage._handle);
+        glAttachShader(_handle, stage.handle());
     }
 
     void Shader::bind() const
