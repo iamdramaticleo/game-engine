@@ -1,5 +1,7 @@
 project(platform)
 
+option(USE_WINDOWS_API "use windows api" OFF)
+
 add_library(${PROJECT_NAME})
 
 target_compile_features(${PROJECT_NAME}    PUBLIC cxx_std_23)
@@ -8,4 +10,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_sources(${PROJECT_NAME} PRIVATE window_instance.cpp input_instance.cpp platform_module.cpp)
 
-add_subdirectory(windows)
+if (USE_WINDOWS_API)
+    add_subdirectory(windows)
+endif()
