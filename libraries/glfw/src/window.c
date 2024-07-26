@@ -305,9 +305,6 @@ void glfwWindowHint(int hint, int value)
         case GLFW_POSITION_Y:
             _glfw.hints.window.ypos = value;
             return;
-        case GLFW_WIN32_SHOWDEFAULT:
-            _glfw.hints.window.win32.showDefault = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
         case GLFW_SCALE_TO_MONITOR:
             _glfw.hints.window.scaleToMonitor = value ? GLFW_TRUE : GLFW_FALSE;
             return;

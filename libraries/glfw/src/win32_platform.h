@@ -343,7 +343,6 @@ typedef struct _GLFWwindowWin32
     GLFWbool            iconified;
     GLFWbool            maximized;
     GLFWbool            scaleToMonitor;
-    GLFWbool            showDefault;
 
     // Cached size used to filter out duplicate events
     int                 width, height;

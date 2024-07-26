@@ -139,9 +139,6 @@ struct _GLFWwndconfig
     GLFWbool      mousePassthrough;
     GLFWbool      scaleToMonitor;
     GLFWbool      scaleFramebuffer;
-    struct {
-        GLFWbool  showDefault;
-    } win32;
 };
 
 // Context configuration
