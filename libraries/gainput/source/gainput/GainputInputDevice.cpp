@@ -1,19 +1,12 @@
-
 #include <gainput/gainput.h>
 
 namespace gainput
 {
-
-
 InputDevice::InputDevice(InputManager& manager, DeviceId device, unsigned index) :
 	manager_(manager),
 	deviceId_(device),
 	index_(index),
-	deadZones_(0),
-	debugRenderingEnabled_(false)
-#if defined(GAINPUT_DEV) || defined(GAINPUT_ENABLE_RECORDER)
-	, synced_(false)
-#endif
+	deadZones_(0)
 {
 }
 
@@ -26,25 +19,7 @@ void
 InputDevice::Update(InputDeltaState* delta)
 {
 	*previousState_ = *state_;
-#if defined(GAINPUT_DEV)
-	if (synced_)
-	{
-		return;
-	}
-#endif
 	InternalUpdate(delta);
-}
-
-InputDevice::DeviceState
-InputDevice::GetState() const
-{
-#if defined(GAINPUT_DEV)
-	if (synced_)
-	{
-		return DS_OK;
-	}
-#endif
-	return InternalGetState();
 }
 
 float InputDevice::GetDeadZone(DeviceButtonId buttonId) const
@@ -70,12 +45,6 @@ void InputDevice::SetDeadZone(DeviceButtonId buttonId, float value)
 	deadZones_[buttonId] = value;
 }
 
-void
-InputDevice::SetDebugRenderingEnabled(bool enabled)
-{
-	debugRenderingEnabled_ = enabled;
-}
-
 size_t
 InputDevice::CheckAllButtonsDown(DeviceButtonSpec* outButtons, size_t maxButtonCount, unsigned start, unsigned end) const
 {
@@ -92,6 +61,4 @@ InputDevice::CheckAllButtonsDown(DeviceButtonSpec* outButtons, size_t maxButtonC
 	}
 	return buttonsFound;
 }
-
 }
-

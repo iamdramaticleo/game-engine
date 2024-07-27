@@ -1,18 +1,13 @@
-
 #include <gainput/gainput.h>
-
-#include <gainput/GainputLog.h>
 
 namespace gainput
 {
-
 DefaultAllocator&
 GetDefaultAllocator()
 {
 	static DefaultAllocator da;
 	return da;
 }
-
 
 TrackingAllocator::TrackingAllocator(Allocator& backingAllocator, Allocator& internalAllocator)
 	: backingAllocator_(backingAllocator),
@@ -40,10 +35,9 @@ void* TrackingAllocator::Allocate(size_t size, size_t align)
 
 void TrackingAllocator::Deallocate(void* ptr)
 {
-	HashMap<void*, size_t>::iterator it = allocations_->find(ptr);
+	const auto it = allocations_->find(ptr);
 	if (it == allocations_->end())
 	{
-		GAINPUT_LOG("Warning: Trying to deallocate unknown memory block: %p\n", ptr);
 	}
 	else
 	{
@@ -53,6 +47,4 @@ void TrackingAllocator::Deallocate(void* ptr)
 	++deallocateCount_;
 	backingAllocator_.Deallocate(ptr);
 }
-
 }
-

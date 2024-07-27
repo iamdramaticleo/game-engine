@@ -223,14 +223,13 @@ public:
 	 * \param manager The input manager this device is managed by.
 	 * \param device The ID of this device.
 	 */
-	InputDeviceKeyboard(InputManager& manager, DeviceId device, unsigned index, DeviceVariant variant);
+	InputDeviceKeyboard(InputManager& manager, DeviceId device, unsigned index);
 	/// Shuts down the device.
 	~InputDeviceKeyboard();
 
 	/// Returns DT_KEYBOARD.
 	DeviceType GetType() const { return DT_KEYBOARD; }
-	DeviceVariant GetVariant() const;
-	const char* GetTypeName() const { return "keyboard"; }
+
 	bool IsValidButtonId(DeviceButtonId deviceButton) const { return deviceButton < KeyCount_; }
 
 	size_t GetAnyButtonDown(DeviceButtonSpec* outButtons, size_t maxButtonCount) const;
@@ -253,7 +252,6 @@ public:
 
 protected:
 	void InternalUpdate(InputDeltaState* delta);
-	DeviceState InternalGetState() const;
 
 private:
 	InputDeviceKeyboardImpl* impl_;

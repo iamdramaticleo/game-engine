@@ -1,6 +1,4 @@
-
-#ifndef GAINPUTINPUTDEVICEMOUSEWIN_H_
-#define GAINPUTINPUTDEVICEMOUSEWIN_H_
+#pragma once
 
 #include "GainputInputDeviceMouseImpl.h"
 #include <gainput/GainputHelpers.h>
@@ -9,7 +7,6 @@
 
 namespace gainput
 {
-
 class InputDeviceMouseImplWin : public InputDeviceMouseImpl
 {
 public:
@@ -21,11 +18,6 @@ public:
 		nextState_(manager.GetAllocator(), MouseButtonCount + MouseAxisCount),
 		delta_(0)
 	{
-	}
-
-	InputDevice::DeviceVariant GetVariant() const
-	{
-		return InputDevice::DV_STANDARD;
 	}
 
 	void Update(InputDeltaState* delta)
@@ -128,8 +120,4 @@ private:
 	InputState nextState_;
 	InputDeltaState* delta_;
 };
-
 }
-
-#endif
-

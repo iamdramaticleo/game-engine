@@ -1,10 +1,7 @@
-
-#ifndef GAINPUTINPUTDEVICEMOUSE_H_
-#define GAINPUTINPUTDEVICEMOUSE_H_
+#pragma once
 
 namespace gainput
 {
-
 /// All valid device buttons for InputDeviceMouse.
 enum MouseButton
 {
@@ -42,8 +39,6 @@ enum MouseButton
 	MouseAxisCount = MouseButtonCount_ - MouseAxisX
 };
 
-
-
 class InputDeviceMouseImpl;
 
 /// A mouse input device.
@@ -67,14 +62,13 @@ public:
 	 * \param manager The input manager this device is managed by.
 	 * \param device The ID of this device.
 	 */
-	InputDeviceMouse(InputManager& manager, DeviceId device, unsigned index, DeviceVariant variant);
+	InputDeviceMouse(InputManager& manager, DeviceId device, unsigned index);
 	/// Shuts down the device.
 	~InputDeviceMouse();
 
 	/// Returns DT_MOUSE.
 	DeviceType GetType() const { return DT_MOUSE; }
-	DeviceVariant GetVariant() const;
-	const char* GetTypeName() const { return "mouse"; }
+
 	bool IsValidButtonId(DeviceButtonId deviceButton) const { return deviceButton < MouseButtonCount_; }
 
 	size_t GetAnyButtonDown(DeviceButtonSpec* outButtons, size_t maxButtonCount) const;
@@ -88,14 +82,9 @@ public:
 
 protected:
 	void InternalUpdate(InputDeltaState* delta);
-	DeviceState InternalGetState() const;
 
 private:
 	InputDeviceMouseImpl* impl_;
 
 };
-
 }
-
-#endif
-

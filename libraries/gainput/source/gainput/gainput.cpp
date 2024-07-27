@@ -357,27 +357,3 @@ Strings are represented like this:
 \endcode
 
 */
-
-namespace gainput
-{
-
-const char*
-GetLibName()
-{
-	return "Gainput";
-}
-
-uint32_t
-GetLibVersion()
-{
-	return ((1 << GAINPUT_VER_MAJOR_SHIFT) | (0) );
-}
-
-const char*
-GetLibVersionString()
-{
-	return "1.0.0";
-}
-
-}
-

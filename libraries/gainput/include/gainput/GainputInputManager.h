@@ -1,11 +1,7 @@
-
-#ifndef GAINPUTINPUTMANAGER_H_
-#define GAINPUTINPUTMANAGER_H_
-
+#pragma once
 
 namespace gainput
 {
-    
 /// Manages all input devices and some other helpful stuff.
 /**
  * This manager takes care of all device-related things. Normally, you should only need one that contains
@@ -113,7 +109,7 @@ public:
 	 * instead. To determine what variant was instantiated, call InputDevice::GetVariant().
 	 * \return The ID of the newly created input device.
 	 */
-	template<class T> DeviceId CreateDevice(unsigned index = InputDevice::AutoIndex, InputDevice::DeviceVariant variant = InputDevice::DV_STANDARD);
+	template<class T> DeviceId CreateDevice(unsigned index = InputDevice::AutoIndex);
 	/// Creates an input device, registers it with the manager and returns it.
 	/**
 	 * \tparam T The input device class, muste be derived from InputDevice.
@@ -122,7 +118,7 @@ public:
 	 * instead. To determine what variant was instantiated, call InputDevice::GetVariant().
 	 * \return The newly created input device.
 	 */
-	template<class T> T* CreateAndGetDevice(unsigned index = InputDevice::AutoIndex, InputDevice::DeviceVariant variant = InputDevice::DV_STANDARD);
+	template<class T> T* CreateAndGetDevice(unsigned index = InputDevice::AutoIndex);
 	/// Returns the input device with the given ID.
 	/**
 	 * \return The input device or 0 if it doesn't exist.
@@ -133,13 +129,6 @@ public:
 	 * \return The input device or 0 if it doesn't exist.
 	 */
 	const InputDevice* GetDevice(DeviceId deviceId) const;
-	/// Returns the ID of the device with the given type and index.
-	/**
-	 * \param typeName The name of the device type. Should come from InputDevice::GetTypeName().
-	 * \param index The index of the device. Should come from InputDevice::GetIndex().
-	 * \return The device's ID or InvalidDeviceId if no matching device exists.
-	 */
-	DeviceId FindDeviceId(const char* typeName, unsigned index) const;
 	/// Returns the ID of the device with the given type and index.
 	/**
 	 * \param type The device type. Should come from InputDevice::GetType().
@@ -201,20 +190,6 @@ public:
     void EnqueueConcurrentChange(InputDevice& device, InputState& state, InputDeltaState* delta, DeviceButtonId buttonId, bool value);
     void EnqueueConcurrentChange(InputDevice& device, InputState& state, InputDeltaState* delta, DeviceButtonId buttonId, float value);
 
-	/// [IN dev BUILDS ONLY] Connect to a remote host to send device state changes to.
-	void ConnectForStateSync(const char* ip, unsigned port);
-	/// [IN dev BUILDS ONLY] Initiate sending of device state changes to the given device.
-	void StartDeviceStateSync(DeviceId deviceId);
-
-	/// Enable/disable debug rendering of input devices.
-	void SetDebugRenderingEnabled(bool enabled);
-	/// Returns true if debug rendering is enabled, false otherwise.
-	bool IsDebugRenderingEnabled() const { return debugRenderingEnabled_; }
-	/// Sets the debug renderer to be used if debug rendering is enabled.
-	void SetDebugRenderer(DebugRenderer* debugRenderer);
-	/// Returns the previously set debug renderer.
-	DebugRenderer* GetDebugRenderer() const { return debugRenderer_; }
-
 private:
 	Allocator& allocator_;
 
@@ -266,9 +241,9 @@ private:
 template<class T>
 inline
 DeviceId
-InputManager::CreateDevice(unsigned index, InputDevice::DeviceVariant variant)
+InputManager::CreateDevice(unsigned index)
 {
-	T* device = allocator_.New<T>(*this, nextDeviceId_, index, variant);
+	T* device = allocator_.New<T>(*this, nextDeviceId_, index);
 	devices_[nextDeviceId_] = device;
 	DeviceCreated(device);
 	return nextDeviceId_++;
@@ -277,9 +252,9 @@ InputManager::CreateDevice(unsigned index, InputDevice::DeviceVariant variant)
 template<class T>
 inline
 T*
-InputManager::CreateAndGetDevice(unsigned index, InputDevice::DeviceVariant variant)
+InputManager::CreateAndGetDevice(unsigned index)
 {
-	T* device = allocator_.New<T>(*this, nextDeviceId_, index, variant);
+	T* device = allocator_.New<T>(*this, nextDeviceId_, index);
 	devices_[nextDeviceId_] = device;
 	++nextDeviceId_;
 	DeviceCreated(device);
@@ -310,7 +285,6 @@ InputManager::GetDevice(DeviceId deviceId) const
 	return it->second;
 }
 
-
 /// Interface for modifiers that change device input states after they have been updated.
 class DeviceStateModifier
 {
@@ -326,6 +300,3 @@ public:
 };
 
 }
-
-#endif
-

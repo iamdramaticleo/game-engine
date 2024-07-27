@@ -1,11 +1,7 @@
-
-#ifndef GAINPUTINPUTDEVICE_H_
-#define GAINPUTINPUTDEVICE_H_
+#pragma once
 
 namespace gainput
 {
-
-
 /// Type of an input device button.
 enum ButtonType
 {
@@ -13,7 +9,6 @@ enum ButtonType
 	BT_FLOAT,	///< A floating-point value button, between -1.0f and 1.0f or 0.0f and 1.0f.
 	BT_COUNT	///< The number of different button types.
 };
-
 
 /// Interface for anything that provides device inputs.
 /**
@@ -36,31 +31,9 @@ public:
 	/// Type of an input device.
 	enum DeviceType
 	{
-		DT_MOUSE,		///< A mouse/cursor input device featuring one pointer.
-		DT_KEYBOARD,		///< A keyboard input device.
-		DT_PAD,			///< A joypad/gamepad input device.
-		DT_TOUCH,		///< A touch-sensitive input device supporting multiple simultaneous pointers.
-		DT_BUILTIN,		///< Any controls directly built into the device that also contains the screen.
-		DT_REMOTE,		///< A generic networked input device.
-		DT_GESTURE,		///< A gesture input device, building on top of other input devices.
-		DT_CUSTOM,		///< A custom, user-created input device.
-		DT_COUNT		///< The count of input device types.
-	};
-
-	/// Variant of an input device type.
-	enum DeviceVariant
-	{
-		DV_STANDARD,		///< The standard implementation of the given device type.
-		DV_RAW,			///< The raw input implementation of the given device type.
-		DV_NULL			///< The null/empty implementation of the given device type.
-	};
-
-	/// State of an input device.
-	enum DeviceState
-	{
-		DS_OK,			///< Everything is okay.
-		DS_LOW_BATTERY,		///< The input device is low on battery.
-		DS_UNAVAILABLE		///< The input device is currently not available.
+		DT_MOUSE,
+		DT_KEYBOARD,
+		DT_COUNT
 	};
 
 	static const unsigned AutoIndex = unsigned(-1);
@@ -87,16 +60,8 @@ public:
 
 	/// Returns the device type.
 	virtual DeviceType GetType() const = 0;
-	/// Returns the device variant.
-	virtual DeviceVariant GetVariant() const { return DV_STANDARD; }
-	/// Returns the device type's name.
-	virtual const char* GetTypeName() const = 0;
 	/// Returns if this device should be updated after other devices.
 	virtual bool IsLateUpdate() const { return false; }
-	/// Returns the device state.
-	DeviceState GetState() const;
-	/// Returns if this device is available.
-	virtual bool IsAvailable() const { return GetState() == DS_OK || GetState() == DS_LOW_BATTERY; }
 
 	/// Returns if the given button is valid for this device.
 	virtual bool IsValidButtonId(DeviceButtonId deviceButton) const = 0;
@@ -150,22 +115,6 @@ public:
 	/// Sets the dead zone for the given button.
 	void SetDeadZone(DeviceButtonId buttonId, float value);
 
-	/// Enable/disable debug rendering of this device.
-	void SetDebugRenderingEnabled(bool enabled);
-	/// Returns true if debug rendering is enabled, false otherwise.
-	bool IsDebugRenderingEnabled() const { return debugRenderingEnabled_; }
-
-#if defined(GAINPUT_DEV) || defined(GAINPUT_ENABLE_RECORDER)
-	/// Returns true if this device is being controlled by a remote device 
-	/// or a recorded input sequence, false otherwise.
-	bool IsSynced() const { return synced_; }
-	/// Sets if this device is being controlled remotely or from a recording.
-	/**
-	 * \sa IsSynced()
-	 */
-	void SetSynced(bool synced) { synced_ = synced; }
-#endif
-
 protected:
 	/// The manager this device belongs to.
 	InputManager& manager_;
@@ -183,26 +132,11 @@ protected:
 
 	float* deadZones_;
 
-	/// Specifies if this device is currently rendering debug information.
-	bool debugRenderingEnabled_;
-
-#if defined(GAINPUT_DEV) || defined(GAINPUT_ENABLE_RECORDER)
-	/// Specifies if this device's state is actually set from a device
-	/// or manually set by some other system.
-	bool synced_;
-#endif
-
 	/// Implementation of the device's Update function.
 	/**
 	 * \param delta The delta state to add changes to. May be 0.
 	 */
 	virtual void InternalUpdate(InputDeltaState* delta) = 0;
-
-	/// Implementation of the device's GetState function.
-	/**
-	 * \return The device's state.
-	 */
-	virtual DeviceState InternalGetState() const = 0;
 
 	/// Checks which buttons are down.
 	/**
@@ -216,15 +150,10 @@ protected:
 	size_t CheckAllButtonsDown(DeviceButtonSpec* outButtons, size_t maxButtonCount, unsigned start, unsigned end) const;
 };
 
-
 inline
 bool
 InputDevice::GetBool(DeviceButtonId deviceButton) const
 {
-	if (!IsAvailable())
-	{
-		return false;
-	}
 	GAINPUT_ASSERT(state_);
 	return state_->GetBool(deviceButton);
 }
@@ -233,10 +162,6 @@ inline
 bool
 InputDevice::GetBoolPrevious(DeviceButtonId deviceButton) const
 {
-	if (!IsAvailable())
-	{
-		return false;
-	}
 	GAINPUT_ASSERT(previousState_);
 	return previousState_->GetBool(deviceButton);
 }
@@ -245,10 +170,6 @@ inline
 float
 InputDevice::GetFloat(DeviceButtonId deviceButton) const
 {
-	if (!IsAvailable())
-	{
-		return 0.0f;
-	}
 	GAINPUT_ASSERT(state_);
 	return state_->GetFloat(deviceButton);
 }
@@ -257,15 +178,7 @@ inline
 float
 InputDevice::GetFloatPrevious(DeviceButtonId deviceButton) const
 {
-	if (!IsAvailable())
-	{
-		return 0.0f;
-	}
 	GAINPUT_ASSERT(previousState_);
 	return previousState_->GetFloat(deviceButton);
 }
-
 }
-
-#endif
-

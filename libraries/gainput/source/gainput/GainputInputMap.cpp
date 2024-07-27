@@ -1,6 +1,4 @@
-
 #include <gainput/gainput.h>
-#include "dev/GainputDev.h"
 
 #include <stdlib.h>
 
@@ -63,12 +61,10 @@ InputMap::InputMap(InputManager& manager, const char* name, Allocator& allocator
 		name_ = static_cast<char*>(allocator_.Allocate(strlen(name) + 1));
 		strcpy(name_, name);
 	}
-	GAINPUT_DEV_NEW_MAP(this);
 }
 
 InputMap::~InputMap()
 {
-	GAINPUT_DEV_REMOVE_MAP(this);
 	Clear();
 	allocator_.Deallocate(name_);
 
@@ -87,7 +83,6 @@ InputMap::Clear()
 			++it)
 	{
 		allocator_.Delete(it->second);
-		GAINPUT_DEV_REMOVE_USER_BUTTON(this, it->first);
 	}
 	userButtons_.clear();
 	nextUserButtonId_ = 0;
@@ -111,8 +106,6 @@ InputMap::MapBool(UserButtonId userButton, DeviceId device, DeviceButtonId devic
 	mi.device = device;
 	mi.deviceButton = deviceButton;
 	ub->inputs.push_back(mi);
-
-	GAINPUT_DEV_NEW_USER_BUTTON(this, userButton, device, deviceButton);
 
 	return true;
 }
@@ -140,8 +133,6 @@ InputMap::MapFloat(UserButtonId userButton, DeviceId device, DeviceButtonId devi
 	mi.filterUserData = filterUserData;
 	ub->inputs.push_back(mi);
 
-	GAINPUT_DEV_NEW_USER_BUTTON(this, userButton, device, deviceButton);
-
 	return true;
 }
 
@@ -153,7 +144,6 @@ InputMap::Unmap(UserButtonId userButton)
 	{
 		allocator_.Delete(ub);
 		userButtons_.erase(userButton);
-		GAINPUT_DEV_REMOVE_USER_BUTTON(this, userButton);
 	}
 }
 

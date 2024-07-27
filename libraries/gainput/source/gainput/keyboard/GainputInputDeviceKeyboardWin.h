@@ -127,11 +127,6 @@ public:
 		dialect_[0xff] = KeyFn; // Marked as "reserved".
 	}
 
-	InputDevice::DeviceVariant GetVariant() const
-	{
-		return InputDevice::DV_STANDARD;
-	}
-
 	void Update(InputDeltaState* delta)
 	{
 		delta_ = delta;
@@ -176,9 +171,6 @@ public:
 			}
 			const char charKey = key;
 			textBuffer_.Put(charKey);
-#ifdef GAINPUT_DEBUG
-			GAINPUT_LOG("Text: %c\n", charKey);
-#endif
 			return;
 		}
 
