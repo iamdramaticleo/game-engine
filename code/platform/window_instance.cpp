@@ -25,6 +25,11 @@ namespace core
         _window->state(base::window_state::closed);
     }
 
+    std::any WindowInstance::handle() const
+    {
+        return _window->handle();
+    }
+
     int32_t WindowInstance::width() const
     {
         return _window->size().width;

@@ -13,10 +13,12 @@ namespace core
         void update()     const;
         void close()      const;
 
-        [[nodiscard]] int32_t width()  const;
-        [[nodiscard]] int32_t height() const;
+        [[nodiscard]] std::any handle() const;
 
-        [[nodiscard]] bool is_active() const;
+        [[nodiscard]] int32_t width()   const;
+        [[nodiscard]] int32_t height()  const;
+
+        [[nodiscard]] bool is_active()  const;
 
         WindowInstance& operator=(const WindowInstance&) = delete;
         WindowInstance(const WindowInstance&)            = delete;

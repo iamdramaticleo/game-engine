@@ -78,8 +78,7 @@ InputMap::Clear()
 	nextUserButtonId_ = 0;
 }
 
-bool
-InputMap::MapBool(UserButtonId userButton, DeviceId device, DeviceButtonId deviceButton)
+bool InputMap::MapBool(UserButtonId userButton, DeviceId device, DeviceButtonId deviceButton)
 {
 	UserButton* ub = GetUserButton(userButton);
 
@@ -100,8 +99,7 @@ InputMap::MapBool(UserButtonId userButton, DeviceId device, DeviceButtonId devic
 	return true;
 }
 
-bool
-InputMap::MapFloat(UserButtonId userButton, DeviceId device, DeviceButtonId deviceButton, float min, float max, FilterFunc_T filterFunc, void* filterUserData)
+bool InputMap::MapFloat(UserButtonId userButton, DeviceId device, DeviceButtonId deviceButton, float min, float max, FilterFunc_T filterFunc, void* filterUserData)
 {
 	UserButton* ub = GetUserButton(userButton);
 
