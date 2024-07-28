@@ -1,10 +1,7 @@
-
-#ifndef GAINPUTINPUTDELTASTATE_H_
-#define GAINPUTINPUTDELTASTATE_H_
+#pragma once
 
 namespace gainput
 {
-
 /// Stores a list of input state changes.
 class GAINPUT_LIBEXPORT InputDeltaState
 {
@@ -31,12 +28,6 @@ public:
 	/// Clear list of state changes.
 	void Clear();
 
-	/// Notifies all input listeners of the previously recorded state changes.
-	/**
-	 * \param listeners A list of input listeners to notify.
-	 */
-	void NotifyListeners(Array<InputListener*>& listeners) const;
-
 private:
 	struct Change
 	{
@@ -52,8 +43,4 @@ private:
 
 	Array<Change> changes_;
 };
-
 }
-
-#endif
-

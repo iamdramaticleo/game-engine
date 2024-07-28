@@ -47,11 +47,7 @@ InputMap::InputMap(InputManager& manager, const char* name, Allocator& allocator
 	name_(0),
 	allocator_(allocator),
 	userButtons_(allocator_),
-	nextUserButtonId_(0),
-	listeners_(allocator_),
-	sortedListeners_(allocator_),
-	nextListenerId_(0),
-	managerListener_(0)
+	nextUserButtonId_(0)
 {
 	static unsigned nextId = 0;
 	id_ = nextId++;
@@ -67,12 +63,6 @@ InputMap::~InputMap()
 {
 	Clear();
 	allocator_.Deallocate(name_);
-
-	if (managerListener_)
-	{
-		manager_.RemoveListener(managerListenerId_);
-		allocator_.Delete(managerListener_);
-	}
 }
 
 void
@@ -421,119 +411,6 @@ InputMap::GetUserButtonId(DeviceId device, DeviceButtonId deviceButton) const
 		}
 	}
 	return InvalidUserButtonId;
-}
-
-namespace {
-
-class ManagerToMapListener : public InputListener
-{
-public:
-	ManagerToMapListener(InputMap& inputMap, Array<MappedInputListener*>& listeners) :
-		inputMap_(inputMap),
-		listeners_(listeners)
-	{ }
-
-	bool OnDeviceButtonBool(DeviceId device, DeviceButtonId deviceButton, bool oldValue, bool newValue)
-	{
-		const UserButtonId userButton = inputMap_.GetUserButtonId(device, deviceButton);
-		if (userButton == InvalidUserButtonId)
-		{
-			return true;
-		}
-		for (Array<MappedInputListener*>::iterator it = listeners_.begin();
-				it != listeners_.end();
-				++it)
-		{
-			if(!(*it)->OnUserButtonBool(userButton, oldValue, newValue))
-			{
-				break;
-			}
-		}
-		return true;
-	}
-
-	bool OnDeviceButtonFloat(DeviceId device, DeviceButtonId deviceButton, float oldValue, float newValue)
-	{
-		const UserButtonId userButton = inputMap_.GetUserButtonId(device, deviceButton);
-		if (userButton == InvalidUserButtonId)
-		{
-			return true;
-		}
-		for (Array<MappedInputListener*>::iterator it = listeners_.begin();
-				it != listeners_.end();
-				++it)
-		{
-			if (!(*it)->OnUserButtonFloat(userButton, oldValue, newValue))
-			{
-				break;
-			}
-		}
-		return true;
-	}
-
-private:
-	InputMap& inputMap_;
-	Array<MappedInputListener*>& listeners_;
-};
-
-}
-
-unsigned
-InputMap::AddListener(MappedInputListener* listener)
-{
-	if (!managerListener_)
-	{
-		managerListener_ = allocator_.New<ManagerToMapListener>(*this, sortedListeners_);
-		managerListenerId_ = manager_.AddListener(managerListener_);
-	}
-	listeners_[nextListenerId_] = listener;
-	ReorderListeners();
-	return nextListenerId_++;
-}
-
-void
-InputMap::RemoveListener(unsigned listenerId)
-{
-	listeners_.erase(listenerId);
-	ReorderListeners();
-
-	if (listeners_.empty())
-	{
-		manager_.RemoveListener(managerListenerId_);
-		allocator_.Delete(managerListener_);
-		managerListener_ = 0;
-	}
-}
-
-namespace {
-static int CompareListeners(const void* a, const void* b)
-{
-	const MappedInputListener* listener1 = *reinterpret_cast<const MappedInputListener* const*>(a);
-	const MappedInputListener* listener2 = *reinterpret_cast<const MappedInputListener* const*>(b);
-	return listener2->GetPriority() - listener1->GetPriority();
-}
-}
-
-void
-InputMap::ReorderListeners()
-{
-	sortedListeners_.clear();
-	for (HashMap<ListenerId, MappedInputListener*>::iterator it = listeners_.begin();
-		it != listeners_.end();
-		++it)
-	{
-		sortedListeners_.push_back(it->second);
-	}
-
-	if (sortedListeners_.empty())
-	{
-		return;
-	}
-
-	qsort(&sortedListeners_[0], 
-		sortedListeners_.size(), 
-		sizeof(MappedInputListener*), 
-		&CompareListeners);
 }
 
 UserButton*

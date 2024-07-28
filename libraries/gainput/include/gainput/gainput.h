@@ -11,8 +11,6 @@
 	#endif
 #endif
 
-//#define GAINPUT_DEBUG
-//#define GAINPUT_DEV
 #define GAINPUT_ENABLE_ALL_GESTURES
 #define GAINPUT_ENABLE_RECORDER
 #define GAINPUT_TEXT_INPUT_QUEUE_LENGTH 32
@@ -94,7 +92,6 @@ template <class T> T Abs(T a) { return a < T() ? -a : a; }
 #include <gainput/GainputContainers.h>
 #include <gainput/GainputInputState.h>
 #include <gainput/GainputInputDevice.h>
-#include <gainput/GainputInputListener.h>
 #include <gainput/GainputInputManager.h>
 #include <gainput/GainputInputMap.h>
 

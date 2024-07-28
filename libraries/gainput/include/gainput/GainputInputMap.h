@@ -146,21 +146,6 @@ public:
 	 * \return The user button ID the device button is mapped to or InvalidDeviceButtonId if the device button is not mapped.
 	 */
 	UserButtonId GetUserButtonId(DeviceId device, DeviceButtonId deviceButton) const;
-	
-	/// Registers a listener to be notified when a button state changes.
-	/**
-	 * If there are listeners registered, all input devices will have to record their state changes. This incurs extra runtime costs.
-	 */
-	ListenerId AddListener(MappedInputListener* listener);
-	/// De-registers the given listener.
-	void RemoveListener(ListenerId listenerId);
-	/// Sorts the list of listeners which controls the order in which listeners are called.
-	/**
-	 * The order of listeners may be important as the functions being called to notify a listener of a state change can control if
-	 * the state change will be passed to any consequent listeners. Call this function whenever listener priorites have changed. It
-	 * is automatically called by AddListener() and RemoveListener().
-	 */
-	void ReorderListeners();
 
 private:
 	InputManager& manager_;
@@ -171,12 +156,6 @@ private:
 	typedef HashMap<UserButtonId, UserButton*> UserButtonMap;
 	UserButtonMap userButtons_;
 	UserButtonId nextUserButtonId_;
-
-	HashMap<ListenerId, MappedInputListener*> listeners_;
-	Array<MappedInputListener*> sortedListeners_;
-	unsigned nextListenerId_;
-	InputListener* managerListener_;
-	ListenerId managerListenerId_;
 
 	float GetFloatState(UserButtonId userButton, bool previous) const;
 

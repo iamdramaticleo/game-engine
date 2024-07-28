@@ -14,9 +14,6 @@ InputManager::InputManager(bool useSystemTime, Allocator& allocator) :
 		allocator_(allocator),
 		devices_(allocator_),
 		nextDeviceId_(0),
-		listeners_(allocator_),
-		nextListenerId_(0),
-		sortedListeners_(allocator_),
 		modifiers_(allocator_),
 		nextModifierId_(0),
 		deltaState_(allocator_.New<InputDeltaState>(allocator_)),
@@ -24,9 +21,7 @@ InputManager::InputManager(bool useSystemTime, Allocator& allocator) :
         GAINPUT_CONC_CONSTRUCT(concurrentInputs_),
 		displayWidth_(-1),
 		displayHeight_(-1),
-		useSystemTime_(useSystemTime),
-		debugRenderingEnabled_(false),
-		debugRenderer_(0)
+		useSystemTime_(useSystemTime)
 {
 }
 
@@ -34,16 +29,13 @@ InputManager::~InputManager()
 {
 	allocator_.Delete(deltaState_);
 
-	for (DeviceMap::iterator it = devices_.begin();
-			it != devices_.end();
-			++it)
+	for (auto it = devices_.begin(); it != devices_.end(); ++it)
 	{
 		allocator_.Delete(it->second);
 	}
 }
 
-void
-InputManager::Update()
+void InputManager::Update()
 {
     Change change;
     while (GAINPUT_CONC_DEQUEUE(concurrentInputs_, change))
@@ -57,12 +49,10 @@ InputManager::Update()
             HandleAxis(*change.device, *change.state, change.delta, change.buttonId, change.f);
         }
     }
-    
-	InputDeltaState* ds = listeners_.empty() ? 0 : deltaState_;
 
-	for (DeviceMap::iterator it = devices_.begin();
-			it != devices_.end();
-			++it)
+	InputDeltaState* ds = deltaState_;
+
+	for (auto it = devices_.begin(); it != devices_.end(); ++it)
 	{
 		if (!it->second->IsLateUpdate())
 		{
@@ -70,16 +60,12 @@ InputManager::Update()
 		}
 	}
 
-	for (HashMap<ModifierId, DeviceStateModifier*>::iterator it = modifiers_.begin();
-			it != modifiers_.end();
-			++it)
+	for (auto it = modifiers_.begin(); it != modifiers_.end();++it)
 	{
 		it->second->Update(ds);
 	}
 
-	for (DeviceMap::iterator it = devices_.begin();
-			it != devices_.end();
-			++it)
+	for (auto it = devices_.begin(); it != devices_.end(); ++it)
 	{
 		if (it->second->IsLateUpdate())
 		{
@@ -89,7 +75,6 @@ InputManager::Update()
 
 	if (ds)
 	{
-		ds->NotifyListeners(sortedListeners_);
 		ds->Clear();
 	}
 }
@@ -107,16 +92,6 @@ InputManager::GetTime() const
 {
 	if (useSystemTime_)
 	{
-#if defined(GAINPUT_PLATFORM_LINUX) || defined(GAINPUT_PLATFORM_ANDROID)
-	struct timespec ts;
-	if (clock_gettime(CLOCK_MONOTONIC, &ts) == -1)
-	{
-		return -1;
-	}
-
-	uint64_t t = ts.tv_sec*1000ul + ts.tv_nsec/1000000ul;
-	return t;
-#elif defined(GAINPUT_PLATFORM_WIN)
 	static LARGE_INTEGER perfFreq = { 0 };
 	if (perfFreq.QuadPart == 0)
 	{
@@ -127,17 +102,6 @@ InputManager::GetTime() const
 	QueryPerformanceCounter(&count);
 	double t = 1000.0 * double(count.QuadPart) / double(perfFreq.QuadPart);
 	return static_cast<uint64_t>(t);
-#elif defined(GAINPUT_PLATFORM_IOS) || defined(GAINPUT_PLATFORM_MAC) || defined(GAINPUT_PLATFORM_TVOS)
-	clock_serv_t cclock;
-	mach_timespec_t mts;
-		host_get_clock_service(mach_host_self(), SYSTEM_CLOCK, &cclock);
-	clock_get_time(cclock, &mts);
-	mach_port_deallocate(mach_task_self(), cclock);
-	uint64_t t = mts.tv_sec*1000ul + mts.tv_nsec/1000000ul;
-	return t;
-#else
-#error Gainput: No time support
-#endif
 }
 	else
 	{
@@ -161,85 +125,31 @@ InputManager::FindDeviceId(InputDevice::DeviceType type, unsigned index) const
 	return InvalidDeviceId;
 }
 
-ListenerId
-InputManager::AddListener(InputListener* listener)
-{
-	listeners_[nextListenerId_] = listener;
-	ReorderListeners();
-	return nextListenerId_++;
-}
-
-void
-InputManager::RemoveListener(ListenerId listenerId)
-{
-	listeners_.erase(listenerId);
-	ReorderListeners();
-}
-
-namespace {
-static int CompareListeners(const void* a, const void* b)
-{
-	const InputListener* listener1 = *reinterpret_cast<const InputListener* const*>(a);
-	const InputListener* listener2 = *reinterpret_cast<const InputListener* const*>(b);
-	return listener2->GetPriority() - listener1->GetPriority();
-}
-}
-
-void
-InputManager::ReorderListeners()
-{
-	sortedListeners_.clear();
-	for (HashMap<ListenerId, InputListener*>::iterator it = listeners_.begin();
-		it != listeners_.end();
-		++it)
-	{
-		sortedListeners_.push_back(it->second);
-	}
-
-	if (sortedListeners_.empty())
-	{
-		return;
-	}
-
-	qsort(&sortedListeners_[0], 
-		sortedListeners_.size(), 
-		sizeof(InputListener*), 
-		&CompareListeners);
-}
-
-ModifierId
-InputManager::AddDeviceStateModifier(DeviceStateModifier* modifier)
+ModifierId InputManager::AddDeviceStateModifier(DeviceStateModifier* modifier)
 {
 	modifiers_[nextModifierId_] = modifier;
 	return nextModifierId_++;
 }
 
-void
-InputManager::RemoveDeviceStateModifier(ModifierId modifierId)
+void InputManager::RemoveDeviceStateModifier(ModifierId modifierId)
 {
 	modifiers_.erase(modifierId);
 }
 
-size_t
-InputManager::GetAnyButtonDown(DeviceButtonSpec* outButtons, size_t maxButtonCount) const
+size_t InputManager::GetAnyButtonDown(DeviceButtonSpec* outButtons, size_t maxButtonCount) const
 {
 	size_t buttonsFound = 0;
-	for (DeviceMap::const_iterator it = devices_.begin();
-			it != devices_.end() && maxButtonCount > buttonsFound;
-			++it)
+	for (auto it = devices_.begin(); it != devices_.end() && maxButtonCount > buttonsFound; ++it)
 	{
 		buttonsFound += it->second->GetAnyButtonDown(outButtons+buttonsFound, maxButtonCount-buttonsFound);
 	}
 	return buttonsFound;
 }
 
-unsigned
-InputManager::GetDeviceCountByType(InputDevice::DeviceType type) const
+unsigned InputManager::GetDeviceCountByType(const InputDevice::DeviceType type) const
 {
 	unsigned count = 0;
-	for (DeviceMap::const_iterator it = devices_.begin();
-			it != devices_.end();
-			++it)
+	for (auto it = devices_.begin(); it != devices_.end(); ++it)
 	{
 		if (it->second->GetType() == type)
 		{
@@ -249,13 +159,11 @@ InputManager::GetDeviceCountByType(InputDevice::DeviceType type) const
 	return count;
 }
 
-void
-InputManager::DeviceCreated(InputDevice* device)
+void InputManager::DeviceCreated(InputDevice* device)
 {
 	GAINPUT_UNUSED(device);
 }
 
-#if defined(GAINPUT_PLATFORM_WIN)
 void
 InputManager::HandleMessage(const MSG& msg)
 {
@@ -277,7 +185,6 @@ InputManager::HandleMessage(const MSG& msg)
 		}
 	}
 }
-#endif
 
 void InputManager::EnqueueConcurrentChange(InputDevice& device, InputState& state, InputDeltaState* delta, DeviceButtonId buttonId, bool value)
 {

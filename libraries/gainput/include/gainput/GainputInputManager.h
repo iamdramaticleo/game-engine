@@ -152,21 +152,6 @@ public:
 	/// Returns the end iterator over all registered devices.
 	const_iterator end() const { return devices_.end(); }
 
-	/// Registers a listener to be notified when a button state changes.
-	/**
-	 * If there are listeners registered, all input devices will have to record their state changes. This incurs extra runtime costs.
-	 */
-	ListenerId AddListener(InputListener* listener);
-	/// De-registers the given listener.
-	void RemoveListener(ListenerId listenerId);
-	/// Sorts the list of listeners which controls the order in which listeners are called.
-	/**
-	 * The order of listeners may be important as the functions being called to notify a listener of a state change can control if
-	 * the state change will be passed to any consequent listeners. Call this function whenever listener priorites have changed. It
-	 * is automatically called by AddListener() and RemoveListener().
-	 */
-	void ReorderListeners();
-
 	/// Checks if any button on any device is down.
 	/**
 	 * \param[out] outButtons An array with maxButtonCount fields to receive the device buttons that are down.
@@ -196,10 +181,6 @@ private:
 	DeviceMap devices_;
 	unsigned nextDeviceId_;
 
-	HashMap<ListenerId, InputListener*> listeners_;
-	unsigned nextListenerId_;
-	Array<InputListener*> sortedListeners_;
-
 	HashMap<ModifierId, DeviceStateModifier*> modifiers_;
 	unsigned nextModifierId_;
 
@@ -219,27 +200,21 @@ private:
 			float f;
 		};
     };
-    
+
     GAINPUT_CONC_QUEUE(Change) concurrentInputs_;
 
 	int displayWidth_;
 	int displayHeight_;
 	bool useSystemTime_;
-
-	bool debugRenderingEnabled_;
-	DebugRenderer* debugRenderer_;
     
 	void DeviceCreated(InputDevice* device);
 
 	// Do not copy.
 	InputManager(const InputManager &);
 	InputManager& operator=(const InputManager &);
-
 };
 
-
 template<class T>
-inline
 DeviceId
 InputManager::CreateDevice(unsigned index)
 {
@@ -250,7 +225,6 @@ InputManager::CreateDevice(unsigned index)
 }
 
 template<class T>
-inline
 T*
 InputManager::CreateAndGetDevice(unsigned index)
 {
@@ -277,7 +251,7 @@ inline
 const InputDevice*
 InputManager::GetDevice(DeviceId deviceId) const
 {
-	DeviceMap::const_iterator it = devices_.find(deviceId);
+	const auto it = devices_.find(deviceId);
 	if (it == devices_.end())
 	{
 		return 0;
@@ -298,5 +272,4 @@ public:
 	 */
 	virtual void Update(InputDeltaState* delta) = 0;
 };
-
 }
