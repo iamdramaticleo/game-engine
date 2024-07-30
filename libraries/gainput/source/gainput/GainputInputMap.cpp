@@ -54,8 +54,7 @@ InputMap::~InputMap()
 	Clear();
 }
 
-void
-InputMap::Clear()
+void InputMap::Clear()
 {
 	for (auto it = userButtons_.begin(); it != userButtons_.end(); ++it)
 	{

@@ -22,19 +22,11 @@ public:
 
 	static const unsigned AutoIndex = unsigned(-1);
 
-	/// Initializes the input device.
-	/**
-	 * Do not instantiate any input device directly. Call InputManager::CreateDevice() instead.
-	 */
 	InputDevice(InputManager& manager, DeviceId device, unsigned index);
 
 	/// Empty virtual destructor.
 	virtual ~InputDevice();
-
-	/// Update this device, internally called by InputManager.
-	/**
-	 * \param delta The delta state to add changes to. May be 0.
-	 */
+	
 	void Update(InputDeltaState* delta);
 
 	/// Returns this device's ID.

@@ -66,15 +66,11 @@ void InputManager::Update()
 	}
 }
 
-DeviceId
-InputManager::FindDeviceId(InputDevice::DeviceType type, unsigned index) const
+DeviceId InputManager::FindDeviceId(InputDevice::DeviceType type, unsigned index) const
 {
-	for (DeviceMap::const_iterator it = devices_.begin();
-			it != devices_.end();
-			++it)
+	for (auto it = devices_.begin(); it != devices_.end(); ++it)
 	{
-		if (it->second->GetType() == type
-			&& it->second->GetIndex() == index)
+		if (it->second->GetType() == type && it->second->GetIndex() == index)
 		{
 			return it->first;
 		}

@@ -45,5 +45,4 @@ namespace gainput
 
 		state.Set(buttonId, value);
 	}
-
 }

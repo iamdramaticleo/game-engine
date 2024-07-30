@@ -41,19 +41,8 @@ public:
 	 */
 	void SetDisplaySize(int width, int height) { displayWidth_ = width; displayHeight_ = height; }
 
-	/// [WINDOWS ONLY] Lets the InputManager handle the given Windows message.
-	/** 
-	 * Call this function for message types WM_CHAR, WM_KEYDOWN, WM_KEYUP, 
-	 * WM_SYSKEYDOWN, WM_SYSKEYUP, WM_?BUTTON*, WM_MOUSEMOVE, WM_MOUSEWHEEL.
-	 */
 	void HandleMessage(const MSG& msg);
 
-	/// Updates the input state, call this every frame.
-	/**
-	 * If the InputManager was initialized with `useSystemTime` set to `false`, you have to
-	 * call Update(uint64_t) instead.
-	 * \see GetTime
-	 */
 	void Update();
 
 	/// Updates the input state and the manager's time, call this every frame.
@@ -69,9 +58,6 @@ public:
 
 	/// Returns the allocator to be used for memory allocations.
 	Allocator& GetAllocator() const { return allocator_; }
-
-	/// Returns a monotonic time in milliseconds.
-	uint64_t GetTime() const;
 
 	/// Creates an input device and registers it with the manager.
 	/**
@@ -182,7 +168,7 @@ inline
 InputDevice*
 InputManager::GetDevice(DeviceId deviceId)
 {
-	DeviceMap::iterator it = devices_.find(deviceId);
+	const auto it = devices_.find(deviceId);
 	if (it == devices_.end())
 	{
 		return 0;

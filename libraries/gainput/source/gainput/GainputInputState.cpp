@@ -1,10 +1,8 @@
 
 #include <gainput/gainput.h>
 
-
 namespace gainput
 {
-
 InputState::InputState(Allocator& allocator, unsigned int buttonCount) :
 		allocator_(allocator),
 		buttonCount_(buttonCount)
@@ -27,6 +25,4 @@ InputState::operator=(const InputState& other)
 	memcpy(buttons_, other.buttons_, size);
 	return *this;
 }
-
 }
-

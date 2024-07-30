@@ -41,17 +41,6 @@ enum MouseButton
 
 class InputDeviceMouseImpl;
 
-/// A mouse input device.
-/**
- * This input device provides support for standard mouse devices. The valid device buttons are defined
- * in the ::MouseButton enum.
- *
- * This device is implemented on Linux and Windows.
- *
- * The raw variants (InputDevice::DV_RAW) of this device do not offer normalized absolute axis values. 
- * That means that the values of MouseAxisX and MouseAxisY don't have defined mininum or maximum 
- * values. Therefore only the delta (InputMap::GetFloatDelta()) should be used with raw mouse devices.
- */
 class GAINPUT_LIBEXPORT InputDeviceMouse : public InputDevice
 {
 public:
@@ -71,11 +60,7 @@ public:
 
 	bool IsValidButtonId(DeviceButtonId deviceButton) const { return deviceButton < MouseButtonCount_; }
 
-	size_t GetAnyButtonDown(DeviceButtonSpec* outButtons, size_t maxButtonCount) const;
-
-	size_t GetButtonName(DeviceButtonId deviceButton, char* buffer, size_t bufferLength) const;
 	ButtonType GetButtonType(DeviceButtonId deviceButton) const;
-	DeviceButtonId GetButtonByName(const char* name) const;
 
 	/// Returns the platform-specific implementation of this device (internal use only).
 	InputDeviceMouseImpl* GetPimpl() { return impl_; }

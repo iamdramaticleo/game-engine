@@ -15,8 +15,7 @@ InputDevice::~InputDevice()
 	manager_.GetAllocator().Deallocate(deadZones_);
 }
 
-void
-InputDevice::Update(InputDeltaState* delta)
+void InputDevice::Update(InputDeltaState* delta)
 {
 	*previousState_ = *state_;
 	InternalUpdate(delta);
@@ -24,8 +23,7 @@ InputDevice::Update(InputDeltaState* delta)
 
 float InputDevice::GetDeadZone(DeviceButtonId buttonId) const
 {
-	if (!deadZones_
-		|| !IsValidButtonId(buttonId))
+	if (!deadZones_ || !IsValidButtonId(buttonId))
 	{
 		return 0.0f;
 	}
