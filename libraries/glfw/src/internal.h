@@ -318,8 +318,8 @@ struct _GLFWplatform
 {
     int platformID;
     // init
-    GLFWbool (*init)(void);
-    void (*terminate)(void);
+    GLFWbool (*init)();
+    void (*terminate)();
     // input
     void (*getCursorPos)(_GLFWwindow*,double*,double*);
     void (*setCursorPos)(_GLFWwindow*,double,double);
@@ -330,7 +330,6 @@ struct _GLFWplatform
     GLFWbool (*createStandardCursor)(_GLFWcursor*,int);
     void (*destroyCursor)(_GLFWcursor*);
     void (*setCursor)(_GLFWwindow*,_GLFWcursor*);
-    const char* (*getScancodeName)(int);
     int (*getKeyScancode)(int);
     void (*setClipboardString)(const char*);
     const char* (*getClipboardString)(void);
@@ -421,10 +420,6 @@ GLFWbool _glfwPlatformCreateMutex(_GLFWmutex* mutex);
 void _glfwPlatformDestroyMutex(_GLFWmutex* mutex);
 void _glfwPlatformLockMutex(_GLFWmutex* mutex);
 void _glfwPlatformUnlockMutex(_GLFWmutex* mutex);
-
-void* _glfwPlatformLoadModule(const char* path);
-void _glfwPlatformFreeModule(void* module);
-GLFWproc _glfwPlatformGetModuleSymbol(void* module, const char* name);
 
 //////////////////////////////////////////////////////////////////////////
 //////                         GLFW event API                       //////

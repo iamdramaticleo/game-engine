@@ -1896,29 +1896,12 @@ void _glfwSetCursorModeWin32(_GLFWwindow* window, int mode)
         updateCursorImage(window);
 }
 
-const char* _glfwGetScancodeNameWin32(int scancode)
-{
-    if (scancode < 0 || scancode > (KF_EXTENDED | 0xff))
-    {
-        _glfwInputError(GLFW_INVALID_VALUE, "Invalid scancode %i", scancode);
-        return NULL;
-    }
-
-    const int key = _glfw.win32.keycodes[scancode];
-    if (key == GLFW_KEY_UNKNOWN)
-        return NULL;
-
-    return _glfw.win32.keynames[key];
-}
-
 int _glfwGetKeyScancodeWin32(int key)
 {
     return _glfw.win32.scancodes[key];
 }
 
-GLFWbool _glfwCreateCursorWin32(_GLFWcursor* cursor,
-                                const GLFWimage* image,
-                                int xhot, int yhot)
+GLFWbool _glfwCreateCursorWin32(_GLFWcursor* cursor,const GLFWimage* image,int xhot, int yhot)
 {
     cursor->win32.handle = (HCURSOR) createIcon(image, xhot, yhot, GLFW_FALSE);
     if (!cursor->win32.handle)
