@@ -4,8 +4,6 @@
 #include "keyboard/GainputInputDeviceKeyboardWin.h"
 #include "mouse/GainputInputDeviceMouseWin.h"
 
-#include <stdlib.h>
-
 #include <gainput/GainputHelpers.h>
 
 namespace gainput
@@ -102,13 +100,7 @@ unsigned InputManager::GetDeviceCountByType(const InputDevice::DeviceType type) 
 	return count;
 }
 
-void InputManager::DeviceCreated(InputDevice* device)
-{
-	GAINPUT_UNUSED(device);
-}
-
-void
-InputManager::HandleMessage(const MSG& msg)
+void InputManager::HandleMessage(const MSG& msg)
 {
 	for (DeviceMap::const_iterator it = devices_.begin(); it != devices_.end(); ++it)
 	{

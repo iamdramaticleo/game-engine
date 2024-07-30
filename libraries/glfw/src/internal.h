@@ -406,8 +406,6 @@ struct _GLFWlibrary
     GLFW_PLATFORM_LIBRARY_CONTEXT_STATE
 };
 
-// Global state shared between compilation units of GLFW
-//
 extern _GLFWlibrary _glfw;
 
 //////////////////////////////////////////////////////////////////////////

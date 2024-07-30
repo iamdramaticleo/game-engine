@@ -2,59 +2,18 @@
 
 namespace gainput
 {
-/// Manages all input devices and some other helpful stuff.
-/**
- * This manager takes care of all device-related things. Normally, you should only need one that contains
- * all your input devices.
- *
- * After instantiating an InputManager, you have to call SetDisplaySize(). You should also create some 
- * input devices using the template function CreateDevice() which returns the device ID that is needed 
- * to do anything further with the device (for example, see InputMap).
- *
- * The manager has to be updated every frame by calling Update(). Depending on the platform,
- * you may have to call another function as part of your message handling code (see HandleMessage(), HandleInput()).
- *
- * Note that destruction of an InputManager invalidates all input maps based on it and all devices created
- * through it.
- */
 class GAINPUT_LIBEXPORT InputManager
 {
 public:
-	/// Initializes the manager.
-	/**
-	 * Further initialization is typically necessary.
-	 * \param useSystemTime Specifies if the GetTime() function uses system time or the time
-	 * supplied to Update(uint64_t).
-	 * \param allocator The memory allocator to be used for all allocations.
-	 * \see SetDisplaySize
-	 * \see GetTime
-	 */
 	InputManager(Allocator& allocator = GetDefaultAllocator());
 
-	/// Destructs the manager.
 	~InputManager();
 
-	/// Sets the window resolution.
-	/**
-	 * Informs the InputManager and its devices of the size of the window that is used for
-	 * receiving inputs. For example, the size is used to to normalize mouse inputs.
-	 */
 	void SetDisplaySize(int width, int height) { displayWidth_ = width; displayHeight_ = height; }
 
 	void HandleMessage(const MSG& msg);
 
 	void Update();
-
-	/// Updates the input state and the manager's time, call this every frame.
-	/**
-	 * Updates the time returned by GetTime() and then calls the regular Update(). This function
-	 * should only be called if the InputManager was initialized with `useSystemTime`
-	 * set to `false`.
-	 * \param deltaTime The provided must be in milliseconds.
-	 * \see Update
-	 * \see GetTime
-	 */
-	void Update(uint64_t deltaTime);
 
 	/// Returns the allocator to be used for memory allocations.
 	Allocator& GetAllocator() const { return allocator_; }
@@ -146,27 +105,21 @@ private:
 
 	int displayWidth_;
 	int displayHeight_;
-    
-	void DeviceCreated(InputDevice* device);
 
 	// Do not copy.
 	InputManager(const InputManager &);
 	InputManager& operator=(const InputManager &);
 };
 
-template<class T>
-DeviceId
+template<class T> DeviceId
 InputManager::CreateDevice(unsigned index)
 {
 	T* device = allocator_.New<T>(*this, nextDeviceId_, index);
 	devices_[nextDeviceId_] = device;
-	DeviceCreated(device);
 	return nextDeviceId_++;
 }
 
-inline
-InputDevice*
-InputManager::GetDevice(DeviceId deviceId)
+inline InputDevice* InputManager::GetDevice(DeviceId deviceId)
 {
 	const auto it = devices_.find(deviceId);
 	if (it == devices_.end())
@@ -176,9 +129,7 @@ InputManager::GetDevice(DeviceId deviceId)
 	return it->second;
 }
 
-inline
-const InputDevice*
-InputManager::GetDevice(DeviceId deviceId) const
+inline const InputDevice* InputManager::GetDevice(DeviceId deviceId) const
 {
 	const auto it = devices_.find(deviceId);
 	if (it == devices_.end())
