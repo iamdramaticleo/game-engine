@@ -31,14 +31,11 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
-#include <float.h>
 
 //////////////////////////////////////////////////////////////////////////
 //////                         GLFW event API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-// Notifies shared code that a window has lost or received input focus
-//
 void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused)
 {
     assert(window != NULL);
@@ -66,9 +63,6 @@ void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused)
     }
 }
 
-// Notifies shared code that a window has been resized
-// The size is specified in screen coordinates
-//
 void _glfwInputWindowSize(_GLFWwindow* window, int width, int height)
 {
     assert(window != NULL);
@@ -79,8 +73,6 @@ void _glfwInputWindowSize(_GLFWwindow* window, int width, int height)
         window->callbacks.size((GLFWwindow*) window, width, height);
 }
 
-// Notifies shared code that a window has been iconified or restored
-//
 void _glfwInputWindowIconify(_GLFWwindow* window, GLFWbool iconified)
 {
     assert(window != NULL);
@@ -90,8 +82,6 @@ void _glfwInputWindowIconify(_GLFWwindow* window, GLFWbool iconified)
         window->callbacks.iconify((GLFWwindow*) window, iconified);
 }
 
-// Notifies shared code that a window has been maximized or restored
-//
 void _glfwInputWindowMaximize(_GLFWwindow* window, GLFWbool maximized)
 {
     assert(window != NULL);
@@ -101,9 +91,6 @@ void _glfwInputWindowMaximize(_GLFWwindow* window, GLFWbool maximized)
         window->callbacks.maximize((GLFWwindow*) window, maximized);
 }
 
-// Notifies shared code that a window framebuffer has been resized
-// The size is specified in pixels
-//
 void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height)
 {
     assert(window != NULL);
@@ -114,8 +101,6 @@ void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height)
         window->callbacks.fbsize((GLFWwindow*) window, width, height);
 }
 
-// Notifies shared code that the user wishes to close a window
-//
 void _glfwInputWindowCloseRequest(const _GLFWwindow* window)
 {
     assert(window != NULL);
@@ -124,8 +109,6 @@ void _glfwInputWindowCloseRequest(const _GLFWwindow* window)
         window->callbacks.close();
 }
 
-// Notifies shared code that a window has changed its desired monitor
-//
 void _glfwInputWindowMonitor(_GLFWwindow* window, _GLFWmonitor* monitor)
 {
     assert(window != NULL);
@@ -363,7 +346,7 @@ void glfwDestroyWindow(GLFWwindow* handle)
         _GLFWwindow** prev = &_glfw.windowListHead;
 
         while (*prev != window)
-            prev = &((*prev)->next);
+            prev = &(*prev)->next;
 
         *prev = window->next;
     }
@@ -477,9 +460,7 @@ void glfwSetWindowSizeLimits(GLFWwindow* handle, int minwidth, int minheight, in
     {
         if (numer <= 0 || denom <= 0)
         {
-            _glfwInputError(GLFW_INVALID_VALUE,
-                            "Invalid window aspect ratio %i:%i",
-                            numer, denom);
+            _glfwInputError(GLFW_INVALID_VALUE,"Invalid window aspect ratio %i:%i",numer, denom);
             return;
         }
     }
