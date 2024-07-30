@@ -1,10 +1,7 @@
-
-#ifndef GAINPUTALLOCATOR_H_
-#define GAINPUTALLOCATOR_H_
+#pragma once
 
 namespace gainput
 {
-
 /// Interface used to pass custom allocators to the library.
 /**
  * If you want the library to use your custom allocator you should implement this interface.
@@ -219,10 +216,4 @@ private:
 	size_t deallocateCount_;
 	size_t allocatedMemory_;
 };
-
-
-
 }
-
-#endif
-

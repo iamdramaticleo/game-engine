@@ -75,31 +75,8 @@ public:
 	/// Returns the previous state of the given button.
 	float GetFloatPrevious(DeviceButtonId deviceButton) const;
 
-	/// Checks if any button on this device is down.
-	/**
-	 * \param[out] outButtons An array with maxButtonCount fields to receive the device buttons that are down.
-	 * \param maxButtonCount The number of fields in outButtons.
-	 * \return The number of device buttons written to outButtons.
-	 */
-	virtual size_t GetAnyButtonDown(DeviceButtonSpec* outButtons, size_t maxButtonCount) const { GAINPUT_UNUSED(outButtons); GAINPUT_UNUSED(maxButtonCount); return 0; }
-
-	/// Gets the name of the given button.
-	/**
-	 * \param deviceButton ID of the button.
-	 * \param buffer A char-buffer to receive the button name.
-	 * \param bufferLength Length of the buffer receiving the button name in bytes.
-	 * \return The number of bytes written to buffer (includes the trailing \0).
-	 */
-	virtual size_t GetButtonName(DeviceButtonId deviceButton, char* buffer, size_t bufferLength) const { GAINPUT_UNUSED(deviceButton); GAINPUT_UNUSED(buffer); GAINPUT_UNUSED(bufferLength); return 0; }
 	/// Returns the type of the given button.
 	virtual ButtonType GetButtonType(DeviceButtonId deviceButton) const = 0;
-
-	/// Returns the button's ID if the name is of this device's buttons.
-	/**
-	 * \param name Name of the device button to look for.
-	 * \return The device button ID.
-	 */
-	virtual DeviceButtonId GetButtonByName(const char* name) const { GAINPUT_UNUSED(name); return InvalidDeviceButtonId; }
 
 	/// Returns the device's state, probably best if only used internally.
 	InputState* GetInputState() { return state_; }
@@ -137,17 +114,6 @@ protected:
 	 * \param delta The delta state to add changes to. May be 0.
 	 */
 	virtual void InternalUpdate(InputDeltaState* delta) = 0;
-
-	/// Checks which buttons are down.
-	/**
-	 * This function is normally used by GetAnyButtonDown implementations internally.
-	 * \param outButtons An array to write buttons that are down to.
-	 * \param maxButtonCount The size of outButtons.
-	 * \param start The lowest device button ID to check.
-	 * \param end The biggest device button ID to check.
-	 * \return The number of buttons written to outButtons.
-	 */
-	size_t CheckAllButtonsDown(DeviceButtonSpec* outButtons, size_t maxButtonCount, unsigned start, unsigned end) const;
 };
 
 inline

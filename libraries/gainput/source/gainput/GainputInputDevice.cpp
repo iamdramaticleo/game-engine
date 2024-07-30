@@ -44,21 +44,4 @@ void InputDevice::SetDeadZone(DeviceButtonId buttonId, float value)
 	GAINPUT_ASSERT(buttonId < state_->GetButtonCount());
 	deadZones_[buttonId] = value;
 }
-
-size_t
-InputDevice::CheckAllButtonsDown(DeviceButtonSpec* outButtons, size_t maxButtonCount, unsigned start, unsigned end) const
-{
-	size_t buttonsFound = 0;
-	for (unsigned i = start; i < end && buttonsFound < maxButtonCount; ++i)
-	{
-		DeviceButtonId id(i);
-		if (IsValidButtonId(id) && GetBool(id))
-		{
-			outButtons[buttonsFound].deviceId = deviceId_;
-			outButtons[buttonsFound].buttonId = id;
-			++buttonsFound;
-		}
-	}
-	return buttonsFound;
-}
 }

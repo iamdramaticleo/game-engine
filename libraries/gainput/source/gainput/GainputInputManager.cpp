@@ -10,18 +10,16 @@
 
 namespace gainput
 {
-InputManager::InputManager(bool useSystemTime, Allocator& allocator) :
+InputManager::InputManager(Allocator& allocator) :
 		allocator_(allocator),
 		devices_(allocator_),
 		nextDeviceId_(0),
 		modifiers_(allocator_),
 		nextModifierId_(0),
 		deltaState_(allocator_.New<InputDeltaState>(allocator_)),
-		currentTime_(0),
         GAINPUT_CONC_CONSTRUCT(concurrentInputs_),
 		displayWidth_(-1),
-		displayHeight_(-1),
-		useSystemTime_(useSystemTime)
+		displayHeight_(-1)
 {
 }
 
@@ -79,36 +77,6 @@ void InputManager::Update()
 	}
 }
 
-void
-InputManager::Update(uint64_t deltaTime)
-{
-	GAINPUT_ASSERT(useSystemTime_ == false);
-	currentTime_ += deltaTime;
-	Update();
-}
-
-uint64_t
-InputManager::GetTime() const
-{
-	if (useSystemTime_)
-	{
-	static LARGE_INTEGER perfFreq = { 0 };
-	if (perfFreq.QuadPart == 0)
-	{
-		QueryPerformanceFrequency(&perfFreq);
-		GAINPUT_ASSERT(perfFreq.QuadPart != 0);
-	}
-	LARGE_INTEGER count;
-	QueryPerformanceCounter(&count);
-	double t = 1000.0 * double(count.QuadPart) / double(perfFreq.QuadPart);
-	return static_cast<uint64_t>(t);
-}
-	else
-	{
-		return currentTime_;
-	}
-}
-
 DeviceId
 InputManager::FindDeviceId(InputDevice::DeviceType type, unsigned index) const
 {
@@ -134,16 +102,6 @@ ModifierId InputManager::AddDeviceStateModifier(DeviceStateModifier* modifier)
 void InputManager::RemoveDeviceStateModifier(ModifierId modifierId)
 {
 	modifiers_.erase(modifierId);
-}
-
-size_t InputManager::GetAnyButtonDown(DeviceButtonSpec* outButtons, size_t maxButtonCount) const
-{
-	size_t buttonsFound = 0;
-	for (auto it = devices_.begin(); it != devices_.end() && maxButtonCount > buttonsFound; ++it)
-	{
-		buttonsFound += it->second->GetAnyButtonDown(outButtons+buttonsFound, maxButtonCount-buttonsFound);
-	}
-	return buttonsFound;
 }
 
 unsigned InputManager::GetDeviceCountByType(const InputDevice::DeviceType type) const

@@ -29,7 +29,7 @@ public:
 	 * \see SetDisplaySize
 	 * \see GetTime
 	 */
-	InputManager(bool useSystemTime = true, Allocator& allocator = GetDefaultAllocator());
+	InputManager(Allocator& allocator = GetDefaultAllocator());
 
 	/// Destructs the manager.
 	~InputManager();
@@ -41,40 +41,12 @@ public:
 	 */
 	void SetDisplaySize(int width, int height) { displayWidth_ = width; displayHeight_ = height; }
 
-#if defined(GAINPUT_PLATFORM_LINUX)
-	/// [LINUX ONLY] Lets the InputManager handle the given X event.
-	/**
-	 * Call this function for event types MotionNotify, ButtonPress, 
-	 * ButtonRelease, KeyPress, KeyRelease.
-	 */
-	void HandleEvent(XEvent& event);
-#endif
-#if defined(GAINPUT_PLATFORM_WIN)
 	/// [WINDOWS ONLY] Lets the InputManager handle the given Windows message.
 	/** 
 	 * Call this function for message types WM_CHAR, WM_KEYDOWN, WM_KEYUP, 
 	 * WM_SYSKEYDOWN, WM_SYSKEYUP, WM_?BUTTON*, WM_MOUSEMOVE, WM_MOUSEWHEEL.
 	 */
 	void HandleMessage(const MSG& msg);
-#endif
-#if defined(GAINPUT_PLATFORM_ANDROID)
-	/// [ANDROID ONLY] Lets the InputManager handle the given input event.
-	int32_t HandleInput(AInputEvent* event);
-
-	struct DeviceInput
-	{
-		InputDevice::DeviceType deviceType;
-		unsigned deviceIndex;
-		ButtonType buttonType;
-		DeviceButtonId buttonId;
-		union
-		{
-			float f;
-			bool b;
-		} value;
-	};
-    void HandleDeviceInput(DeviceInput const& input);
-#endif
 
 	/// Updates the input state, call this every frame.
 	/**
@@ -110,15 +82,7 @@ public:
 	 * \return The ID of the newly created input device.
 	 */
 	template<class T> DeviceId CreateDevice(unsigned index = InputDevice::AutoIndex);
-	/// Creates an input device, registers it with the manager and returns it.
-	/**
-	 * \tparam T The input device class, muste be derived from InputDevice.
-	 * \param variant Requests the specified device variant. Note that this is only
-	 * a request. Another implementation variant of the device may silently be instantiated
-	 * instead. To determine what variant was instantiated, call InputDevice::GetVariant().
-	 * \return The newly created input device.
-	 */
-	template<class T> T* CreateAndGetDevice(unsigned index = InputDevice::AutoIndex);
+
 	/// Returns the input device with the given ID.
 	/**
 	 * \return The input device or 0 if it doesn't exist.
@@ -152,14 +116,6 @@ public:
 	/// Returns the end iterator over all registered devices.
 	const_iterator end() const { return devices_.end(); }
 
-	/// Checks if any button on any device is down.
-	/**
-	 * \param[out] outButtons An array with maxButtonCount fields to receive the device buttons that are down.
-	 * \param maxButtonCount The number of fields in outButtons.
-	 * \return The number of device buttons written to outButtons.
-	 */
-	size_t GetAnyButtonDown(DeviceButtonSpec* outButtons, size_t maxButtonCount) const;
-
 	/// Returns the number of devices with the given type.
 	unsigned GetDeviceCountByType(InputDevice::DeviceType type) const;
 	/// Returns the graphical display's width in pixels.
@@ -186,7 +142,6 @@ private:
 
 	InputDeltaState* deltaState_;
 
-	uint64_t currentTime_;
     struct Change
     {
         InputDevice* device;
@@ -205,7 +160,6 @@ private:
 
 	int displayWidth_;
 	int displayHeight_;
-	bool useSystemTime_;
     
 	void DeviceCreated(InputDevice* device);
 
@@ -222,17 +176,6 @@ InputManager::CreateDevice(unsigned index)
 	devices_[nextDeviceId_] = device;
 	DeviceCreated(device);
 	return nextDeviceId_++;
-}
-
-template<class T>
-T*
-InputManager::CreateAndGetDevice(unsigned index)
-{
-	T* device = allocator_.New<T>(*this, nextDeviceId_, index);
-	devices_[nextDeviceId_] = device;
-	++nextDeviceId_;
-	DeviceCreated(device);
-	return device;
 }
 
 inline

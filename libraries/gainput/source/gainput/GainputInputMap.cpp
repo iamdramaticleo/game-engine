@@ -68,9 +68,7 @@ InputMap::~InputMap()
 void
 InputMap::Clear()
 {
-	for (UserButtonMap::iterator it = userButtons_.begin();
-			it != userButtons_.end();
-			++it)
+	for (auto it = userButtons_.begin(); it != userButtons_.end(); ++it)
 	{
 		allocator_.Delete(it->second);
 	}
@@ -124,8 +122,7 @@ bool InputMap::MapFloat(UserButtonId userButton, DeviceId device, DeviceButtonId
 	return true;
 }
 
-void
-InputMap::Unmap(UserButtonId userButton)
+void InputMap::Unmap(UserButtonId userButton)
 {
 	UserButton* ub = GetUserButton(userButton);
 	if (ub)
@@ -135,14 +132,12 @@ InputMap::Unmap(UserButtonId userButton)
 	}
 }
 
-bool
-InputMap::IsMapped(UserButtonId userButton) const
+bool InputMap::IsMapped(UserButtonId userButton) const
 {
 	return GetUserButton(userButton) != 0;
 }
 
-size_t
-InputMap::GetMappings(UserButtonId userButton, DeviceButtonSpec* outButtons, size_t maxButtonCount) const
+size_t InputMap::GetMappings(UserButtonId userButton, DeviceButtonSpec* outButtons, size_t maxButtonCount) const
 {
 	size_t buttonCount = 0;
 	const UserButton* ub = GetUserButton(userButton);
@@ -161,8 +156,7 @@ InputMap::GetMappings(UserButtonId userButton, DeviceButtonSpec* outButtons, siz
 	return buttonCount;
 }
 
-bool
-InputMap::SetUserButtonPolicy(UserButtonId userButton, UserButtonPolicy policy)
+bool InputMap::SetUserButtonPolicy(UserButtonId userButton, UserButtonPolicy policy)
 {
 	UserButton* ub = GetUserButton(userButton);
 	if (!ub)
@@ -173,8 +167,7 @@ InputMap::SetUserButtonPolicy(UserButtonId userButton, UserButtonPolicy policy)
 	return true;
 }
 
-bool
-InputMap::SetDeadZone(UserButtonId userButton, float deadZone)
+bool InputMap::SetDeadZone(UserButtonId userButton, float deadZone)
 {
 	UserButton* ub = GetUserButton(userButton);
 	if (!ub)
@@ -185,8 +178,7 @@ InputMap::SetDeadZone(UserButtonId userButton, float deadZone)
 	return true;
 }
 
-bool
-InputMap::GetBool(UserButtonId userButton) const
+bool InputMap::GetBool(UserButtonId userButton) const
 {
 	const UserButton* ub = GetUserButton(userButton);
 	GAINPUT_ASSERT(ub);
@@ -205,8 +197,7 @@ InputMap::GetBool(UserButtonId userButton) const
 	return false;
 }
 
-bool
-InputMap::GetBoolIsNew(UserButtonId userButton) const
+bool InputMap::GetBoolIsNew(UserButtonId userButton) const
 {
 	const UserButton* ub = GetUserButton(userButton);
 	GAINPUT_ASSERT(ub);
@@ -226,8 +217,7 @@ InputMap::GetBoolIsNew(UserButtonId userButton) const
 	return false;
 }
 
-bool
-InputMap::GetBoolPrevious(UserButtonId userButton) const
+bool InputMap::GetBoolPrevious(UserButtonId userButton) const
 {
 	const UserButton* ub = GetUserButton(userButton);
 	GAINPUT_ASSERT(ub);
@@ -246,14 +236,11 @@ InputMap::GetBoolPrevious(UserButtonId userButton) const
 	return false;
 }
 
-bool
-InputMap::GetBoolWasDown(UserButtonId userButton) const
+bool InputMap::GetBoolWasDown(UserButtonId userButton) const
 {
 	const UserButton* ub = GetUserButton(userButton);
 	GAINPUT_ASSERT(ub);
-	for (MappedInputList::const_iterator it = ub->inputs.begin();
-			it != ub->inputs.end();
-			++it)
+	for (auto it = ub->inputs.begin(); it != ub->inputs.end(); ++it)
 	{
 		const MappedInput& mi= *it;
 		const InputDevice* device = manager_.GetDevice(mi.device);
@@ -267,26 +254,22 @@ InputMap::GetBoolWasDown(UserButtonId userButton) const
 	return false;
 }
 
-float
-InputMap::GetFloat(UserButtonId userButton) const
+float InputMap::GetFloat(UserButtonId userButton) const
 {
 	return GetFloatState(userButton, false);
 }
 
-float
-InputMap::GetFloatPrevious(UserButtonId userButton) const
+float InputMap::GetFloatPrevious(UserButtonId userButton) const
 {
 	return GetFloatState(userButton, true);
 }
 
-float
-InputMap::GetFloatDelta(UserButtonId userButton) const
+float InputMap::GetFloatDelta(UserButtonId userButton) const
 {
 	return GetFloat(userButton) - GetFloatPrevious(userButton);
 }
 
-float
-InputMap::GetFloatState(UserButtonId userButton, bool previous) const
+float InputMap::GetFloatState(UserButtonId userButton, bool previous) const
 {
 	float value = 0.0f;
 	int downCount = 0;
@@ -370,23 +353,6 @@ InputMap::GetFloatState(UserButtonId userButton, bool previous) const
 	}
 
 	return value;
-}
-
-size_t
-InputMap::GetUserButtonName(UserButtonId userButton, char* buffer, size_t bufferLength) const
-{
-	const UserButton* ub = GetUserButton(userButton);
-	GAINPUT_ASSERT(ub);
-	for (MappedInputList::const_iterator it = ub->inputs.begin();
-			it != ub->inputs.end();
-			++it)
-	{
-		const MappedInput& mi = *it;
-		const InputDevice* device = manager_.GetDevice(mi.device);
-		GAINPUT_ASSERT(device);
-		return device->GetButtonName(mi.deviceButton, buffer, bufferLength);
-	}
-	return 0;
 }
 
 UserButtonId

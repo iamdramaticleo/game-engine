@@ -1,10 +1,7 @@
-
-#ifndef GAINPUTINPUTMAP_H_
-#define GAINPUTINPUTMAP_H_
+#pragma once
 
 namespace gainput
 {
-
 class UserButton;
 
 /// Type for filter functions that can be used to filter mapped float inputs.
@@ -68,8 +65,7 @@ public:
 	 * \param filterUserData Optional user data pointer that is passed to filterFunc.
 	 * \return true if the mapping was created.
 	 */
-	bool MapFloat(UserButtonId userButton, DeviceId device, DeviceButtonId deviceButton,
-			float min = 0.0f, float max = 1.0f,
+	bool MapFloat(UserButtonId userButton, DeviceId device, DeviceButtonId deviceButton, float min = 0.0f, float max = 1.0f,
 			FilterFunc_T filterFunc = 0, void* filterUserData = 0);
 	/// Removes all mappings for the given user button.
 	void Unmap(UserButtonId userButton);
@@ -127,15 +123,6 @@ public:
 	/// Returns the delta between the previous and the current frame of the float state of the given user button.
 	float GetFloatDelta(UserButtonId userButton) const;
 
-	/// Gets the name of the device button mapped to the given user button.
-	/**
-	 * \param userButton ID of the user button.
-	 * \param buffer A char-buffer to receive the button name.
-	 * \param bufferLength Length of the buffer receiving the button name in bytes.
-	 * \return The number of bytes written to buffer (includes the trailing \0).
-	 */
-	size_t GetUserButtonName(UserButtonId userButton, char* buffer, size_t bufferLength) const;
-
 	/// Returns the user button ID the given device button is mapped to.
 	/**
 	 * This function iterates over all mapped buttons and therefore shouldn't be used in a performance critical
@@ -165,10 +152,5 @@ private:
 	// Do not copy.
 	InputMap(const InputMap &);
 	InputMap& operator=(const InputMap &);
-
 };
-
 }
-
-#endif
-

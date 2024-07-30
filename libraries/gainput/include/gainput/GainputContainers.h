@@ -1,12 +1,7 @@
-
-#ifndef GAINPUTCONTAINERS_H_
-#define GAINPUTCONTAINERS_H_
-
+#pragma once
 
 namespace gainput
 {
-
-
 // -- MurmurHash3 begin --
 // http://code.google.com/p/smhasher/wiki/MurmurHash3
 // MurmurHash3 was written by Austin Appleby, and is placed in the public
@@ -21,7 +16,6 @@ inline uint32_t getblock(const uint32_t * p, int i)
 {
 	return p[i];
 }
-
 
 inline uint32_t fmix(uint32_t h)
 {
@@ -84,9 +78,7 @@ inline void MurmurHash3_x86_32(const void * key, int len, uint32_t seed, void * 
 
 	*(uint32_t*)out = h1;
 }
-
 // -- MurmurHash3 end --
-
 
 /// A std::vector-like data container for POD-types.
 /**
@@ -222,7 +214,6 @@ private:
 	T* data_;
 };
 
-
 /// A hash table mapping keys to POD-type values.
 /**
  * \tparam K The key pointing to a value.
@@ -245,7 +236,6 @@ public:
 
 	typedef Node* iterator;
 	typedef const Node* const_iterator;
-
 
 	HashMap(Allocator& allocator = GetDefaultAllocator()) :
 		allocator_(allocator),
@@ -451,10 +441,7 @@ private:
 			insert(it->first, it->second);
 		}
 	}
-
 };
-
-
 
 /// A ring buffer.
 /**
@@ -469,7 +456,6 @@ public:
 		nextRead_(0),
 		nextWrite_(0)
 	{ }
-
 
 	bool CanGet() const
 	{
@@ -499,10 +485,4 @@ private:
 	size_t nextRead_;
 	size_t nextWrite_;
 };
-
-
-
 }
-
-#endif
-

@@ -37,16 +37,9 @@
 #define GAINPUT_UNUSED(x) (void)(x)
 
 #include <cstdlib>
+#include <cstdint>
 
 typedef struct tagMSG MSG;
-
-namespace gainput
-{
-	typedef unsigned __int8 uint8_t;
-	typedef __int8 int8_t;
-	typedef unsigned __int32 uint32_t;
-	typedef unsigned __int64 uint64_t;
-}
 
 /// Contains all Gainput related classes, types, and functions.
 namespace gainput

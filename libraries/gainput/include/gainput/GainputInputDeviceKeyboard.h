@@ -1,11 +1,7 @@
-
-#ifndef GAINPUTINPUTDEVICEKEYBOARD_H_
-#define GAINPUTINPUTDEVICEKEYBOARD_H_
+#pragma once
 
 namespace gainput
 {
-
-/// All valid device buttons for InputDeviceKeyboard.
 enum Key
 {
 	KeyEscape,
@@ -21,13 +17,6 @@ enum Key
 	KeyF10,
 	KeyF11,
 	KeyF12,
-	KeyF13,
-	KeyF14,
-	KeyF15,
-	KeyF16,
-	KeyF17,
-	KeyF18,
-	KeyF19,
 	KeyPrint,
 	KeyScrollLock,
 	KeyBreak,
@@ -200,7 +189,6 @@ enum Key
 	KeyCount_
 };
 
-
 class InputDeviceKeyboardImpl;
 
 /// A keyboard input device.
@@ -232,11 +220,7 @@ public:
 
 	bool IsValidButtonId(DeviceButtonId deviceButton) const { return deviceButton < KeyCount_; }
 
-	size_t GetAnyButtonDown(DeviceButtonSpec* outButtons, size_t maxButtonCount) const;
-
-	size_t GetButtonName(DeviceButtonId deviceButton, char* buffer, size_t bufferLength) const;
 	ButtonType GetButtonType(DeviceButtonId deviceButton) const;
-	DeviceButtonId GetButtonByName(const char* name) const;
 
 	InputState* GetNextInputState();
 
@@ -255,11 +239,5 @@ protected:
 
 private:
 	InputDeviceKeyboardImpl* impl_;
-
-	HashMap<Key, const char*> keyNames_;
 };
-
 }
-
-#endif
-
