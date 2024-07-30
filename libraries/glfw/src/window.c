@@ -402,8 +402,6 @@ void glfwSetWindowSize(GLFWwindow* handle, int width, int height)
     assert(width >= 0);
     assert(height >= 0);
 
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -492,8 +490,6 @@ void glfwRestoreWindow(GLFWwindow* handle)
 
 void glfwMaximizeWindow(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -574,17 +570,13 @@ void glfwSetWindowMonitor(GLFWwindow* wh, GLFWmonitor* mh, int xpos, int ypos, i
 
     if (width <= 0 || height <= 0)
     {
-        _glfwInputError(GLFW_INVALID_VALUE,
-                        "Invalid window size %ix%i",
-                        width, height);
+        _glfwInputError(GLFW_INVALID_VALUE,"Invalid window size %ix%i",width, height);
         return;
     }
 
     if (refreshRate < 0 && refreshRate != GLFW_DONT_CARE)
     {
-        _glfwInputError(GLFW_INVALID_VALUE,
-                        "Invalid refresh rate %i",
-                        refreshRate);
+        _glfwInputError(GLFW_INVALID_VALUE,"Invalid refresh rate %i",refreshRate);
         return;
     }
 
@@ -592,9 +584,7 @@ void glfwSetWindowMonitor(GLFWwindow* wh, GLFWmonitor* mh, int xpos, int ypos, i
     window->videoMode.height      = height;
     window->videoMode.refreshRate = refreshRate;
 
-    _glfw.platform.setWindowMonitor(window, monitor,
-                                    xpos, ypos, width, height,
-                                    refreshRate);
+    _glfw.platform.setWindowMonitor(window, monitor,xpos, ypos, width, height,refreshRate);
 }
 
 GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWwindow* handle, GLFWwindowsizefun cbfun)

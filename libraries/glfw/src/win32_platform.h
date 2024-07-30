@@ -147,19 +147,6 @@ typedef enum
 #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 ((HANDLE) -4)
 #endif /*DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2*/
 
-// Replacement for versionhelpers.h macros, as we cannot rely on the
-// application having a correct embedded manifest
-//
-#define IsWindows7OrGreater()                                         \
-    _glfwIsWindowsVersionOrGreaterWin32(HIBYTE(_WIN32_WINNT_WIN7),    \
-                                        LOBYTE(_WIN32_WINNT_WIN7), 0)
-#define IsWindows8OrGreater()                                         \
-    _glfwIsWindowsVersionOrGreaterWin32(HIBYTE(_WIN32_WINNT_WIN8),    \
-                                        LOBYTE(_WIN32_WINNT_WIN8), 0)
-#define IsWindows8Point1OrGreater()                                   \
-    _glfwIsWindowsVersionOrGreaterWin32(HIBYTE(_WIN32_WINNT_WINBLUE), \
-                                        LOBYTE(_WIN32_WINNT_WINBLUE), 0)
-
 // Windows 10 Anniversary Update
 #define _glfwIsWindows10Version1607OrGreaterWin32() \
     _glfwIsWindows10BuildOrGreaterWin32(14393)
@@ -273,8 +260,6 @@ typedef BOOL (WINAPI * PFN_wglMakeCurrent)(HDC,HGLRC);
 #define GLFW_WGL_CONTEXT_STATE          _GLFWcontextWGL wgl;
 #define GLFW_WGL_LIBRARY_CONTEXT_STATE  _GLFWlibraryWGL wgl;
 
-// WGL-specific per-context data
-//
 typedef struct _GLFWcontextWGL
 {
     HDC       dc;
@@ -282,8 +267,6 @@ typedef struct _GLFWcontextWGL
     int       interval;
 } _GLFWcontextWGL;
 
-// WGL-specific global data
-//
 typedef struct _GLFWlibraryWGL
 {
     HINSTANCE                           instance;

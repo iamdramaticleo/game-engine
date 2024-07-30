@@ -1088,12 +1088,9 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
     return DefWindowProcW(hWnd, uMsg, wParam, lParam);
 }
 
-// Creates the GLFW window
-//
 static int createNativeWindow(_GLFWwindow* window,const _GLFWwndconfig* wndconfig,const _GLFWfbconfig* fbconfig)
 {
     int frameX, frameY, frameWidth, frameHeight;
-    WCHAR* wideTitle;
     DWORD style = getWindowStyle(window);
     DWORD exStyle = getWindowExStyle(window);
 
@@ -1104,11 +1101,8 @@ static int createNativeWindow(_GLFWwindow* window,const _GLFWwndconfig* wndconfi
         wc.lpfnWndProc   = windowProc;
         wc.hInstance     = _glfw.win32.instance;
         wc.hCursor       = LoadCursorW(NULL, IDC_ARROW);
-#if defined(_GLFW_WNDCLASSNAME)
-        wc.lpszClassName = _GLFW_WNDCLASSNAME;
-#else
         wc.lpszClassName = L"GLFW30";
-#endif
+
         // Load user-provided icon if available
         wc.hIcon = LoadImageW(GetModuleHandleW(NULL),L"GLFW_ICON", IMAGE_ICON,0, 0, LR_DEFAULTSIZE | LR_SHARED);
         if (!wc.hIcon)
@@ -1163,7 +1157,7 @@ static int createNativeWindow(_GLFWwindow* window,const _GLFWwndconfig* wndconfi
         frameHeight = rect.bottom - rect.top;
     }
 
-    wideTitle = _glfwCreateWideStringFromUTF8Win32(wndconfig->title);
+    WCHAR* wideTitle = _glfwCreateWideStringFromUTF8Win32(wndconfig->title);
     if (!wideTitle)
         return GLFW_FALSE;
 
@@ -1187,12 +1181,9 @@ static int createNativeWindow(_GLFWwindow* window,const _GLFWwndconfig* wndconfi
 
     SetPropW(window->win32.handle, L"GLFW", window);
 
-    if (IsWindows7OrGreater())
-    {
-        ChangeWindowMessageFilterEx(window->win32.handle, WM_DROPFILES, MSGFLT_ALLOW, NULL);
-        ChangeWindowMessageFilterEx(window->win32.handle, WM_COPYDATA, MSGFLT_ALLOW, NULL);
-        ChangeWindowMessageFilterEx(window->win32.handle, WM_COPYGLOBALDATA, MSGFLT_ALLOW, NULL);
-    }
+    ChangeWindowMessageFilterEx(window->win32.handle, WM_DROPFILES, MSGFLT_ALLOW, NULL);
+    ChangeWindowMessageFilterEx(window->win32.handle, WM_COPYDATA, MSGFLT_ALLOW, NULL);
+    ChangeWindowMessageFilterEx(window->win32.handle, WM_COPYGLOBALDATA, MSGFLT_ALLOW, NULL);
 
     window->win32.scaleToMonitor = wndconfig->scaleToMonitor;
 
@@ -1393,9 +1384,7 @@ void _glfwSetWindowPosWin32(_GLFWwindow* window, int xpos, int ypos)
 
     if (_glfwIsWindows10Version1607OrGreaterWin32())
     {
-        AdjustWindowRectExForDpi(&rect, getWindowStyle(window),
-                                 FALSE, getWindowExStyle(window),
-                                 GetDpiForWindow(window->win32.handle));
+        AdjustWindowRectExForDpi(&rect, getWindowStyle(window),FALSE, getWindowExStyle(window),GetDpiForWindow(window->win32.handle));
     }
 
     SetWindowPos(window->win32.handle, NULL, rect.left, rect.top, 0, 0,SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOSIZE);
@@ -1579,15 +1568,10 @@ void _glfwSetWindowMonitorWin32(_GLFWwindow* window, _GLFWmonitor* monitor,
 
         if (_glfwIsWindows10Version1607OrGreaterWin32())
         {
-            AdjustWindowRectExForDpi(&rect, getWindowStyle(window),
-                                     FALSE, getWindowExStyle(window),
-                                     GetDpiForWindow(window->win32.handle));
+            AdjustWindowRectExForDpi(&rect, getWindowStyle(window),FALSE, getWindowExStyle(window),GetDpiForWindow(window->win32.handle));
         }
 
-        SetWindowPos(window->win32.handle, after,
-                     rect.left, rect.top,
-                     rect.right - rect.left, rect.bottom - rect.top,
-                     flags);
+        SetWindowPos(window->win32.handle, after,rect.left, rect.top,rect.right - rect.left, rect.bottom - rect.top,flags);
     }
 }
 
@@ -1629,8 +1613,7 @@ void _glfwSetWindowDecoratedWin32(_GLFWwindow* window, GLFWbool enabled)
 void _glfwSetWindowFloatingWin32(_GLFWwindow* window, GLFWbool enabled)
 {
     const HWND after = enabled ? HWND_TOPMOST : HWND_NOTOPMOST;
-    SetWindowPos(window->win32.handle, after, 0, 0, 0, 0,
-                 SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+    SetWindowPos(window->win32.handle, after, 0, 0, 0, 0,SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
 }
 
 void _glfwSetWindowMousePassthroughWin32(_GLFWwindow* window, GLFWbool enabled)
@@ -1793,9 +1776,7 @@ void _glfwSetCursorModeWin32(_GLFWwindow* window, int mode)
     {
         if (mode == GLFW_CURSOR_DISABLED)
         {
-            _glfwGetCursorPosWin32(window,
-                                   &_glfw.win32.restoreCursorPosX,
-                                   &_glfw.win32.restoreCursorPosY);
+            _glfwGetCursorPosWin32(window,&_glfw.win32.restoreCursorPosX,&_glfw.win32.restoreCursorPosY);
             _glfwCenterCursorInContentArea(window);
             if (window->rawMouseMotion)
                 enableRawMouseMotion(window);
@@ -1816,9 +1797,7 @@ void _glfwSetCursorModeWin32(_GLFWwindow* window, int mode)
         else if (_glfw.win32.disabledCursorWindow == window)
         {
             _glfw.win32.disabledCursorWindow = NULL;
-            _glfwSetCursorPosWin32(window,
-                                   _glfw.win32.restoreCursorPosX,
-                                   _glfw.win32.restoreCursorPosY);
+            _glfwSetCursorPosWin32(window,_glfw.win32.restoreCursorPosX,_glfw.win32.restoreCursorPosY);
         }
     }
 

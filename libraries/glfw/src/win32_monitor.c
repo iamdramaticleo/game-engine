@@ -73,16 +73,8 @@ static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter, DISPLAY_DEVICEW* di
 
     HDC dc = CreateDCW(L"DISPLAY", adapter->DeviceName, NULL, NULL);
 
-    if (IsWindows8Point1OrGreater())
-    {
-        widthMM  = GetDeviceCaps(dc, HORZSIZE);
-        heightMM = GetDeviceCaps(dc, VERTSIZE);
-    }
-    else
-    {
-        widthMM  = (int) (dm.dmPelsWidth * 25.4f / GetDeviceCaps(dc, LOGPIXELSX));
-        heightMM = (int) (dm.dmPelsHeight * 25.4f / GetDeviceCaps(dc, LOGPIXELSY));
-    }
+    widthMM  = GetDeviceCaps(dc, HORZSIZE);
+    heightMM = GetDeviceCaps(dc, VERTSIZE);
 
     DeleteDC(dc);
 
@@ -312,20 +304,10 @@ void _glfwGetHMONITORContentScaleWin32(HMONITOR handle, float* xscale, float* ys
     if (yscale)
         *yscale = 0.f;
 
-    if (IsWindows8Point1OrGreater())
+    if (GetDpiForMonitor(handle, MDT_EFFECTIVE_DPI, &xdpi, &ydpi) != S_OK)
     {
-        if (GetDpiForMonitor(handle, MDT_EFFECTIVE_DPI, &xdpi, &ydpi) != S_OK)
-        {
-            _glfwInputError(GLFW_PLATFORM_ERROR, "Win32: Failed to query monitor DPI");
-            return;
-        }
-    }
-    else
-    {
-        const HDC dc = GetDC(NULL);
-        xdpi = GetDeviceCaps(dc, LOGPIXELSX);
-        ydpi = GetDeviceCaps(dc, LOGPIXELSY);
-        ReleaseDC(NULL, dc);
+        _glfwInputError(GLFW_PLATFORM_ERROR, "Win32: Failed to query monitor DPI");
+        return;
     }
 
     if (xscale)
