@@ -1,10 +1,7 @@
-
-#ifndef GAINPUTINPUTSTATE_H_
-#define GAINPUTINPUTSTATE_H_
+#pragma once
 
 namespace gainput
 {
-
 /// State of an input device.
 class GAINPUT_LIBEXPORT InputState
 {
@@ -53,8 +50,4 @@ private:
 
 	Button* buttons_;
 };
-
 }
-
-#endif
-

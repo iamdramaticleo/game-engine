@@ -85,6 +85,5 @@ protected:
 
 private:
 	InputDeviceMouseImpl* impl_;
-
 };
 }

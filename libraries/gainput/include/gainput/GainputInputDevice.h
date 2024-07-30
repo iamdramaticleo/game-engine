@@ -2,7 +2,6 @@
 
 namespace gainput
 {
-/// Type of an input device button.
 enum ButtonType
 {
 	BT_BOOL,	///< A boolean value button, either down (true) or up (false).
@@ -10,21 +9,6 @@ enum ButtonType
 	BT_COUNT	///< The number of different button types.
 };
 
-/// Interface for anything that provides device inputs.
-/**
- * An InputDevice can be anything from a physical device, like a mouse or keyboard, to the more abstract
- * concept of gestures that in turn themselves depend on other InputDevices. What they have in common is
- * that they provide a number of device buttons (identified by a DeviceButtonId) which can be queried for
- * their state.
- *
- * Note that you may not instantiate an InputDevice (or any derived implementation) directly. Instead you
- * have to call InputManager::CreateDevice() or InputManager::CreateAndGetDevice() with the device you want
- * to instantiate as the template parameter. That way the device will be properly registered with the
- * InputManager and continuously updated.
- *
- * Normally, you won't interact with an InputDevice directly, but instead use its device ID and its device
- * buttons' IDs to map the device buttons to user buttons (see InputMap).
- */
 class GAINPUT_LIBEXPORT InputDevice
 {
 public:
@@ -60,8 +44,6 @@ public:
 
 	/// Returns the device type.
 	virtual DeviceType GetType() const = 0;
-	/// Returns if this device should be updated after other devices.
-	virtual bool IsLateUpdate() const { return false; }
 
 	/// Returns if the given button is valid for this device.
 	virtual bool IsValidButtonId(DeviceButtonId deviceButton) const = 0;
@@ -117,32 +99,28 @@ protected:
 };
 
 inline
-bool
-InputDevice::GetBool(DeviceButtonId deviceButton) const
+bool InputDevice::GetBool(DeviceButtonId deviceButton) const
 {
 	GAINPUT_ASSERT(state_);
 	return state_->GetBool(deviceButton);
 }
 
 inline
-bool
-InputDevice::GetBoolPrevious(DeviceButtonId deviceButton) const
+bool InputDevice::GetBoolPrevious(DeviceButtonId deviceButton) const
 {
 	GAINPUT_ASSERT(previousState_);
 	return previousState_->GetBool(deviceButton);
 }
 
 inline
-float
-InputDevice::GetFloat(DeviceButtonId deviceButton) const
+float InputDevice::GetFloat(DeviceButtonId deviceButton) const
 {
 	GAINPUT_ASSERT(state_);
 	return state_->GetFloat(deviceButton);
 }
 
 inline
-float
-InputDevice::GetFloatPrevious(DeviceButtonId deviceButton) const
+float InputDevice::GetFloatPrevious(DeviceButtonId deviceButton) const
 {
 	GAINPUT_ASSERT(previousState_);
 	return previousState_->GetFloat(deviceButton);
