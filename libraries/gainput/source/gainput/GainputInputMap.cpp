@@ -10,7 +10,6 @@ namespace
 
 namespace gainput
 {
-
 class MappedInput
 {
 public:
@@ -29,7 +28,6 @@ typedef Array<MappedInput> MappedInputList;
 class UserButton
 {
 public:
-
 	UserButtonId userButton;
 	MappedInputList inputs;
 	InputMap::UserButtonPolicy policy;
@@ -41,28 +39,19 @@ public:
 	{ }
 };
 
-
-InputMap::InputMap(InputManager& manager, const char* name, Allocator& allocator) :
+InputMap::InputMap(InputManager& manager, Allocator& allocator) :
 	manager_(manager),
-	name_(0),
 	allocator_(allocator),
 	userButtons_(allocator_),
 	nextUserButtonId_(0)
 {
 	static unsigned nextId = 0;
 	id_ = nextId++;
-
-	if (name)
-	{
-		name_ = static_cast<char*>(allocator_.Allocate(strlen(name) + 1));
-		strcpy(name_, name);
-	}
 }
 
 InputMap::~InputMap()
 {
 	Clear();
-	allocator_.Deallocate(name_);
 }
 
 void
@@ -355,8 +344,7 @@ float InputMap::GetFloatState(UserButtonId userButton, bool previous) const
 	return value;
 }
 
-UserButtonId
-InputMap::GetUserButtonId(DeviceId device, DeviceButtonId deviceButton) const
+UserButtonId InputMap::GetUserButtonId(DeviceId device, DeviceButtonId deviceButton) const
 {
 	for (UserButtonMap::const_iterator it = userButtons_.begin();
 			it != userButtons_.end();
@@ -377,8 +365,7 @@ InputMap::GetUserButtonId(DeviceId device, DeviceButtonId deviceButton) const
 	return InvalidUserButtonId;
 }
 
-UserButton*
-InputMap::GetUserButton(UserButtonId userButton)
+UserButton* InputMap::GetUserButton(UserButtonId userButton)
 {
 	UserButtonMap::iterator it = userButtons_.find(userButton);
 	if (it == userButtons_.end())
@@ -388,8 +375,7 @@ InputMap::GetUserButton(UserButtonId userButton)
 	return it->second;
 }
 
-const UserButton*
-InputMap::GetUserButton(UserButtonId userButton) const
+const UserButton* InputMap::GetUserButton(UserButtonId userButton) const
 {
 	UserButtonMap::const_iterator it = userButtons_.find(userButton);
 	if (it == userButtons_.end())
@@ -398,6 +384,4 @@ InputMap::GetUserButton(UserButtonId userButton) const
 	}
 	return it->second;
 }
-
 }
-

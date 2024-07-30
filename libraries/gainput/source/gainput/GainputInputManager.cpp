@@ -52,23 +52,12 @@ void InputManager::Update()
 
 	for (auto it = devices_.begin(); it != devices_.end(); ++it)
 	{
-		if (!it->second->IsLateUpdate())
-		{
-			it->second->Update(ds);
-		}
+		it->second->Update(ds);
 	}
 
 	for (auto it = modifiers_.begin(); it != modifiers_.end();++it)
 	{
 		it->second->Update(ds);
-	}
-
-	for (auto it = devices_.begin(); it != devices_.end(); ++it)
-	{
-		if (it->second->IsLateUpdate())
-		{
-			it->second->Update(ds);
-		}
 	}
 
 	if (ds)

@@ -29,7 +29,7 @@ public:
 	 * \param name The name for the input map (optional). If a name is provided, it is copied to an internal buffer.
 	 * \param allocator The allocator to be used for all memory allocations.
 	 */
-	InputMap(InputManager& manager, const char* name = 0, Allocator& allocator = GetDefaultAllocator());
+	InputMap(InputManager& manager, Allocator& allocator = GetDefaultAllocator());
 	/// Unitializes the map.
 	~InputMap();
 
@@ -38,11 +38,6 @@ public:
 
 	/// Returns the input manager this input map uses.
 	const InputManager& GetManager() const { return manager_; }
-	/// Returns the map's name, if any.
-	/**
-	 * \return The map's name or 0 if no name was set.
-	 */
-	const char* GetName() const { return name_; }
 	/// Returns the map's auto-generated ID (that should not be used outside of the library).
 	unsigned GetId() const { return id_; }
 
@@ -136,7 +131,6 @@ public:
 
 private:
 	InputManager& manager_;
-	char* name_;
 	unsigned id_;
 	Allocator& allocator_;
 
