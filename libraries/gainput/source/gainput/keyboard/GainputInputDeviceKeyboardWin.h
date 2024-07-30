@@ -1,6 +1,4 @@
-
-#ifndef GAINPUTINPUTDEVICEKEYBOARDWIN_H_
-#define GAINPUTINPUTDEVICEKEYBOARDWIN_H_
+#pragma once
 
 #include "../GainputWindows.h"
 
@@ -9,7 +7,6 @@
 
 namespace gainput
 {
-
 class InputDeviceKeyboardImplWin : public InputDeviceKeyboardImpl
 {
 public:
@@ -212,12 +209,6 @@ public:
 				{
 					winKey = VK_RSHIFT;
 				}
-#ifdef GAINPUT_DEBUG
-				else
-				{
-					GAINPUT_LOG("Not sure which shift this is.\n");
-				}
-#endif
 			}
 			else
 			{
@@ -229,19 +220,8 @@ public:
 				{
 					winKey = VK_RSHIFT;
 				}
-#ifdef GAINPUT_DEBUG
-				else
-				{
-					GAINPUT_LOG("Not sure which shift this is.\n");
-				}
-#endif
 			}
 		}
-		// TODO handle l/r alt properly
-
-#ifdef GAINPUT_DEBUG
-		GAINPUT_LOG("Keyboard: %d, %i\n", winKey, pressed);
-#endif
 
 		if (dialect_.count(winKey))
 		{
@@ -261,9 +241,4 @@ private:
 	InputState nextState_;
 	InputDeltaState* delta_;
 };
-
-
 }
-
-#endif
-
