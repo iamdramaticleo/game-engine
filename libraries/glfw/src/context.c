@@ -385,7 +385,7 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window, const _GLFWctxconfig* c
         GLint behavior;
         window->context.GetIntegerv(GL_CONTEXT_RELEASE_BEHAVIOR, &behavior);
 
-        if (behavior == GL_NONE)
+        if (behavior == 0)
             window->context.release = GLFW_RELEASE_BEHAVIOR_NONE;
         else if (behavior == GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH)
             window->context.release = GLFW_RELEASE_BEHAVIOR_FLUSH;

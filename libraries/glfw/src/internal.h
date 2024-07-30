@@ -52,7 +52,6 @@ typedef struct _GLFWtls         _GLFWtls;
 typedef struct _GLFWmutex       _GLFWmutex;
 
 #define GL_VERSION 0x1f02
-#define GL_NONE 0
 #define GL_COLOR_BUFFER_BIT 0x00004000
 #define GL_UNSIGNED_BYTE 0x1401
 #define GL_EXTENSIONS 0x1f03

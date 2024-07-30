@@ -332,8 +332,6 @@ static void destroyContextWGL(_GLFWwindow* window)
 
 GLFWbool _glfwInitWGL()
 {
-    PIXELFORMATDESCRIPTOR pfd;
-
     if (_glfw.wgl.instance)
         return GLFW_TRUE;
 
@@ -357,6 +355,8 @@ GLFWbool _glfwInitWGL()
     //       creation failure occurs during manual pixel format enumeration
 
     HDC dc = GetDC(_glfw.win32.helperWindowHandle);
+
+    PIXELFORMATDESCRIPTOR pfd;
 
     ZeroMemory(&pfd, sizeof(pfd));
     pfd.nSize = sizeof(pfd);
@@ -442,11 +442,7 @@ void _glfwTerminateWGL()
     attribs[index++] = v; \
 }
 
-// Create the OpenGL or OpenGL ES context
-//
-GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
-                               const _GLFWctxconfig* ctxconfig,
-                               const _GLFWfbconfig* fbconfig)
+GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,const _GLFWctxconfig* ctxconfig,const _GLFWfbconfig* fbconfig)
 {
     PIXELFORMATDESCRIPTOR pfd;
 

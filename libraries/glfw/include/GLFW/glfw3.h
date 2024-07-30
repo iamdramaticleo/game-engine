@@ -428,7 +428,6 @@ void glfwTerminate();
 
 void glfwInitAllocator(const GLFWallocator* allocator);
 
-GLFWmonitor** glfwGetMonitors(int* count);
 GLFWmonitor* glfwGetPrimaryMonitor(void);
 void glfwGetMonitorPos(GLFWmonitor* monitor, int* xpos, int* ypos);
 
