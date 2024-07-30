@@ -8,6 +8,33 @@
 
 namespace gainput
 {
+ButtonType deviceButtonInfos[] =
+{
+	BT_BOOL,//"mouse_left" },
+	BT_BOOL,//"mouse_middle" },
+	BT_BOOL,//"mouse_right" },
+	BT_BOOL,//"mouse_3" },
+	BT_BOOL,//"mouse_4" },
+	BT_BOOL,//"mouse_5" },
+	BT_BOOL,//"mouse_6" },
+	BT_BOOL,//"mouse_7" },
+	BT_BOOL,//"mouse_8" },
+	BT_BOOL,//"mouse_9" },
+	BT_BOOL,//"mouse_10" },
+	BT_BOOL,//"mouse_11" },
+	BT_BOOL,//"mouse_12" },
+	BT_BOOL,//"mouse_13" },
+	BT_BOOL,//"mouse_14" },
+	BT_BOOL,//"mouse_15" },
+	BT_BOOL,//"mouse_16" },
+	BT_BOOL,//"mouse_17" },
+	BT_BOOL,//"mouse_18" },
+	BT_BOOL,//"mouse_19" },
+	BT_BOOL,//"mouse_20" },
+	BT_FLOAT,// "mouse_x" },
+	BT_FLOAT,//"mouse_y" }
+};
+
 InputDeviceMouse::InputDeviceMouse(InputManager& manager, const DeviceId device, const unsigned index) :
 	InputDevice(manager, device, index == AutoIndex ? manager.GetDeviceCountByType(DT_MOUSE) : index),
 	impl_(nullptr)
@@ -32,5 +59,11 @@ InputDeviceMouse::~InputDeviceMouse()
 void InputDeviceMouse::InternalUpdate(InputDeltaState* delta)
 {
 	impl_->Update(delta);
+}
+
+ButtonType InputDeviceMouse::GetButtonType(DeviceButtonId deviceButton) const
+{
+	GAINPUT_ASSERT(IsValidButtonId(deviceButton));
+	return deviceButtonInfos[deviceButton];
 }
 }
