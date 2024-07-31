@@ -2,8 +2,7 @@
 
 namespace gainput
 {
-DefaultAllocator&
-GetDefaultAllocator()
+DefaultAllocator& GetDefaultAllocator()
 {
 	static DefaultAllocator da;
 	return da;

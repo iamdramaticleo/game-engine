@@ -18,8 +18,7 @@ InputState::~InputState()
 	allocator_.Deallocate(buttons_);
 }
 
-InputState&
-InputState::operator=(const InputState& other)
+InputState& InputState::operator=(const InputState& other)
 {
 	const size_t size = sizeof(Button) * buttonCount_;
 	memcpy(buttons_, other.buttons_, size);

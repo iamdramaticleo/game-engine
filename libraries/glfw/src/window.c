@@ -60,7 +60,7 @@ void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused)
 void _glfwInputWindowSize(_GLFWwindow* window, int width, int height)
 {
     assert(window != NULL);
-    assert(width >= 0);1
+    assert(width >= 0);
     assert(height >= 0);
 
     if (window->callbacks.size)

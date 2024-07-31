@@ -298,7 +298,7 @@ float InputMap::GetFloatState(UserButtonId userButton, bool previous) const
 				value = deviceValue;
 				break;
 			}
-			else if (ub->policy == UBP_MAX)
+			if (ub->policy == UBP_MAX)
 			{
 				if (Abs(deviceValue) > Abs(value))
 				{
