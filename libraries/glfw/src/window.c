@@ -501,50 +501,6 @@ void glfwFocusWindow(GLFWwindow* handle)
     _glfw.platform.focusWindow(window);
 }
 
-void glfwSetWindowAttrib(GLFWwindow* handle, int attrib, int value)
-{
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    value = value ? GLFW_TRUE : GLFW_FALSE;
-
-    switch (attrib)
-    {
-        case GLFW_AUTO_ICONIFY:
-            window->autoIconify = value;
-            return;
-
-        case GLFW_RESIZABLE:
-            window->resizable = value;
-            if (!window->monitor)
-                _glfw.platform.setWindowResizable(window, value);
-            return;
-
-        case GLFW_DECORATED:
-            window->decorated = value;
-            if (!window->monitor)
-                _glfw.platform.setWindowDecorated(window, value);
-            return;
-
-        case GLFW_FLOATING:
-            window->floating = value;
-            if (!window->monitor)
-                _glfw.platform.setWindowFloating(window, value);
-            return;
-
-        case GLFW_FOCUS_ON_SHOW:
-            window->focusOnShow = value;
-            return;
-
-        case GLFW_MOUSE_PASSTHROUGH:
-            window->mousePassthrough = value;
-            _glfw.platform.setWindowMousePassthrough(window, value);
-            return;
-    }
-
-    _glfwInputError(GLFW_INVALID_ENUM, "Invalid window attribute 0x%08X", attrib);
-}
-
 GLFWmonitor* glfwGetWindowMonitor(GLFWwindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;

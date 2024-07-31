@@ -469,8 +469,6 @@ GLFWmonitor* glfwGetWindowMonitor(GLFWwindow* window);
 
 void glfwSetWindowMonitor(GLFWwindow* window, GLFWmonitor* monitor, int xpos, int ypos, int width, int height, int refreshRate);
 
-void glfwSetWindowAttrib(GLFWwindow* window, int attrib, int value);
-
 GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWwindow* window, GLFWwindowsizefun callback);
 
 void glfwSetCloseCallback(GLFWwindow* window, GLFWwindowclosefun callback);
