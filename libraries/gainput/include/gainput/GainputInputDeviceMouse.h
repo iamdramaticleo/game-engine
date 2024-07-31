@@ -41,18 +41,10 @@ enum MouseButton
 
 class InputDeviceMouseImpl;
 
-class GAINPUT_LIBEXPORT InputDeviceMouse : public InputDevice
+class InputDeviceMouse : public InputDevice
 {
 public:
-	/// Initializes the device.
-	/**
-	 * Instantiate the device using InputManager::CreateDevice().
-	 *
-	 * \param manager The input manager this device is managed by.
-	 * \param device The ID of this device.
-	 */
 	InputDeviceMouse(InputManager& manager, DeviceId device, unsigned index);
-	/// Shuts down the device.
 	~InputDeviceMouse();
 
 	/// Returns DT_MOUSE.

@@ -209,9 +209,7 @@ bool InputMap::GetBoolPrevious(UserButtonId userButton) const
 {
 	const UserButton* ub = GetUserButton(userButton);
 	GAINPUT_ASSERT(ub);
-	for (MappedInputList::const_iterator it = ub->inputs.begin();
-			it != ub->inputs.end();
-			++it)
+	for (auto it = ub->inputs.begin(); it != ub->inputs.end(); ++it)
 	{
 		const MappedInput& mi= *it;
 		const InputDevice* device = manager_.GetDevice(mi.device);
@@ -263,9 +261,7 @@ float InputMap::GetFloatState(UserButtonId userButton, bool previous) const
 	int downCount = 0;
 	const UserButton* ub = GetUserButton(userButton);
 	GAINPUT_ASSERT(ub);
-	for (MappedInputList::const_iterator it = ub->inputs.begin();
-			it != ub->inputs.end();
-			++it)
+	for (auto it = ub->inputs.begin();it != ub->inputs.end();++it)
 	{
 		const MappedInput& mi= *it;
 		const InputDevice* device = manager_.GetDevice(mi.device);
@@ -332,7 +328,7 @@ float InputMap::GetFloatState(UserButtonId userButton, bool previous) const
 
 	if (ub->policy == UBP_AVERAGE && downCount)
 	{
-		value /= float(downCount);
+		value /= static_cast<float>(downCount);
 	}
 
 	if (Abs(value) <= ub->deadZone)
@@ -345,14 +341,10 @@ float InputMap::GetFloatState(UserButtonId userButton, bool previous) const
 
 UserButtonId InputMap::GetUserButtonId(DeviceId device, DeviceButtonId deviceButton) const
 {
-	for (UserButtonMap::const_iterator it = userButtons_.begin();
-			it != userButtons_.end();
-			++it)
+	for (auto it = userButtons_.begin();it != userButtons_.end();++it)
 	{
 		const UserButton* ub = it->second;
-		for (MappedInputList::const_iterator it2 = ub->inputs.begin();
-				it2 != ub->inputs.end();
-				++it2)
+		for (auto it2 = ub->inputs.begin();it2 != ub->inputs.end();++it2)
 		{
 			const MappedInput& mi = *it2;
 			if (mi.device == device && mi.deviceButton == deviceButton)
@@ -366,20 +358,20 @@ UserButtonId InputMap::GetUserButtonId(DeviceId device, DeviceButtonId deviceBut
 
 UserButton* InputMap::GetUserButton(UserButtonId userButton)
 {
-	UserButtonMap::iterator it = userButtons_.find(userButton);
+	auto it = userButtons_.find(userButton);
 	if (it == userButtons_.end())
 	{
-		return 0;
+		return nullptr;
 	}
 	return it->second;
 }
 
 const UserButton* InputMap::GetUserButton(UserButtonId userButton) const
 {
-	UserButtonMap::const_iterator it = userButtons_.find(userButton);
+	auto it = userButtons_.find(userButton);
 	if (it == userButtons_.end())
 	{
-		return 0;
+		return nullptr;
 	}
 	return it->second;
 }

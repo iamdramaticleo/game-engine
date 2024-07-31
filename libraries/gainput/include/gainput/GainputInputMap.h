@@ -3,23 +3,9 @@
 namespace gainput
 {
 class UserButton;
-
 /// Type for filter functions that can be used to filter mapped float inputs.
 typedef float (*FilterFunc_T)(float const value, void* userData);
 
-/// Maps user buttons to device buttons.
-/**
- * This is the interface that should be used to get input. You can have several maps that are used
- * simultaneously or use different ones depending on game state. The user button IDs have to be unique per input map.
- *
- * InputMap uses the provided InputManager to get devices inputs and process them into user-mapped inputs. After creating 
- * an InputMap, you should map some device buttons to user buttons (using MapBool() or MapFloat()). User buttons are identified 
- * by an ID provided by you. In order to ensure their uniqueness, it's a good idea to define an enum containing all your user buttons
- * for any given InputMap. It's of course possible to map multiple different device button to one user button.
- *
- * After a user button has been mapped, you can query its state by calling one of the several GetBool* and GetFloat* functions. The
- * result will depend on the mapped device button(s) and the policy (set using SetUserButtonPolicy()).
- */
 class GAINPUT_LIBEXPORT InputMap
 {
 public:
@@ -84,49 +70,20 @@ public:
 		UBP_MIN,		///< The minimum of all device button states is the result.
 		UBP_AVERAGE		///< The average of all device button states is the result.
 	};
-	/// Sets how a user button handles inputs from multiple device buttons.
-	/**
-	 * \return true if the policy was set, false otherwise (i.e. the user button doesn't exist).
-	 */
+
 	bool SetUserButtonPolicy(UserButtonId userButton, UserButtonPolicy policy);
 
-	/// Sets a dead zone for a float-type button.
-	/**
-	 * If a dead zone is set for a button anything less or equal to the given value will be treated
-	 * as 0.0f. The absolute input value is used in order to determine if the input value falls within the dead
-	 * zone (i.e. with a dead zone of 0.2f, both -0.1f and 0.1f will result in 0.0f).
-	 *
-	 * \param userButton The user button's ID.
-	 * \param deadZone The dead zone to be set.
-	 * \return true if the dead zone was set, false otherwise (i.e. the user button doesn't exist).
-	 */
 	bool SetDeadZone(UserButtonId userButton, float deadZone);
 
-	/// Returns the bool state of a user button.
 	bool GetBool(UserButtonId userButton) const;
-	/// Returns if the user button is newly down.
 	bool GetBoolIsNew(UserButtonId userButton) const;
-	/// Returns the bool state of a user button from the previous frame.
 	bool GetBoolPrevious(UserButtonId userButton) const;
-	/// Returns if the user button has been released.
 	bool GetBoolWasDown(UserButtonId userButton) const;
 
-	/// Returns the float state of a user button.
 	float GetFloat(UserButtonId userButton) const;
-	/// Returns the float state of a user button from the previous frame.
 	float GetFloatPrevious(UserButtonId userButton) const;
-	/// Returns the delta between the previous and the current frame of the float state of the given user button.
 	float GetFloatDelta(UserButtonId userButton) const;
 
-	/// Returns the user button ID the given device button is mapped to.
-	/**
-	 * This function iterates over all mapped buttons and therefore shouldn't be used in a performance critical
-	 * situation.
-	 *
-	 * \param device The device's ID of the device button to be checked.
-	 * \param deviceButton The ID of the device button to be checked.
-	 * \return The user button ID the device button is mapped to or InvalidDeviceButtonId if the device button is not mapped.
-	 */
 	UserButtonId GetUserButtonId(DeviceId device, DeviceButtonId deviceButton) const;
 
 private:
