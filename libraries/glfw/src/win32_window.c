@@ -690,99 +690,6 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
             break;
         }
 
-        case WM_LBUTTONDOWN:
-        case WM_RBUTTONDOWN:
-        case WM_MBUTTONDOWN:
-        case WM_XBUTTONDOWN:
-        case WM_LBUTTONUP:
-        case WM_RBUTTONUP:
-        case WM_MBUTTONUP:
-        case WM_XBUTTONUP:
-        {
-            int i, button, action;
-
-            if (uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONUP)
-                button = GLFW_MOUSE_BUTTON_LEFT;
-            else if (uMsg == WM_RBUTTONDOWN || uMsg == WM_RBUTTONUP)
-                button = GLFW_MOUSE_BUTTON_RIGHT;
-            else if (uMsg == WM_MBUTTONDOWN || uMsg == WM_MBUTTONUP)
-                button = GLFW_MOUSE_BUTTON_MIDDLE;
-
-            if (uMsg == WM_LBUTTONDOWN || uMsg == WM_RBUTTONDOWN ||
-                uMsg == WM_MBUTTONDOWN || uMsg == WM_XBUTTONDOWN)
-            {
-                action = GLFW_PRESS;
-            }
-            else
-                action = GLFW_RELEASE;
-
-            for (i = 0;  i <= GLFW_MOUSE_BUTTON_LAST;  i++)
-            {
-                if (window->mouseButtons[i] == GLFW_PRESS)
-                    break;
-            }
-
-            if (i > GLFW_MOUSE_BUTTON_LAST)
-                SetCapture(hWnd);
-
-            _glfwInputMouseClick(window, button, action, getKeyMods());
-
-            for (i = 0;  i <= GLFW_MOUSE_BUTTON_LAST;  i++)
-            {
-                if (window->mouseButtons[i] == GLFW_PRESS)
-                    break;
-            }
-
-            if (i > GLFW_MOUSE_BUTTON_LAST)
-                ReleaseCapture();
-
-            if (uMsg == WM_XBUTTONDOWN || uMsg == WM_XBUTTONUP)
-                return TRUE;
-
-            return 0;
-        }
-
-        case WM_MOUSEMOVE:
-        {
-            const int x = GET_X_LPARAM(lParam);
-            const int y = GET_Y_LPARAM(lParam);
-
-            if (!window->win32.cursorTracked)
-            {
-                TRACKMOUSEEVENT tme;
-                ZeroMemory(&tme, sizeof(tme));
-                tme.cbSize = sizeof(tme);
-                tme.dwFlags = TME_LEAVE;
-                tme.hwndTrack = window->win32.handle;
-                TrackMouseEvent(&tme);
-
-                window->win32.cursorTracked = GLFW_TRUE;
-                _glfwInputCursorEnter(window, GLFW_TRUE);
-            }
-
-            if (window->cursorMode == GLFW_CURSOR_DISABLED)
-            {
-                const int dx = x - window->win32.lastCursorPosX;
-                const int dy = y - window->win32.lastCursorPosY;
-
-                if (_glfw.win32.disabledCursorWindow != window)
-                    break;
-                if (window->rawMouseMotion)
-                    break;
-
-                _glfwInputCursorPos(window,
-                                    window->virtualCursorPosX + dx,
-                                    window->virtualCursorPosY + dy);
-            }
-            else
-                _glfwInputCursorPos(window, x, y);
-
-            window->win32.lastCursorPosX = x;
-            window->win32.lastCursorPosY = y;
-
-            return 0;
-        }
-
         case WM_INPUT:
         {
             UINT size = 0;
@@ -858,20 +765,6 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         {
             window->win32.cursorTracked = GLFW_FALSE;
             _glfwInputCursorEnter(window, GLFW_FALSE);
-            return 0;
-        }
-
-        case WM_MOUSEWHEEL:
-        {
-            _glfwInputScroll(window, 0.0, (SHORT) HIWORD(wParam) / (double) WHEEL_DELTA);
-            return 0;
-        }
-
-        case WM_MOUSEHWHEEL:
-        {
-            // This message is only sent on Windows Vista and later
-            // NOTE: The X-axis is inverted for consistency with macOS and X11
-            _glfwInputScroll(window, -((SHORT) HIWORD(wParam) / (double) WHEEL_DELTA), 0.0);
             return 0;
         }
 

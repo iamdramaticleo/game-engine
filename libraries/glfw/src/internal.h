@@ -235,7 +235,6 @@ struct _GLFWwindow
     GLFWbool            lockKeyMods;
     GLFWbool            disableMouseButtonLimit;
     int                 cursorMode;
-    char                mouseButtons[GLFW_MOUSE_BUTTON_LAST + 1];
     char                keys[GLFW_KEY_LAST + 1];
     // Virtual cursor position when cursor is disabled
     double              virtualCursorPosX, virtualCursorPosY;
@@ -250,7 +249,6 @@ struct _GLFWwindow
         GLFWwindowiconifyfun      iconify;
         GLFWwindowmaximizefun     maximize;
         GLFWframebuffersizefun    fbsize;
-        GLFWmousebuttonfun        mouseButton;
         GLFWcursorposfun          cursorPos;
         GLFWcursorenterfun        cursorEnter;
         GLFWscrollfun             scroll;
@@ -435,7 +433,6 @@ void _glfwInputWindowMonitor(_GLFWwindow* window, _GLFWmonitor* monitor);
 void _glfwInputKey(_GLFWwindow* window, int key, int scancode, int action, int mods);
 void _glfwInputChar(_GLFWwindow* window, uint32_t codepoint, int mods, GLFWbool plain);
 void _glfwInputScroll(_GLFWwindow* window, double xoffset, double yoffset);
-void _glfwInputMouseClick(_GLFWwindow* window, int button, int action, int mods);
 void _glfwInputCursorPos(_GLFWwindow* window, double xpos, double ypos);
 void _glfwInputCursorEnter(_GLFWwindow* window, GLFWbool entered);
 

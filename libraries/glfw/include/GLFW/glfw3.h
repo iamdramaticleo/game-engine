@@ -198,15 +198,6 @@ extern "C" {
 #define GLFW_MOD_CAPS_LOCK       0x0010
 #define GLFW_MOD_NUM_LOCK        0x0020
 
-#define GLFW_MOUSE_BUTTON_1         0
-#define GLFW_MOUSE_BUTTON_2         1
-#define GLFW_MOUSE_BUTTON_3         2
-#define GLFW_MOUSE_BUTTON_LAST      GLFW_MOUSE_BUTTON_3
-#define GLFW_MOUSE_BUTTON_LEFT      GLFW_MOUSE_BUTTON_1
-#define GLFW_MOUSE_BUTTON_RIGHT     GLFW_MOUSE_BUTTON_2
-#define GLFW_MOUSE_BUTTON_MIDDLE    GLFW_MOUSE_BUTTON_3
-/*! @} */
-
 #define GLFW_NO_ERROR               0
 #define GLFW_NOT_INITIALIZED        0x00010001
 #define GLFW_NO_CURRENT_CONTEXT     0x00010002
@@ -331,8 +322,6 @@ typedef void (* GLFWwindowiconifyfun)(GLFWwindow* window, int iconified);
 typedef void (* GLFWwindowmaximizefun)(GLFWwindow* window, int maximized);
 
 typedef void (* GLFWframebuffersizefun)(GLFWwindow* window, int width, int height);
-
-typedef void (* GLFWmousebuttonfun)(GLFWwindow* window, int button, int action, int mods);
 
 typedef void (* GLFWcursorposfun)(GLFWwindow* window, double xpos, double ypos);
 
@@ -523,10 +512,7 @@ GLFWkeyfun glfwSetKeyCallback(GLFWwindow* window, GLFWkeyfun callback);
 
 GLFWcharfun glfwSetCharCallback(GLFWwindow* window, GLFWcharfun callback);
 
-GLFWcharmodsfun glfwSetCharModsCallback(GLFWwindow* window, GLFWcharmodsfun callback);
-
-GLFWmousebuttonfun glfwSetMouseButtonCallback(GLFWwindow* window, GLFWmousebuttonfun callback);
-
+GLFWcharmodsfun  glfwSetCharModsCallback(GLFWwindow* window, GLFWcharmodsfun callback);
 GLFWcursorposfun glfwSetCursorPosCallback(GLFWwindow* window, GLFWcursorposfun callback);
 
 GLFWcursorenterfun glfwSetCursorEnterCallback(GLFWwindow* window, GLFWcursorenterfun callback);

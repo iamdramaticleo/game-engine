@@ -112,31 +112,6 @@ void _glfwInputScroll(_GLFWwindow* window, double xoffset, double yoffset)
         window->callbacks.scroll((GLFWwindow*) window, xoffset, yoffset);
 }
 
-void _glfwInputMouseClick(_GLFWwindow* window, int button, int action, int mods)
-{
-    assert(window != NULL);
-    assert(button >= 0);
-    assert(action == GLFW_PRESS || action == GLFW_RELEASE);
-    assert(mods == (mods & GLFW_MOD_MASK));
-
-    if (button < 0 || (!window->disableMouseButtonLimit && button > GLFW_MOUSE_BUTTON_LAST))
-        return;
-
-    if (!window->lockKeyMods)
-        mods &= ~(GLFW_MOD_CAPS_LOCK | GLFW_MOD_NUM_LOCK);
-
-    if (button <= GLFW_MOUSE_BUTTON_LAST)
-    {
-        if (action == GLFW_RELEASE && window->stickyMouseButtons)
-            window->mouseButtons[button] = _GLFW_STICK;
-        else
-            window->mouseButtons[button] = (char) action;
-    }
-
-    if (window->callbacks.mouseButton)
-        window->callbacks.mouseButton((GLFWwindow*) window, button, action, mods);
-}
-
 void _glfwInputCursorPos(_GLFWwindow* window, double xpos, double ypos)
 {
     assert(window != NULL);
@@ -257,26 +232,6 @@ void glfwSetInputMode(GLFWwindow* handle, int mode, int value)
             return;
         }
 
-        case GLFW_STICKY_MOUSE_BUTTONS:
-        {
-            value = value ? GLFW_TRUE : GLFW_FALSE;
-            if (window->stickyMouseButtons == value)
-                return;
-
-            if (!value)
-            {
-                // Release all sticky mouse buttons
-                for (int i = 0;  i <= GLFW_MOUSE_BUTTON_LAST;  i++)
-                {
-                    if (window->mouseButtons[i] == _GLFW_STICK)
-                        window->mouseButtons[i] = GLFW_RELEASE;
-                }
-            }
-
-            window->stickyMouseButtons = value;
-            return;
-        }
-
         case GLFW_LOCK_KEY_MODS:
         {
             window->lockKeyMods = value ? GLFW_TRUE : GLFW_FALSE;
@@ -346,29 +301,6 @@ int glfwGetKey(GLFWwindow* handle, int key)
     }
 
     return (int) window->keys[key];
-}
-
-int glfwGetMouseButton(GLFWwindow* handle, int button)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(GLFW_RELEASE);
-
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    if (button < GLFW_MOUSE_BUTTON_1 || button > GLFW_MOUSE_BUTTON_LAST)
-    {
-        _glfwInputError(GLFW_INVALID_ENUM, "Invalid mouse button %i", button);
-        return GLFW_RELEASE;
-    }
-
-    if (window->mouseButtons[button] == _GLFW_STICK)
-    {
-        // Sticky mode: release mouse button now
-        window->mouseButtons[button] = GLFW_RELEASE;
-        return GLFW_PRESS;
-    }
-
-    return (int) window->mouseButtons[button];
 }
 
 void glfwGetCursorPos(GLFWwindow* handle, double* xpos, double* ypos)
@@ -548,15 +480,6 @@ GLFWcharmodsfun glfwSetCharModsCallback(GLFWwindow* handle, GLFWcharmodsfun cbfu
     assert(window != NULL);
 
     _GLFW_SWAP(GLFWcharmodsfun, window->callbacks.charmods, cbfun);
-    return cbfun;
-}
-
-GLFWmousebuttonfun glfwSetMouseButtonCallback(GLFWwindow* handle, GLFWmousebuttonfun cbfun)
-{
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
-    _GLFW_SWAP(GLFWmousebuttonfun, window->callbacks.mouseButton, cbfun);
     return cbfun;
 }
 

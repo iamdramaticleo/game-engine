@@ -54,19 +54,13 @@ void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused)
                 _glfwInputKey(window, key, scancode, GLFW_RELEASE, 0);
             }
         }
-
-        for (int button = 0;  button <= GLFW_MOUSE_BUTTON_LAST;  button++)
-        {
-            if (window->mouseButtons[button] == GLFW_PRESS)
-                _glfwInputMouseClick(window, button, GLFW_RELEASE, 0);
-        }
     }
 }
 
 void _glfwInputWindowSize(_GLFWwindow* window, int width, int height)
 {
     assert(window != NULL);
-    assert(width >= 0);
+    assert(width >= 0);1
     assert(height >= 0);
 
     if (window->callbacks.size)
