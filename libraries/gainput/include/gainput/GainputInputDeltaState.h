@@ -2,8 +2,7 @@
 
 namespace gainput
 {
-/// Stores a list of input state changes.
-class GAINPUT_LIBEXPORT InputDeltaState
+class InputDeltaState
 {
 public:
 	InputDeltaState(Allocator& allocator);
