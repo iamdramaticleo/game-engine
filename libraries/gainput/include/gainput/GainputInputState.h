@@ -6,21 +6,9 @@ namespace gainput
 class GAINPUT_LIBEXPORT InputState
 {
 public:
-	/// Initializes the state.
-	/**
-	 * \param allocator The allocator to be used for all memory allocations.
-	 * \param buttonCount The maximum number of device buttons.
-	 */
 	InputState(Allocator& allocator, unsigned int buttonCount);
-	/// Unitializes the state.
 	~InputState();
 
-	/// Returns the number of buttons in this state.
-	/**
-	 * Note that not all buttons may be valid.
-	 *
-	 * \sa InputDevice::IsValidButtonId()
-	 */
 	unsigned GetButtonCount() const { return buttonCount_; }
 
 	/// Returns the bool state of the given device button.

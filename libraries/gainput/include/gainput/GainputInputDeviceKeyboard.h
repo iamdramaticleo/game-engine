@@ -191,31 +191,12 @@ enum Key
 
 class InputDeviceKeyboardImpl;
 
-/// A keyboard input device.
-/**
- * This input device provides support for standard keyboard devices. The valid device buttons are defined
- * in the ::Key enum.
- *
- * This device is implemented on Android NDK, Linux, and Windows. Note that no support for
- * virtual keyboards (on-screen) is present.
- *
- * The raw variants (InputDevice::DV_RAW) of this device do not support text input.
- */
 class GAINPUT_LIBEXPORT InputDeviceKeyboard : public InputDevice
 {
 public:
-	/// Initializes the device.
-	/**
-	 * Instantiate the device using InputManager::CreateDevice().
-	 *
-	 * \param manager The input manager this device is managed by.
-	 * \param device The ID of this device.
-	 */
 	InputDeviceKeyboard(InputManager& manager, DeviceId device, unsigned index);
-	/// Shuts down the device.
 	~InputDeviceKeyboard();
 
-	/// Returns DT_KEYBOARD.
 	DeviceType GetType() const { return DT_KEYBOARD; }
 
 	bool IsValidButtonId(DeviceButtonId deviceButton) const { return deviceButton < KeyCount_; }
@@ -224,14 +205,12 @@ public:
 
 	InputState* GetNextInputState();
 
-	/// Returns if text input is enabled.
+
 	bool IsTextInputEnabled() const;
-	/// Sets if text input is enabled and therefore if calling GetNextCharacter() make sense.
 	void SetTextInputEnabled(bool enabled);
-	/// Returns the next pending input character if text input is enabled.
+
 	char GetNextCharacter();
 
-	/// Returns the platform-specific implementation of this device (internal use only).
 	InputDeviceKeyboardImpl* GetPimpl() { return impl_; }
 
 protected:

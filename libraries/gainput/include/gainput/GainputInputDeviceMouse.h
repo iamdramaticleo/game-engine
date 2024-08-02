@@ -47,14 +47,12 @@ public:
 	InputDeviceMouse(InputManager& manager, DeviceId device, unsigned index);
 	~InputDeviceMouse();
 
-	/// Returns DT_MOUSE.
 	DeviceType GetType() const { return DT_MOUSE; }
 
 	bool IsValidButtonId(DeviceButtonId deviceButton) const { return deviceButton < MouseButtonCount_; }
 
 	ButtonType GetButtonType(DeviceButtonId deviceButton) const;
 
-	/// Returns the platform-specific implementation of this device (internal use only).
 	InputDeviceMouseImpl* GetPimpl() { return impl_; }
 
 protected:
