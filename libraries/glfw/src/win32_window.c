@@ -1462,12 +1462,8 @@ void _glfwSetWindowIconWin32(_GLFWwindow* window, int count, const GLFWimage* im
 
     if (count)
     {
-        const GLFWimage* bigImage = chooseImage(count, images,
-                                                GetSystemMetrics(SM_CXICON),
-                                                GetSystemMetrics(SM_CYICON));
-        const GLFWimage* smallImage = chooseImage(count, images,
-                                                  GetSystemMetrics(SM_CXSMICON),
-                                                  GetSystemMetrics(SM_CYSMICON));
+        const GLFWimage* bigImage   = chooseImage(count, images, GetSystemMetrics(SM_CXICON),   GetSystemMetrics(SM_CYICON));
+        const GLFWimage* smallImage = chooseImage(count, images, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON));
 
         bigIcon = createIcon(bigImage, 0, 0, GLFW_TRUE);
         smallIcon = createIcon(smallImage, 0, 0, GLFW_TRUE);
@@ -1608,9 +1604,7 @@ void _glfwGetWindowFrameSizeWin32(_GLFWwindow* window,
 
     if (_glfwIsWindows10Version1607OrGreaterWin32())
     {
-        AdjustWindowRectExForDpi(&rect, getWindowStyle(window),
-                                 FALSE, getWindowExStyle(window),
-                                 GetDpiForWindow(window->win32.handle));
+        AdjustWindowRectExForDpi(&rect, getWindowStyle(window), FALSE, getWindowExStyle(window), GetDpiForWindow(window->win32.handle));
     }
 
     if (left)
@@ -2005,14 +1999,12 @@ void _glfwSetCursorModeWin32(_GLFWwindow* window, int mode)
         updateCursorImage(window);
 }
 
-int _glfwGetKeyScancodeWin32(int key)
+int _glfwGetKeyScancodeWin32(const int key)
 {
     return _glfw.win32.scancodes[key];
 }
 
-GLFWbool _glfwCreateCursorWin32(_GLFWcursor* cursor,
-                                const GLFWimage* image,
-                                int xhot, int yhot)
+GLFWbool _glfwCreateCursorWin32(_GLFWcursor* cursor, const GLFWimage* image, int xhot, int yhot)
 {
     cursor->win32.handle = (HCURSOR) createIcon(image, xhot, yhot, GLFW_FALSE);
     if (!cursor->win32.handle)
@@ -2086,15 +2078,13 @@ void _glfwSetCursorWin32(_GLFWwindow* window, _GLFWcursor* cursor)
 
 void _glfwSetClipboardStringWin32(const char* string)
 {
-    int characterCount, tries = 0;
-    HANDLE object;
-    WCHAR* buffer;
+    int tries = 0;
 
-    characterCount = MultiByteToWideChar(CP_UTF8, 0, string, -1, NULL, 0);
+    int characterCount = MultiByteToWideChar(CP_UTF8, 0, string, -1, NULL, 0);
     if (!characterCount)
         return;
 
-    object = GlobalAlloc(GMEM_MOVEABLE, characterCount * sizeof(WCHAR));
+    HANDLE object = GlobalAlloc(GMEM_MOVEABLE, characterCount * sizeof(WCHAR));
     if (!object)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -2102,7 +2092,7 @@ void _glfwSetClipboardStringWin32(const char* string)
         return;
     }
 
-    buffer = GlobalLock(object);
+    WCHAR* buffer = GlobalLock(object);
     if (!buffer)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -2135,9 +2125,8 @@ void _glfwSetClipboardStringWin32(const char* string)
     CloseClipboard();
 }
 
-const char* _glfwGetClipboardStringWin32(void)
+const char* _glfwGetClipboardStringWin32()
 {
-    HANDLE object;
     int tries = 0;
 
     // NOTE: Retry clipboard opening a few times as some other application may have it
@@ -2155,7 +2144,7 @@ const char* _glfwGetClipboardStringWin32(void)
         }
     }
 
-    object = GetClipboardData(CF_UNICODETEXT);
+    HANDLE object = GetClipboardData(CF_UNICODETEXT);
     if (!object)
     {
         _glfwInputErrorWin32(GLFW_FORMAT_UNAVAILABLE,
@@ -2184,12 +2173,9 @@ const char* _glfwGetClipboardStringWin32(void)
 
 HWND glfwGetWin32Window(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     if (_glfw.platform.platformID != GLFW_PLATFORM_WIN32)
     {
-        _glfwInputError(GLFW_PLATFORM_UNAVAILABLE,
-                        "Win32: Platform not initialized");
+        _glfwInputError(GLFW_PLATFORM_UNAVAILABLE, "Win32: Platform not initialized");
         return NULL;
     }
 
