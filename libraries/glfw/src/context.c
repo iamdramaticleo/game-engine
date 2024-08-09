@@ -49,10 +49,10 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
 
     if (ctxconfig->client == GLFW_OPENGL_API)
     {
-        if ((ctxconfig->major < 1 || ctxconfig->minor < 0) ||
-            (ctxconfig->major == 1 && ctxconfig->minor > 5) ||
-            (ctxconfig->major == 2 && ctxconfig->minor > 1) ||
-            (ctxconfig->major == 3 && ctxconfig->minor > 3))
+        if (ctxconfig->major < 1 || ctxconfig->minor < 0 ||
+           (ctxconfig->major == 1 && ctxconfig->minor > 5) ||
+           (ctxconfig->major == 2 && ctxconfig->minor > 1) ||
+           (ctxconfig->major == 3 && ctxconfig->minor > 3))
         {
             // OpenGL 1.0 is the smallest valid version
             // OpenGL 1.x series ended with version 1.5

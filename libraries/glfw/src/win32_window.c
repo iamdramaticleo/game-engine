@@ -1208,7 +1208,6 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 static int createNativeWindow(_GLFWwindow* window, const _GLFWwndconfig* wndconfig, const _GLFWfbconfig* fbconfig)
 {
     int frameX, frameY, frameWidth, frameHeight;
-    WCHAR* wideTitle;
     DWORD style = getWindowStyle(window);
     DWORD exStyle = getWindowExStyle(window);
 
@@ -1274,7 +1273,7 @@ static int createNativeWindow(_GLFWwindow* window, const _GLFWwndconfig* wndconf
         frameHeight = rect.bottom - rect.top;
     }
 
-    wideTitle = _glfwCreateWideStringFromUTF8Win32(wndconfig->title);
+    WCHAR* wideTitle = _glfwCreateWideStringFromUTF8Win32(wndconfig->title);
     if (!wideTitle)
         return GLFW_FALSE;
 
@@ -1293,8 +1292,7 @@ static int createNativeWindow(_GLFWwindow* window, const _GLFWwndconfig* wndconf
 
     if (!window->win32.handle)
     {
-        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to create window");
+        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR, "Win32: Failed to create window");
         return GLFW_FALSE;
     }
 
@@ -1340,7 +1338,7 @@ static int createNativeWindow(_GLFWwindow* window, const _GLFWwndconfig* wndconf
         GetWindowPlacement(window->win32.handle, &wp);
         OffsetRect(&rect,
                    wp.rcNormalPosition.left - rect.left,
-                   wp.rcNormalPosition.top - rect.top);
+                   wp.rcNormalPosition.top  - rect.top);
 
         wp.rcNormalPosition = rect;
         wp.showCmd = SW_HIDE;
@@ -1370,10 +1368,7 @@ static int createNativeWindow(_GLFWwindow* window, const _GLFWwndconfig* wndconf
     return GLFW_TRUE;
 }
 
-GLFWbool _glfwCreateWindowWin32(_GLFWwindow* window,
-                                const _GLFWwndconfig* wndconfig,
-                                const _GLFWctxconfig* ctxconfig,
-                                const _GLFWfbconfig* fbconfig)
+GLFWbool _glfwCreateWindowWin32(_GLFWwindow* window, const _GLFWwndconfig* wndconfig, const _GLFWctxconfig* ctxconfig, const _GLFWfbconfig* fbconfig)
 {
     if (!createNativeWindow(window, wndconfig, fbconfig))
         return GLFW_FALSE;
@@ -1642,17 +1637,17 @@ void _glfwMaximizeWindowWin32(_GLFWwindow* window)
         maximizeWindowManually(window);
 }
 
-void _glfwShowWindowWin32(_GLFWwindow* window)
+void _glfwShowWindowWin32(const _GLFWwindow* window)
 {
     ShowWindow(window->win32.handle, SW_SHOWNA);
 }
 
-void _glfwHideWindowWin32(_GLFWwindow* window)
+void _glfwHideWindowWin32(const _GLFWwindow* window)
 {
     ShowWindow(window->win32.handle, SW_HIDE);
 }
 
-void _glfwFocusWindowWin32(_GLFWwindow* window)
+void _glfwFocusWindowWin32(const _GLFWwindow* window)
 {
     BringWindowToTop(window->win32.handle);
     SetForegroundWindow(window->win32.handle);
@@ -1795,8 +1790,7 @@ void _glfwSetWindowDecoratedWin32(_GLFWwindow* window, GLFWbool enabled)
 void _glfwSetWindowFloatingWin32(_GLFWwindow* window, GLFWbool enabled)
 {
     const HWND after = enabled ? HWND_TOPMOST : HWND_NOTOPMOST;
-    SetWindowPos(window->win32.handle, after, 0, 0, 0, 0,
-                 SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+    SetWindowPos(window->win32.handle, after, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
 }
 
 void _glfwSetWindowMousePassthroughWin32(_GLFWwindow* window, GLFWbool enabled)

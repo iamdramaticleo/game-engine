@@ -179,6 +179,8 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height, const char* title, G
         return NULL;
 
     _GLFWwindow* window = malloc(sizeof(_GLFWwindow));
+                          memset(window, 0, sizeof(_GLFWwindow));
+
     window->next = _glfw.windowListHead;
     _glfw.windowListHead = window;
 
