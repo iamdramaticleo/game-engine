@@ -112,18 +112,9 @@ static GLFWbool loadLibraries(void)
     }
 
     {
-        int i;
-        const char* names[] =
-        {
-            "xinput1_4.dll",
-            "xinput1_3.dll",
-            "xinput9_1_0.dll",
-            "xinput1_2.dll",
-            "xinput1_1.dll",
-            NULL
-        };
 
-        for (i = 0;  names[i];  i++)
+
+        for (int i = 0;  names[i];  i++)
         {
             _glfw.win32.xinput.instance = _glfwPlatformLoadModule(names[i]);
             if (_glfw.win32.xinput.instance)
@@ -407,8 +398,6 @@ static GLFWbool createHelperWindow()
 //////                       GLFW internal API                      //////
 //////////////////////////////////////////////////////////////////////////
 
-// Returns a wide string version of the specified UTF-8 string
-//
 WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source)
 {
     WCHAR* target;
@@ -435,8 +424,6 @@ WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source)
     return target;
 }
 
-// Returns a UTF-8 string version of the specified wide string
-//
 char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source)
 {
     char* target;
@@ -463,8 +450,6 @@ char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source)
     return target;
 }
 
-// Reports the specified error, appending information about the last Win32 error
-//
 void _glfwInputErrorWin32(int error, const char* description)
 {
     WCHAR buffer[_GLFW_MESSAGE_SIZE] = L"";
@@ -636,9 +621,6 @@ GLFWbool _glfwConnectWin32(int platformID, _GLFWplatform* platform)
         .waitEvents = _glfwWaitEventsWin32,
         .waitEventsTimeout = _glfwWaitEventsTimeoutWin32,
         .postEmptyEvent = _glfwPostEmptyEventWin32,
-        .getEGLPlatform = _glfwGetEGLPlatformWin32,
-        .getEGLNativeDisplay = _glfwGetEGLNativeDisplayWin32,
-        .getEGLNativeWindow = _glfwGetEGLNativeWindowWin32,
         .getRequiredInstanceExtensions = _glfwGetRequiredInstanceExtensionsWin32,
         .getPhysicalDevicePresentationSupport = _glfwGetPhysicalDevicePresentationSupportWin32,
         .createWindowSurface = _glfwCreateWindowSurfaceWin32
@@ -648,7 +630,7 @@ GLFWbool _glfwConnectWin32(int platformID, _GLFWplatform* platform)
     return GLFW_TRUE;
 }
 
-int _glfwInitWin32(void)
+int _glfwInitWin32()
 {
     if (!loadLibraries())
         return GLFW_FALSE;
@@ -670,7 +652,7 @@ int _glfwInitWin32(void)
     return GLFW_TRUE;
 }
 
-void _glfwTerminateWin32(void)
+void _glfwTerminateWin32()
 {
     if (_glfw.win32.blankCursor)
         DestroyIcon((HICON) _glfw.win32.blankCursor);
@@ -694,4 +676,3 @@ void _glfwTerminateWin32(void)
 }
 
 #endif // _GLFW_WIN32
-

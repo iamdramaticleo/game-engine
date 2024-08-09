@@ -403,12 +403,6 @@ GLFWAPI void glfwWindowHint(int hint, int value)
         case GLFW_CONTEXT_ROBUSTNESS:
             _glfw.hints.context.robustness = value;
             return;
-        case GLFW_OPENGL_FORWARD_COMPAT:
-            _glfw.hints.context.forward = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
-        case GLFW_CONTEXT_DEBUG:
-            _glfw.hints.context.debug = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
         case GLFW_CONTEXT_NO_ERROR:
             _glfw.hints.context.noerror = value ? GLFW_TRUE : GLFW_FALSE;
             return;
@@ -424,35 +418,6 @@ GLFWAPI void glfwWindowHint(int hint, int value)
     }
 
     _glfwInputError(GLFW_INVALID_ENUM, "Invalid window hint 0x%08X", hint);
-}
-
-GLFWAPI void glfwWindowHintString(int hint, const char* value)
-{
-    assert(value != NULL);
-
-    _GLFW_REQUIRE_INIT();
-
-    switch (hint)
-    {
-        case GLFW_COCOA_FRAME_NAME:
-            strncpy(_glfw.hints.window.ns.frameName, value,
-                    sizeof(_glfw.hints.window.ns.frameName) - 1);
-            return;
-        case GLFW_X11_CLASS_NAME:
-            strncpy(_glfw.hints.window.x11.className, value,
-                    sizeof(_glfw.hints.window.x11.className) - 1);
-            return;
-        case GLFW_X11_INSTANCE_NAME:
-            strncpy(_glfw.hints.window.x11.instanceName, value,
-                    sizeof(_glfw.hints.window.x11.instanceName) - 1);
-            return;
-        case GLFW_WAYLAND_APP_ID:
-            strncpy(_glfw.hints.window.wl.appId, value,
-                    sizeof(_glfw.hints.window.wl.appId) - 1);
-            return;
-    }
-
-    _glfwInputError(GLFW_INVALID_ENUM, "Invalid window hint string 0x%08X", hint);
 }
 
 GLFWAPI void glfwDestroyWindow(GLFWwindow* handle)
@@ -914,10 +879,6 @@ GLFWAPI int glfwGetWindowAttrib(GLFWwindow* handle, int attrib)
             return window->context.revision;
         case GLFW_CONTEXT_ROBUSTNESS:
             return window->context.robustness;
-        case GLFW_OPENGL_FORWARD_COMPAT:
-            return window->context.forward;
-        case GLFW_CONTEXT_DEBUG:
-            return window->context.debug;
         case GLFW_OPENGL_PROFILE:
             return window->context.profile;
         case GLFW_CONTEXT_RELEASE_BEHAVIOR:

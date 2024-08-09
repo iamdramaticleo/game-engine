@@ -116,14 +116,6 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
                 return GLFW_FALSE;
             }
         }
-
-        if (ctxconfig->forward && ctxconfig->major <= 2)
-        {
-            // Forward-compatible contexts are only defined for OpenGL version 3.0 and above
-            _glfwInputError(GLFW_INVALID_VALUE,
-                            "Forward-compatibility is only defined for OpenGL version 3.0 and above");
-            return GLFW_FALSE;
-        }
     }
 
     if (ctxconfig->robustness)
@@ -424,20 +416,6 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,const _GLFWctxconfig* ct
             GLint flags;
             window->context.GetIntegerv(GL_CONTEXT_FLAGS, &flags);
 
-            if (flags & GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT)
-                window->context.forward = GLFW_TRUE;
-
-            if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
-                window->context.debug = GLFW_TRUE;
-            else if (glfwExtensionSupported("GL_ARB_debug_output") &&
-                     ctxconfig->debug)
-            {
-                // HACK: This is a workaround for older drivers (pre KHR_debug)
-                //       not setting the debug bit in the context flags for
-                //       debug contexts
-                window->context.debug = GLFW_TRUE;
-            }
-
             if (flags & GL_CONTEXT_FLAG_NO_ERROR_BIT_KHR)
                 window->context.noerror = GLFW_TRUE;
         }
@@ -524,8 +502,6 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,const _GLFWctxconfig* ct
     return GLFW_TRUE;
 }
 
-// Searches an extension string for the specified extension
-//
 GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions)
 {
     const char* start = extensions;
@@ -551,11 +527,6 @@ GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions
 
     return GLFW_TRUE;
 }
-
-
-//////////////////////////////////////////////////////////////////////////
-//////                        GLFW public API                       //////
-//////////////////////////////////////////////////////////////////////////
 
 GLFWAPI void glfwMakeContextCurrent(GLFWwindow* handle)
 {
@@ -583,12 +554,6 @@ GLFWAPI void glfwMakeContextCurrent(GLFWwindow* handle)
         window->context.makeCurrent(window);
 }
 
-GLFWAPI GLFWwindow* glfwGetCurrentContext(void)
-{
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-    return _glfwPlatformGetTls(&_glfw.contextSlot);
-}
-
 GLFWAPI void glfwSwapBuffers(GLFWwindow* handle)
 {
     _GLFW_REQUIRE_INIT();
@@ -608,11 +573,9 @@ GLFWAPI void glfwSwapBuffers(GLFWwindow* handle)
 
 GLFWAPI void glfwSwapInterval(int interval)
 {
-    _GLFWwindow* window;
-
     _GLFW_REQUIRE_INIT();
 
-    window = _glfwPlatformGetTls(&_glfw.contextSlot);
+    _GLFWwindow* window = _glfwPlatformGetTls(&_glfw.contextSlot);
     if (!window)
     {
         _glfwInputError(GLFW_NO_CURRENT_CONTEXT,
@@ -706,4 +669,3 @@ GLFWAPI GLFWglproc glfwGetProcAddress(const char* procname)
 
     return window->context.getProcAddress(procname);
 }
-

@@ -376,8 +376,6 @@ typedef struct _GLFWcontextWGL
     int       interval;
 } _GLFWcontextWGL;
 
-// WGL-specific global data
-//
 typedef struct _GLFWlibraryWGL
 {
     HINSTANCE                           instance;
@@ -408,8 +406,6 @@ typedef struct _GLFWlibraryWGL
     GLFWbool                            ARB_context_flush_control;
 } _GLFWlibraryWGL;
 
-// Win32-specific per-window data
-//
 typedef struct _GLFWwindowWin32
 {
     HWND                handle;
@@ -420,8 +416,6 @@ typedef struct _GLFWwindowWin32
     GLFWbool            frameAction;
     GLFWbool            iconified;
     GLFWbool            maximized;
-    // Whether to enable framebuffer transparency on DWM
-    GLFWbool            transparent;
     GLFWbool            scaleToMonitor;
     GLFWbool            keymenu;
     GLFWbool            showDefault;
@@ -435,8 +429,6 @@ typedef struct _GLFWwindowWin32
     WCHAR               highSurrogate;
 } _GLFWwindowWin32;
 
-// Win32-specific global data
-//
 typedef struct _GLFWlibraryWin32
 {
     HINSTANCE           instance;
@@ -460,18 +452,6 @@ typedef struct _GLFWlibraryWin32
     UINT                mouseTrailSize;
     // The cursor handle to use to hide the cursor (NULL or a transparent cursor)
     HCURSOR             blankCursor;
-
-    struct {
-        HINSTANCE                       instance;
-        PFN_DirectInput8Create          Create;
-        IDirectInput8W*                 api;
-    } dinput8;
-
-    struct {
-        HINSTANCE                       instance;
-        PFN_XInputGetCapabilities       GetCapabilities;
-        PFN_XInputGetState              GetState;
-    } xinput;
 
     struct {
         HINSTANCE                       instance;

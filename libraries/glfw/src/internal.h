@@ -69,9 +69,6 @@ typedef struct _GLFWplatform    _GLFWplatform;
 typedef struct _GLFWlibrary     _GLFWlibrary;
 typedef struct _GLFWmonitor     _GLFWmonitor;
 typedef struct _GLFWcursor      _GLFWcursor;
-typedef struct _GLFWmapelement  _GLFWmapelement;
-typedef struct _GLFWmapping     _GLFWmapping;
-typedef struct _GLFWjoystick    _GLFWjoystick;
 typedef struct _GLFWtls         _GLFWtls;
 typedef struct _GLFWmutex       _GLFWmutex;
 
@@ -82,8 +79,6 @@ typedef struct _GLFWmutex       _GLFWmutex;
 #define GL_EXTENSIONS 0x1f03
 #define GL_NUM_EXTENSIONS 0x821d
 #define GL_CONTEXT_FLAGS 0x821e
-#define GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT 0x00000001
-#define GL_CONTEXT_FLAG_DEBUG_BIT 0x00000002
 #define GL_CONTEXT_PROFILE_MASK 0x9126
 #define GL_CONTEXT_COMPATIBILITY_PROFILE_BIT 0x00000002
 #define GL_CONTEXT_CORE_PROFILE_BIT 0x00000001
@@ -242,14 +237,6 @@ struct _GLFWctxconfig
     _GLFWwindow*  share;
 };
 
-// Framebuffer configuration
-//
-// This describes buffers and their sizes.  It also contains
-// a platform-specific ID used to map back to the backend API object.
-//
-// It is used to pass framebuffer parameters from shared code to the platform
-// API and also to enumerate and select available framebuffer configs.
-//
 struct _GLFWfbconfig
 {
     int         redBits;
@@ -271,14 +258,12 @@ struct _GLFWfbconfig
     uintptr_t   handle;
 };
 
-// Context structure
-//
 struct _GLFWcontext
 {
     int                 client;
     int                 source;
     int                 major, minor, revision;
-    GLFWbool            forward, debug, noerror;
+    GLFWbool            noerror;
     int                 profile;
     int                 robustness;
     int                 release;
@@ -297,8 +282,6 @@ struct _GLFWcontext
     GLFW_PLATFORM_CONTEXT_STATE
 };
 
-// Window and context structure
-//
 struct _GLFWwindow
 {
     struct _GLFWwindow* next;
@@ -355,12 +338,9 @@ struct _GLFWwindow
         GLFWdropfun               drop;
     } callbacks;
 
-    // This is defined in platform.h
     GLFW_PLATFORM_WINDOW_STATE
 };
 
-// Monitor structure
-//
 struct _GLFWmonitor
 {
     char            name[128];
@@ -383,8 +363,6 @@ struct _GLFWmonitor
     GLFW_PLATFORM_MONITOR_STATE
 };
 
-// Cursor structure
-//
 struct _GLFWcursor
 {
     _GLFWcursor*    next;
@@ -392,30 +370,24 @@ struct _GLFWcursor
     GLFW_PLATFORM_CURSOR_STATE
 };
 
-// Thread local storage structure
-//
 struct _GLFWtls
 {
     // This is defined in platform.h
     GLFW_PLATFORM_TLS_STATE
 };
 
-// Mutex structure
-//
 struct _GLFWmutex
 {
     // This is defined in platform.h
     GLFW_PLATFORM_MUTEX_STATE
 };
 
-// Platform API structure
-//
 struct _GLFWplatform
 {
     int platformID;
     // init
-    GLFWbool (*init)(void);
-    void (*terminate)(void);
+    GLFWbool (*init)();
+    void (*terminate)();
     // input
     void (*getCursorPos)(_GLFWwindow*,double*,double*);
     void (*setCursorPos)(_GLFWwindow*,double,double);
@@ -473,7 +445,7 @@ struct _GLFWplatform
     void (*setWindowFloating)(_GLFWwindow*,GLFWbool);
     void (*setWindowOpacity)(_GLFWwindow*,float);
     void (*setWindowMousePassthrough)(_GLFWwindow*,GLFWbool);
-    void (*pollEvents)(void);
+    void (*pollEvents)();
     void (*waitEvents)(void);
     void (*waitEventsTimeout)(double);
     void (*postEmptyEvent)(void);
@@ -483,8 +455,6 @@ struct _GLFWplatform
     VkResult (*createWindowSurface)(VkInstance,_GLFWwindow*,const VkAllocationCallbacks*,VkSurfaceKHR*);
 };
 
-// Library global data
-//
 struct _GLFWlibrary
 {
     GLFWbool            initialized;
@@ -537,7 +507,6 @@ struct _GLFWlibrary
         GLFWjoystickfun joystick;
     } callbacks;
 
-    // These are defined in platform.h
     GLFW_PLATFORM_LIBRARY_WINDOW_STATE
     GLFW_PLATFORM_LIBRARY_CONTEXT_STATE
 };
@@ -580,10 +549,6 @@ void _glfwInputMouseClick(_GLFWwindow* window, int button, int action, int mods)
 void _glfwInputCursorPos(_GLFWwindow* window, double xpos, double ypos);
 void _glfwInputCursorEnter(_GLFWwindow* window, GLFWbool entered);
 void _glfwInputDrop(_GLFWwindow* window, int count, const char** names);
-void _glfwInputJoystick(_GLFWjoystick* js, int event);
-void _glfwInputJoystickAxis(_GLFWjoystick* js, int axis, float value);
-void _glfwInputJoystickButton(_GLFWjoystick* js, int button, char value);
-void _glfwInputJoystickHat(_GLFWjoystick* js, int hat, char value);
 
 void _glfwInputMonitor(_GLFWmonitor* monitor, int action, int placement);
 void _glfwInputMonitorWindow(_GLFWmonitor* monitor, _GLFWwindow* window);
@@ -592,9 +557,7 @@ void _glfwInputError(int code, const char* format, ...);
 GLFWbool _glfwSelectPlatform(int platformID, _GLFWplatform* platform);
 
 GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions);
-const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
-                                         const _GLFWfbconfig* alternatives,
-                                         unsigned int count);
+const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired, const _GLFWfbconfig* alternatives, unsigned int count);
 GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window, const _GLFWctxconfig* ctxconfig);
 GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig);
 
