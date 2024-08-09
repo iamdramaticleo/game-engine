@@ -373,20 +373,10 @@ GLFWAPI void glfwWindowHint(int hint, int value)
         case GLFW_POSITION_Y:
             _glfw.hints.window.ypos = value;
             return;
-        case GLFW_WIN32_KEYBOARD_MENU:
-            _glfw.hints.window.win32.keymenu = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
-        case GLFW_WIN32_SHOWDEFAULT:
-            _glfw.hints.window.win32.showDefault = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
-        case GLFW_COCOA_GRAPHICS_SWITCHING:
-            _glfw.hints.context.nsgl.offline = value ? GLFW_TRUE : GLFW_FALSE;
-            return;
         case GLFW_SCALE_TO_MONITOR:
             _glfw.hints.window.scaleToMonitor = value ? GLFW_TRUE : GLFW_FALSE;
             return;
         case GLFW_SCALE_FRAMEBUFFER:
-        case GLFW_COCOA_RETINA_FRAMEBUFFER:
             _glfw.hints.window.scaleFramebuffer = value ? GLFW_TRUE : GLFW_FALSE;
             return;
         case GLFW_CENTER_CURSOR:

@@ -33,68 +33,34 @@
 #include <stdarg.h>
 #include <assert.h>
 
-
-// NOTE: The global variables below comprise all mutable global data in GLFW
-//       Any other mutable global variable is a bug
-
-// This contains all mutable state shared between compilation units of GLFW
-//
 _GLFWlibrary _glfw = { GLFW_FALSE };
 
-// These are outside of _glfw so they can be used before initialization and
-// after termination without special handling when _glfw is cleared to zero
-//
 static _GLFWerror _glfwMainThreadError;
 static GLFWerrorfun _glfwErrorCallback;
 static GLFWallocator _glfwInitAllocator;
 static _GLFWinitconfig _glfwInitHints =
 {
-    .hatButtons = GLFW_TRUE,
-    .angleType = GLFW_ANGLE_PLATFORM_TYPE_NONE,
-    .platformID = GLFW_ANY_PLATFORM,
-    .vulkanLoader = NULL,
-    .ns =
-    {
-        .menubar = GLFW_TRUE,
-        .chdir = GLFW_TRUE
-    },
-    .x11 =
-    {
-        .xcbVulkanSurface = GLFW_TRUE,
-    },
-    .wl =
-    {
-        .libdecorMode = GLFW_WAYLAND_PREFER_LIBDECOR
-    },
+    .platformID   = GLFW_ANY_PLATFORM,
+    .vulkanLoader = NULL
 };
 
-// The allocation function used when no custom allocator is set
-//
 static void* defaultAllocate(size_t size, void* user)
 {
     return malloc(size);
 }
 
-// The deallocation function used when no custom allocator is set
-//
 static void defaultDeallocate(void* block, void* user)
 {
     free(block);
 }
 
-// The reallocation function used when no custom allocator is set
-//
 static void* defaultReallocate(void* block, size_t size, void* user)
 {
     return realloc(block, size);
 }
 
-// Terminate the library
-//
-static void terminate(void)
+static void terminate()
 {
-    int i;
-
     memset(&_glfw.callbacks, 0, sizeof(_glfw.callbacks));
 
     while (_glfw.windowListHead)
@@ -103,7 +69,7 @@ static void terminate(void)
     while (_glfw.cursorListHead)
         glfwDestroyCursor((GLFWcursor*) _glfw.cursorListHead);
 
-    for (i = 0;  i < _glfw.monitorCount;  i++)
+    for (int i = 0;  i < _glfw.monitorCount;  i++)
     {
         _GLFWmonitor* monitor = _glfw.monitors[i];
         if (monitor->originalRamp.size)
@@ -345,31 +311,12 @@ GLFWAPI void glfwInitHint(int hint, int value)
 {
     switch (hint)
     {
-        case GLFW_JOYSTICK_HAT_BUTTONS:
-            _glfwInitHints.hatButtons = value;
-            return;
-        case GLFW_ANGLE_PLATFORM_TYPE:
-            _glfwInitHints.angleType = value;
-            return;
         case GLFW_PLATFORM:
             _glfwInitHints.platformID = value;
             return;
-        case GLFW_COCOA_CHDIR_RESOURCES:
-            _glfwInitHints.ns.chdir = value;
-            return;
-        case GLFW_COCOA_MENUBAR:
-            _glfwInitHints.ns.menubar = value;
-            return;
-        case GLFW_X11_XCB_VULKAN_SURFACE:
-            _glfwInitHints.x11.xcbVulkanSurface = value;
-            return;
-        case GLFW_WAYLAND_LIBDECOR:
-            _glfwInitHints.wl.libdecorMode = value;
-            return;
     }
 
-    _glfwInputError(GLFW_INVALID_ENUM,
-                    "Invalid init hint 0x%08X", hint);
+    _glfwInputError(GLFW_INVALID_ENUM,"Invalid init hint 0x%08X", hint);
 }
 
 GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator)
@@ -388,16 +335,6 @@ GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator)
 GLFWAPI void glfwInitVulkanLoader(PFN_vkGetInstanceProcAddr loader)
 {
     _glfwInitHints.vulkanLoader = loader;
-}
-
-GLFWAPI void glfwGetVersion(int* major, int* minor, int* rev)
-{
-    if (major != NULL)
-        *major = GLFW_VERSION_MAJOR;
-    if (minor != NULL)
-        *minor = GLFW_VERSION_MINOR;
-    if (rev != NULL)
-        *rev = GLFW_VERSION_REVISION;
 }
 
 GLFWAPI int glfwGetError(const char** description)

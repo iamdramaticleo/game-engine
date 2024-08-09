@@ -204,8 +204,6 @@ struct _GLFWerror
 
 struct _GLFWinitconfig
 {
-    GLFWbool      hatButtons;
-    int           angleType;
     int           platformID;
     PFN_vkGetInstanceProcAddr vulkanLoader;
 };
@@ -237,16 +235,11 @@ struct _GLFWctxconfig
     int           source;
     int           major;
     int           minor;
-    GLFWbool      forward;
-    GLFWbool      debug;
     GLFWbool      noerror;
     int           profile;
     int           robustness;
     int           release;
     _GLFWwindow*  share;
-    struct {
-        GLFWbool  offline;
-    } nsgl;
 };
 
 // Framebuffer configuration
