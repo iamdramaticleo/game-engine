@@ -132,7 +132,7 @@ static int choosePixelFormatWGL(_GLFWwindow* window,
         nativeCount = _glfw_min(nativeCount, extensionCount);
     }
 
-    _GLFWfbconfig* usableConfigs = _glfw_calloc(nativeCount, sizeof(_GLFWfbconfig));
+    _GLFWfbconfig* usableConfigs = malloc(nativeCount * sizeof(_GLFWfbconfig));
 
     for (int i = 0;  i < nativeCount;  i++)
     {

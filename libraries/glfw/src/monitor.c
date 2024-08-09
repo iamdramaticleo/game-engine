@@ -95,9 +95,7 @@ void _glfwInputMonitor(_GLFWmonitor* monitor, int action, int placement)
     if (action == GLFW_CONNECTED)
     {
         _glfw.monitorCount++;
-        _glfw.monitors =
-            _glfw_realloc(_glfw.monitors,
-                          sizeof(_GLFWmonitor*) * _glfw.monitorCount);
+        _glfw.monitors = realloc(_glfw.monitors, sizeof(_GLFWmonitor*) * _glfw.monitorCount);
 
         if (placement == _GLFW_INSERT_FIRST)
         {
@@ -164,7 +162,7 @@ void _glfwInputMonitorWindow(_GLFWmonitor* monitor, _GLFWwindow* window)
 //
 _GLFWmonitor* _glfwAllocMonitor(const char* name, int widthMM, int heightMM)
 {
-    _GLFWmonitor* monitor = _glfw_calloc(1, sizeof(_GLFWmonitor));
+    _GLFWmonitor* monitor = malloc(sizeof(_GLFWmonitor));
     monitor->widthMM = widthMM;
     monitor->heightMM = heightMM;
 
@@ -187,18 +185,14 @@ void _glfwFreeMonitor(_GLFWmonitor* monitor)
     free(monitor);
 }
 
-// Allocates red, green and blue value arrays of the specified size
-//
-void _glfwAllocGammaArrays(GLFWgammaramp* ramp, unsigned int size)
+void _glfwAllocGammaArrays(GLFWgammaramp* ramp, const unsigned int size)
 {
-    ramp->red = _glfw_calloc(size, sizeof(unsigned short));
-    ramp->green = _glfw_calloc(size, sizeof(unsigned short));
-    ramp->blue = _glfw_calloc(size, sizeof(unsigned short));
-    ramp->size = size;
+    ramp->red   = malloc(size * sizeof(unsigned short));
+    ramp->green = malloc(size * sizeof(unsigned short));
+    ramp->blue  = malloc(size * sizeof(unsigned short));
+    ramp->size  = size;
 }
 
-// Frees the red, green and blue value arrays and clears the struct
-//
 void _glfwFreeGammaArrays(GLFWgammaramp* ramp)
 {
     free(ramp->red);
@@ -208,10 +202,7 @@ void _glfwFreeGammaArrays(GLFWgammaramp* ramp)
     memset(ramp, 0, sizeof(GLFWgammaramp));
 }
 
-// Chooses the video mode most closely matching the desired one
-//
-const GLFWvidmode* _glfwChooseVideoMode(_GLFWmonitor* monitor,
-                                        const GLFWvidmode* desired)
+const GLFWvidmode* _glfwChooseVideoMode(_GLFWmonitor* monitor, const GLFWvidmode* desired)
 {
     unsigned int leastSizeDiff = UINT_MAX;
     unsigned int rateDiff, leastRateDiff = UINT_MAX;
@@ -453,14 +444,9 @@ GLFWAPI const GLFWvidmode* glfwGetVideoMode(GLFWmonitor* handle)
 
 GLFWAPI void glfwSetGamma(GLFWmonitor* handle, float gamma)
 {
-    unsigned int i;
-    unsigned short* values;
     GLFWgammaramp ramp;
-    const GLFWgammaramp* original;
     assert(gamma > 0.f);
     assert(gamma <= FLT_MAX);
-
-    _GLFW_REQUIRE_INIT();
 
     assert(handle != NULL);
 
@@ -470,18 +456,16 @@ GLFWAPI void glfwSetGamma(GLFWmonitor* handle, float gamma)
         return;
     }
 
-    original = glfwGetGammaRamp(handle);
+    const GLFWgammaramp* original = glfwGetGammaRamp(handle);
     if (!original)
         return;
 
-    values = _glfw_calloc(original->size, sizeof(unsigned short));
+    unsigned short* values = malloc(original->size * sizeof(unsigned short));
 
-    for (i = 0;  i < original->size;  i++)
+    for (unsigned int i = 0;  i < original->size;  i++)
     {
-        float value;
-
         // Calculate intensity
-        value = i / (float) (original->size - 1);
+        float value = i / (float)(original->size - 1);
         // Apply gamma curve
         value = powf(value, 1.f / gamma) * 65535.f + 0.5f;
         // Clamp to value range

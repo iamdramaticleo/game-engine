@@ -313,15 +313,9 @@ static GLFWbool createHelperWindow()
    return GLFW_TRUE;
 }
 
-//////////////////////////////////////////////////////////////////////////
-//////                       GLFW internal API                      //////
-//////////////////////////////////////////////////////////////////////////
-
 WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source)
 {
-    int count;
-
-    count = MultiByteToWideChar(CP_UTF8, 0, source, -1, NULL, 0);
+    int count = MultiByteToWideChar(CP_UTF8, 0, source, -1, NULL, 0);
     if (!count)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -329,12 +323,11 @@ WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source)
         return NULL;
     }
 
-    WCHAR* target = _glfw_calloc(count, sizeof(WCHAR));
+    WCHAR* target = malloc(count * sizeof(WCHAR));
 
     if (!MultiByteToWideChar(CP_UTF8, 0, source, -1, target, count))
     {
-        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to convert string from UTF-8");
+        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR, "Win32: Failed to convert string from UTF-8");
         free(target);
         return NULL;
     }
@@ -352,7 +345,7 @@ char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source)
         return NULL;
     }
 
-    char* target = _glfw_calloc(size, 1);
+    char* target = malloc(size);
 
     if (!WideCharToMultiByte(CP_UTF8, 0, source, -1, target, size, NULL, NULL))
     {

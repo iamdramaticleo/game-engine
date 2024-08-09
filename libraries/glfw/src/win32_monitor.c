@@ -418,7 +418,7 @@ GLFWvidmode* _glfwGetVideoModesWin32(_GLFWmonitor* monitor, int* count)
         if (*count == size)
         {
             size += 128;
-            result = (GLFWvidmode*) _glfw_realloc(result, size * sizeof(GLFWvidmode));
+            result = (GLFWvidmode*) realloc(result, size * sizeof(GLFWvidmode));
         }
 
         (*count)++;

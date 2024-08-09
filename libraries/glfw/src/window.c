@@ -69,9 +69,6 @@ void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused)
     }
 }
 
-// Notifies shared code that a window has moved
-// The position is specified in content area relative screen coordinates
-//
 void _glfwInputWindowPos(_GLFWwindow* window, int x, int y)
 {
     assert(window != NULL);
@@ -80,9 +77,6 @@ void _glfwInputWindowPos(_GLFWwindow* window, int x, int y)
         window->callbacks.pos((GLFWwindow*) window, x, y);
 }
 
-// Notifies shared code that a window has been resized
-// The size is specified in screen coordinates
-//
 void _glfwInputWindowSize(_GLFWwindow* window, int width, int height)
 {
     assert(window != NULL);
@@ -93,8 +87,6 @@ void _glfwInputWindowSize(_GLFWwindow* window, int width, int height)
         window->callbacks.size((GLFWwindow*) window, width, height);
 }
 
-// Notifies shared code that a window has been iconified or restored
-//
 void _glfwInputWindowIconify(_GLFWwindow* window, GLFWbool iconified)
 {
     assert(window != NULL);
@@ -104,8 +96,6 @@ void _glfwInputWindowIconify(_GLFWwindow* window, GLFWbool iconified)
         window->callbacks.iconify((GLFWwindow*) window, iconified);
 }
 
-// Notifies shared code that a window has been maximized or restored
-//
 void _glfwInputWindowMaximize(_GLFWwindow* window, GLFWbool maximized)
 {
     assert(window != NULL);
@@ -188,7 +178,7 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height, const char* title, G
     if (!_glfwIsValidContextConfig(&ctxconfig))
         return NULL;
 
-    _GLFWwindow* window = _glfw_calloc(1, sizeof(_GLFWwindow));
+    _GLFWwindow* window = malloc(sizeof(_GLFWwindow));
     window->next = _glfw.windowListHead;
     _glfw.windowListHead = window;
 
