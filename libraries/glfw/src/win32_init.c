@@ -345,10 +345,7 @@ WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source)
 
 char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source)
 {
-    char* target;
-    int size;
-
-    size = WideCharToMultiByte(CP_UTF8, 0, source, -1, NULL, 0, NULL, NULL);
+    int size = WideCharToMultiByte(CP_UTF8, 0, source, -1, NULL, 0, NULL, NULL);
     if (!size)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -356,7 +353,7 @@ char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source)
         return NULL;
     }
 
-    target = _glfw_calloc(size, 1);
+    char* target = _glfw_calloc(size, 1);
 
     if (!WideCharToMultiByte(CP_UTF8, 0, source, -1, target, size, NULL, NULL))
     {
@@ -433,7 +430,6 @@ GLFWbool _glfwConnectWin32(int platformID, _GLFWplatform* platform)
         .getKeyScancode = _glfwGetKeyScancodeWin32,
         .setClipboardString = _glfwSetClipboardStringWin32,
         .getClipboardString = _glfwGetClipboardStringWin32,
-        .freeMonitor = _glfwFreeMonitorWin32,
         .getMonitorPos = _glfwGetMonitorPosWin32,
         .getMonitorContentScale = _glfwGetMonitorContentScaleWin32,
         .getMonitorWorkarea = _glfwGetMonitorWorkareaWin32,

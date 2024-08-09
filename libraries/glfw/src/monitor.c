@@ -34,9 +34,6 @@
 #include <stdlib.h>
 #include <limits.h>
 
-
-// Lexically compare video modes, used by qsort
-//
 static int compareVideoModes(const void* fp, const void* sp)
 {
     const GLFWvidmode* fm = fp;
@@ -85,13 +82,10 @@ static GLFWbool refreshVideoModes(_GLFWmonitor* monitor)
     return GLFW_TRUE;
 }
 
-
 //////////////////////////////////////////////////////////////////////////
 //////                         GLFW event API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-// Notifies shared code of a monitor connection or disconnection
-//
 void _glfwInputMonitor(_GLFWmonitor* monitor, int action, int placement)
 {
     assert(monitor != NULL);
@@ -185,8 +179,6 @@ void _glfwFreeMonitor(_GLFWmonitor* monitor)
 {
     if (monitor == NULL)
         return;
-
-    _glfw.platform.freeMonitor(monitor);
 
     _glfwFreeGammaArrays(&monitor->originalRamp);
     _glfwFreeGammaArrays(&monitor->currentRamp);

@@ -287,7 +287,7 @@ GLFWAPI int glfwInit()
     return GLFW_TRUE;
 }
 
-GLFWAPI void glfwTerminate(void)
+GLFWAPI void glfwTerminate()
 {
     if (!_glfw.initialized)
         return;

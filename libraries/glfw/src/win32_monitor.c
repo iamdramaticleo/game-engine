@@ -35,13 +35,7 @@
 #include <wchar.h>
 #include <assert.h>
 
-
-// Callback for EnumDisplayMonitors in createMonitor
-//
-static BOOL CALLBACK monitorCallback(HMONITOR handle,
-                                     HDC dc,
-                                     RECT* rect,
-                                     LPARAM data)
+static BOOL CALLBACK monitorCallback(HMONITOR handle, HDC dc, RECT* rect, LPARAM data)
 {
     MONITORINFOEXW mi;
     ZeroMemory(&mi, sizeof(mi));
@@ -57,12 +51,8 @@ static BOOL CALLBACK monitorCallback(HMONITOR handle,
     return TRUE;
 }
 
-// Create monitor from an adapter and (optionally) a display
-//
-static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter,
-                                   DISPLAY_DEVICEW* display)
+static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter, DISPLAY_DEVICEW* display)
 {
-    _GLFWmonitor* monitor;
     int widthMM, heightMM;
     char* name;
     HDC dc;
@@ -95,7 +85,7 @@ static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter,
 
     DeleteDC(dc);
 
-    monitor = _glfwAllocMonitor(name, widthMM, heightMM);
+    _GLFWmonitor* monitor = _glfwAllocMonitor(name, widthMM, heightMM);
     _glfw_free(name);
 
     if (adapter->StateFlags & DISPLAY_DEVICE_MODESPRUNED)
@@ -127,22 +117,15 @@ static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter,
     return monitor;
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-//////                       GLFW internal API                      //////
-//////////////////////////////////////////////////////////////////////////
-
-// Poll for changes in the set of connected monitors
-//
-void _glfwPollMonitorsWin32(void)
+void _glfwPollMonitorsWin32()
 {
-    int i, disconnectedCount;
+    int i;
     _GLFWmonitor** disconnected = NULL;
     DWORD adapterIndex, displayIndex;
     DISPLAY_DEVICEW adapter, display;
     _GLFWmonitor* monitor;
 
-    disconnectedCount = _glfw.monitorCount;
+    int disconnectedCount = _glfw.monitorCount;
     if (disconnectedCount)
     {
         disconnected = _glfw_calloc(_glfw.monitorCount, sizeof(_GLFWmonitor*));
@@ -244,14 +227,11 @@ void _glfwPollMonitorsWin32(void)
     _glfw_free(disconnected);
 }
 
-// Change the current video mode
-//
 void _glfwSetVideoModeWin32(_GLFWmonitor* monitor, const GLFWvidmode* desired)
 {
     GLFWvidmode current;
     const GLFWvidmode* best;
     DEVMODEW dm;
-    LONG result;
 
     best = _glfwChooseVideoMode(monitor, desired);
     _glfwGetVideoModeWin32(monitor, &current);
@@ -270,11 +250,9 @@ void _glfwSetVideoModeWin32(_GLFWmonitor* monitor, const GLFWvidmode* desired)
     if (dm.dmBitsPerPel < 15 || dm.dmBitsPerPel >= 24)
         dm.dmBitsPerPel = 32;
 
-    result = ChangeDisplaySettingsExW(monitor->win32.adapterName,
-                                      &dm,
-                                      NULL,
-                                      CDS_FULLSCREEN,
-                                      NULL);
+    LONG result = ChangeDisplaySettingsExW(monitor->win32.adapterName, &dm, NULL,
+                                           CDS_FULLSCREEN,
+                                           NULL);
     if (result == DISP_CHANGE_SUCCESSFUL)
         monitor->win32.modeChanged = GLFW_TRUE;
     else
@@ -296,14 +274,10 @@ void _glfwSetVideoModeWin32(_GLFWmonitor* monitor, const GLFWvidmode* desired)
         else if (result == DISP_CHANGE_RESTART)
             description = "Computer restart required";
 
-        _glfwInputError(GLFW_PLATFORM_ERROR,
-                        "Win32: Failed to set video mode: %s",
-                        description);
+        _glfwInputError(GLFW_PLATFORM_ERROR, "Win32: Failed to set video mode: %s", description);
     }
 }
 
-// Restore the previously saved (original) video mode
-//
 void _glfwRestoreVideoModeWin32(_GLFWmonitor* monitor)
 {
     if (monitor->win32.modeChanged)
@@ -343,15 +317,6 @@ void _glfwGetHMONITORContentScaleWin32(HMONITOR handle, float* xscale, float* ys
         *xscale = xdpi / (float) USER_DEFAULT_SCREEN_DPI;
     if (yscale)
         *yscale = ydpi / (float) USER_DEFAULT_SCREEN_DPI;
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-//////                       GLFW platform API                      //////
-//////////////////////////////////////////////////////////////////////////
-
-void _glfwFreeMonitorWin32(_GLFWmonitor* monitor)
-{
 }
 
 void _glfwGetMonitorPosWin32(_GLFWmonitor* monitor, int* xpos, int* ypos)

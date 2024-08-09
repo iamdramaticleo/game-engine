@@ -33,12 +33,6 @@
 #include <limits.h>
 #include <stdio.h>
 
-// Checks whether the desired context attributes are valid
-//
-// This function checks things like whether the specified client API version
-// exists and whether all relevant options have supported and non-conflicting
-// values
-//
 GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
 {
     if (ctxconfig->source != GLFW_NATIVE_CONTEXT_API)
