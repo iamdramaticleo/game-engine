@@ -1261,57 +1261,6 @@ typedef struct GLFWimage
     unsigned char* pixels;
 } GLFWimage;
 
-/*! @brief Gamepad input state
- *
- *  This describes the input state of a gamepad.
- *
- *  @sa @ref gamepad
- *  @sa @ref glfwGetGamepadState
- *
- *  @since Added in version 3.3.
- *
- *  @ingroup input
- */
-typedef struct GLFWgamepadstate
-{
-    /*! The states of each [gamepad button](@ref gamepad_buttons), `GLFW_PRESS`
-     *  or `GLFW_RELEASE`.
-     */
-    unsigned char buttons[15];
-    /*! The states of each [gamepad axis](@ref gamepad_axes), in the range -1.0
-     *  to 1.0 inclusive.
-     */
-    float axes[6];
-} GLFWgamepadstate;
-
-/*! @brief Custom heap memory allocator.
- *
- *  This describes a custom heap memory allocator for GLFW.  To set an allocator, pass it
- *  to @ref glfwInitAllocator before initializing the library.
- *
- *  @sa @ref init_allocator
- *  @sa @ref glfwInitAllocator
- *
- *  @since Added in version 3.4.
- *
- *  @ingroup init
- */
-typedef struct GLFWallocator
-{
-    /*! The memory allocation function.  See @ref GLFWallocatefun for details about
-     *  allocation function.
-     */
-    GLFWallocatefun allocate;
-    /*! The memory reallocation function.  See @ref GLFWreallocatefun for details about
-     *  reallocation function.
-     */
-    GLFWreallocatefun reallocate;
-    /*! The user pointer for this custom allocator.  This value will be passed to the
-     *  allocator functions.
-     */
-    void* user;
-} GLFWallocator;
-
 int  glfwInit();
 void glfwTerminate();
 
@@ -1346,37 +1295,6 @@ void glfwTerminate();
  *  @ingroup init
  */
 GLFWAPI void glfwInitHint(int hint, int value);
-
-/*! @brief Sets the init allocator to the desired value.
- *
- *  To use the default allocator, call this function with a `NULL` argument.
- *
- *  If you specify an allocator struct, every member must be a valid function
- *  pointer.  If any member is `NULL`, this function will emit @ref
- *  GLFW_INVALID_VALUE and the init allocator will be unchanged.
- *
- *  The functions in the allocator must fulfil a number of requirements.  See the
- *  documentation for @ref GLFWallocatefun, @ref GLFWreallocatefun and @ref
- *  GLFWdeallocatefun for details.
- *
- *  @param[in] allocator The allocator to use at the next initialization, or
- *  `NULL` to use the default one.
- *
- *  @errors Possible errors include @ref GLFW_INVALID_VALUE.
- *
- *  @pointer_lifetime The specified allocator is copied before this function
- *  returns.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref init_allocator
- *  @sa @ref glfwInit
- *
- *  @since Added in version 3.4.
- *
- *  @ingroup init
- */
-GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator);
 
 /*! @brief Returns whether the library includes support for the specified platform.
  *
