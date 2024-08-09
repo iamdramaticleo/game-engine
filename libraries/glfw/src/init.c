@@ -36,7 +36,6 @@
 _GLFWlibrary _glfw = { GLFW_FALSE };
 
 static _GLFWerror _glfwMainThreadError;
-static GLFWerrorfun _glfwErrorCallback;
 static GLFWallocator _glfwInitAllocator;
 static _GLFWinitconfig _glfwInitHints =
 {
@@ -245,17 +244,9 @@ void _glfwInputError(int code, const char* format, ...)
 
     error->code = code;
     strcpy(error->description, description);
-
-    if (_glfwErrorCallback)
-        _glfwErrorCallback(code, description);
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-//////                        GLFW public API                       //////
-//////////////////////////////////////////////////////////////////////////
-
-GLFWAPI int glfwInit(void)
+GLFWAPI int glfwInit()
 {
     if (_glfw.initialized)
         return GLFW_TRUE;
@@ -360,10 +351,3 @@ GLFWAPI int glfwGetError(const char** description)
 
     return code;
 }
-
-GLFWAPI GLFWerrorfun glfwSetErrorCallback(GLFWerrorfun cbfun)
-{
-    _GLFW_SWAP(GLFWerrorfun, _glfwErrorCallback, cbfun);
-    return cbfun;
-}
-

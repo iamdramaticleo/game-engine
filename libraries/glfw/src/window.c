@@ -115,9 +115,6 @@ void _glfwInputWindowMaximize(_GLFWwindow* window, GLFWbool maximized)
         window->callbacks.maximize((GLFWwindow*) window, maximized);
 }
 
-// Notifies shared code that a window framebuffer has been resized
-// The size is specified in pixels
-//
 void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height)
 {
     assert(window != NULL);
@@ -128,9 +125,6 @@ void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height)
         window->callbacks.fbsize((GLFWwindow*) window, width, height);
 }
 
-// Notifies shared code that a window content scale has changed
-// The scale is specified as the ratio between the current and default DPI
-//
 void _glfwInputWindowContentScale(_GLFWwindow* window, float xscale, float yscale)
 {
     assert(window != NULL);
@@ -143,8 +137,6 @@ void _glfwInputWindowContentScale(_GLFWwindow* window, float xscale, float yscal
         window->callbacks.scale((GLFWwindow*) window, xscale, yscale);
 }
 
-// Notifies shared code that the window contents needs updating
-//
 void _glfwInputWindowDamage(_GLFWwindow* window)
 {
     assert(window != NULL);
@@ -153,8 +145,6 @@ void _glfwInputWindowDamage(_GLFWwindow* window)
         window->callbacks.refresh((GLFWwindow*) window);
 }
 
-// Notifies shared code that the user wishes to close a window
-//
 void _glfwInputWindowCloseRequest(_GLFWwindow* window)
 {
     assert(window != NULL);
@@ -165,27 +155,17 @@ void _glfwInputWindowCloseRequest(_GLFWwindow* window)
         window->callbacks.close((GLFWwindow*) window);
 }
 
-// Notifies shared code that a window has changed its desired monitor
-//
 void _glfwInputWindowMonitor(_GLFWwindow* window, _GLFWmonitor* monitor)
 {
     assert(window != NULL);
     window->monitor = monitor;
 }
 
-//////////////////////////////////////////////////////////////////////////
-//////                        GLFW public API                       //////
-//////////////////////////////////////////////////////////////////////////
-
-GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height,
-                                     const char* title,
-                                     GLFWmonitor* monitor,
-                                     GLFWwindow* share)
+GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonitor* monitor)
 {
     _GLFWfbconfig fbconfig;
     _GLFWctxconfig ctxconfig;
     _GLFWwndconfig wndconfig;
-    _GLFWwindow* window;
 
     assert(title != NULL);
     assert(width >= 0);
@@ -195,10 +175,7 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height,
 
     if (width <= 0 || height <= 0)
     {
-        _glfwInputError(GLFW_INVALID_VALUE,
-                        "Invalid window size %ix%i",
-                        width, height);
-
+        _glfwInputError(GLFW_INVALID_VALUE, "Invalid window size %ix%i",width, height);
         return NULL;
     }
 
@@ -209,12 +186,11 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height,
     wndconfig.width   = width;
     wndconfig.height  = height;
     wndconfig.title   = title;
-    ctxconfig.share   = (_GLFWwindow*) share;
 
     if (!_glfwIsValidContextConfig(&ctxconfig))
         return NULL;
 
-    window = _glfw_calloc(1, sizeof(_GLFWwindow));
+    _GLFWwindow* window = _glfw_calloc(1, sizeof(_GLFWwindow));
     window->next = _glfw.windowListHead;
     _glfw.windowListHead = window;
 
