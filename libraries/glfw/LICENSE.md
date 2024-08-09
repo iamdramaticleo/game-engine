@@ -1,5 +1,4 @@
 Copyright (c) 2002-2006 Marcus Geelnard
-
 Copyright (c) 2006-2019 Camilla Löwy
 
 This software is provided 'as-is', without any express or implied
@@ -20,4 +19,3 @@ freely, subject to the following restrictions:
 
 3. This notice may not be removed or altered from any source
    distribution.
-
