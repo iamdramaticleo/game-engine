@@ -552,7 +552,7 @@ GLFWAPI void glfwDestroyCursor(GLFWcursor* handle)
         *prev = cursor->next;
     }
 
-    _glfw_free(cursor);
+    free(cursor);
 }
 
 GLFWAPI void glfwSetCursor(GLFWwindow* windowHandle, GLFWcursor* cursorHandle)

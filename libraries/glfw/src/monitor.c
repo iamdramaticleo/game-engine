@@ -75,7 +75,7 @@ static GLFWbool refreshVideoModes(_GLFWmonitor* monitor)
 
     qsort(modes, modeCount, sizeof(GLFWvidmode), compareVideoModes);
 
-    _glfw_free(monitor->modes);
+    free(monitor->modes);
     monitor->modes = modes;
     monitor->modeCount = modeCount;
 
@@ -183,8 +183,8 @@ void _glfwFreeMonitor(_GLFWmonitor* monitor)
     _glfwFreeGammaArrays(&monitor->originalRamp);
     _glfwFreeGammaArrays(&monitor->currentRamp);
 
-    _glfw_free(monitor->modes);
-    _glfw_free(monitor);
+    free(monitor->modes);
+    free(monitor);
 }
 
 // Allocates red, green and blue value arrays of the specified size
@@ -201,9 +201,9 @@ void _glfwAllocGammaArrays(GLFWgammaramp* ramp, unsigned int size)
 //
 void _glfwFreeGammaArrays(GLFWgammaramp* ramp)
 {
-    _glfw_free(ramp->red);
-    _glfw_free(ramp->green);
-    _glfw_free(ramp->blue);
+    free(ramp->red);
+    free(ramp->green);
+    free(ramp->blue);
 
     memset(ramp, 0, sizeof(GLFWgammaramp));
 }
@@ -213,21 +213,19 @@ void _glfwFreeGammaArrays(GLFWgammaramp* ramp)
 const GLFWvidmode* _glfwChooseVideoMode(_GLFWmonitor* monitor,
                                         const GLFWvidmode* desired)
 {
-    int i;
-    unsigned int sizeDiff, leastSizeDiff = UINT_MAX;
+    unsigned int leastSizeDiff = UINT_MAX;
     unsigned int rateDiff, leastRateDiff = UINT_MAX;
-    unsigned int colorDiff, leastColorDiff = UINT_MAX;
-    const GLFWvidmode* current;
+    unsigned int leastColorDiff = UINT_MAX;
     const GLFWvidmode* closest = NULL;
 
     if (!refreshVideoModes(monitor))
         return NULL;
 
-    for (i = 0;  i < monitor->modeCount;  i++)
+    for (int i = 0;  i < monitor->modeCount;  i++)
     {
-        current = monitor->modes + i;
+        const GLFWvidmode* current = monitor->modes + i;
 
-        colorDiff = 0;
+        unsigned int colorDiff = 0;
 
         if (desired->redBits != GLFW_DONT_CARE)
             colorDiff += abs(current->redBits - desired->redBits);
@@ -236,10 +234,10 @@ const GLFWvidmode* _glfwChooseVideoMode(_GLFWmonitor* monitor,
         if (desired->blueBits != GLFW_DONT_CARE)
             colorDiff += abs(current->blueBits - desired->blueBits);
 
-        sizeDiff = abs((current->width - desired->width) *
-                       (current->width - desired->width) +
-                       (current->height - desired->height) *
-                       (current->height - desired->height));
+        unsigned int sizeDiff = abs((current->width - desired->width) *
+            (current->width - desired->width) +
+            (current->height - desired->height) *
+            (current->height - desired->height));
 
         if (desired->refreshRate != GLFW_DONT_CARE)
             rateDiff = abs(current->refreshRate - desired->refreshRate);
@@ -498,7 +496,7 @@ GLFWAPI void glfwSetGamma(GLFWmonitor* handle, float gamma)
     ramp.size = original->size;
 
     glfwSetGammaRamp(handle, &ramp);
-    _glfw_free(values);
+    free(values);
 }
 
 GLFWAPI const GLFWgammaramp* glfwGetGammaRamp(GLFWmonitor* handle)

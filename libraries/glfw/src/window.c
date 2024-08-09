@@ -415,8 +415,8 @@ GLFWAPI void glfwDestroyWindow(GLFWwindow* handle)
         *prev = window->next;
     }
 
-    _glfw_free(window->title);
-    _glfw_free(window);
+    free(window->title);
+    free(window);
 }
 
 GLFWAPI int glfwWindowShouldClose(GLFWwindow* handle)
@@ -456,7 +456,7 @@ GLFWAPI void glfwSetWindowTitle(GLFWwindow* handle, const char* title)
     window->title = _glfw_strdup(title);
 
     _glfw.platform.setWindowTitle(window, title);
-    _glfw_free(prev);
+    free(prev);
 }
 
 GLFWAPI void glfwSetWindowIcon(GLFWwindow* handle, int count, const GLFWimage* images)

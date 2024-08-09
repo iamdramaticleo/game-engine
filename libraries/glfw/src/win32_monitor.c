@@ -86,7 +86,7 @@ static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter, DISPLAY_DEVICEW* di
     DeleteDC(dc);
 
     _GLFWmonitor* monitor = _glfwAllocMonitor(name, widthMM, heightMM);
-    _glfw_free(name);
+    free(name);
 
     if (adapter->StateFlags & DISPLAY_DEVICE_MODESPRUNED)
         monitor->win32.modesPruned = GLFW_TRUE;
@@ -180,7 +180,7 @@ void _glfwPollMonitorsWin32()
             monitor = createMonitor(&adapter, &display);
             if (!monitor)
             {
-                _glfw_free(disconnected);
+                free(disconnected);
                 return;
             }
 
@@ -210,7 +210,7 @@ void _glfwPollMonitorsWin32()
             monitor = createMonitor(&adapter, NULL);
             if (!monitor)
             {
-                _glfw_free(disconnected);
+                free(disconnected);
                 return;
             }
 
@@ -224,7 +224,7 @@ void _glfwPollMonitorsWin32()
             _glfwInputMonitor(disconnected[i], GLFW_DISCONNECTED, 0);
     }
 
-    _glfw_free(disconnected);
+    free(disconnected);
 }
 
 void _glfwSetVideoModeWin32(_GLFWmonitor* monitor, const GLFWvidmode* desired)

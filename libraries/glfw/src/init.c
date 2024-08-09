@@ -69,7 +69,7 @@ static void terminate()
         _glfwFreeMonitor(monitor);
     }
 
-    _glfw_free(_glfw.monitors);
+    free(_glfw.monitors);
     _glfw.monitors = NULL;
     _glfw.monitorCount = 0;
 
@@ -80,7 +80,7 @@ static void terminate()
     {
         _GLFWerror* error = _glfw.errorListHead;
         _glfw.errorListHead = error->next;
-        _glfw_free(error);
+        free(error);
     }
 
     _glfwPlatformDestroyTls(&_glfw.contextSlot);
@@ -140,34 +140,21 @@ void* _glfw_realloc(void* block, size_t size)
         void* resized = _glfw.allocator.reallocate(block, size, _glfw.allocator.user);
         if (resized)
             return resized;
-        else
-        {
-            _glfwInputError(GLFW_OUT_OF_MEMORY, NULL);
-            return NULL;
-        }
-    }
-    else if (block)
-    {
-        _glfw_free(block);
+        _glfwInputError(GLFW_OUT_OF_MEMORY, NULL);
         return NULL;
     }
-    else
-        return _glfw_calloc(1, size);
-}
-
-void _glfw_free(void* block)
-{
     if (block)
+    {
         free(block);
+        return NULL;
+    }
+    return _glfw_calloc(1, size);
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 //////                         GLFW event API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-// Notifies shared code of an error
-//
 void _glfwInputError(int code, const char* format, ...)
 {
     _GLFWerror* error;

@@ -856,7 +856,7 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
             GetRawInputData(ri, RID_INPUT, NULL, &size, sizeof(RAWINPUTHEADER));
             if (size > (UINT) _glfw.win32.rawInputSize)
             {
-                _glfw_free(_glfw.win32.rawInput);
+                free(_glfw.win32.rawInput);
                 _glfw.win32.rawInput = _glfw_calloc(size, 1);
                 _glfw.win32.rawInputSize = size;
             }
@@ -1188,14 +1188,14 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
                 DragQueryFileW(drop, i, buffer, length + 1);
                 paths[i] = _glfwCreateUTF8FromWideStringWin32(buffer);
 
-                _glfw_free(buffer);
+                free(buffer);
             }
 
             _glfwInputDrop(window, count, paths);
 
             for (i = 0;  i < count;  i++)
-                _glfw_free(paths[i]);
-            _glfw_free(paths);
+                free(paths[i]);
+            free(paths);
 
             DragFinish(drop);
             return 0;
@@ -1289,7 +1289,7 @@ static int createNativeWindow(_GLFWwindow* window, const _GLFWwndconfig* wndconf
                                            _glfw.win32.instance,
                                            (LPVOID) wndconfig);
 
-    _glfw_free(wideTitle);
+    free(wideTitle);
 
     if (!window->win32.handle)
     {
@@ -1453,7 +1453,7 @@ void _glfwSetWindowTitleWin32(_GLFWwindow* window, const char* title)
         return;
 
     SetWindowTextW(window->win32.handle, wideTitle);
-    _glfw_free(wideTitle);
+    free(wideTitle);
 }
 
 void _glfwSetWindowIconWin32(_GLFWwindow* window, int count, const GLFWimage* images)
@@ -2173,7 +2173,7 @@ const char* _glfwGetClipboardStringWin32(void)
         return NULL;
     }
 
-    _glfw_free(_glfw.win32.clipboardString);
+    free(_glfw.win32.clipboardString);
     _glfw.win32.clipboardString = _glfwCreateUTF8FromWideStringWin32(buffer);
 
     GlobalUnlock(object);
