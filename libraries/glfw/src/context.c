@@ -538,21 +538,6 @@ GLFWAPI void glfwSwapBuffers(GLFWwindow* handle)
     window->context.swapBuffers(window);
 }
 
-GLFWAPI void glfwSwapInterval(int interval)
-{
-    _GLFW_REQUIRE_INIT();
-
-    _GLFWwindow* window = _glfwPlatformGetTls(&_glfw.contextSlot);
-    if (!window)
-    {
-        _glfwInputError(GLFW_NO_CURRENT_CONTEXT,
-                        "Cannot set swap interval without a current OpenGL or OpenGL ES context");
-        return;
-    }
-
-    window->context.swapInterval(interval);
-}
-
 GLFWAPI int glfwExtensionSupported(const char* extension)
 {
     _GLFWwindow* window;
