@@ -10,7 +10,7 @@ int main()
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-    GLFWwindow* window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", NULL);
     if (!window)
     {
         glfwTerminate();
