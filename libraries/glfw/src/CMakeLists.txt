@@ -1,36 +1,14 @@
-
 add_library(glfw ${GLFW_LIBRARY_TYPE}
                  "${GLFW_SOURCE_DIR}/include/GLFW/glfw3.h"
                  "${GLFW_SOURCE_DIR}/include/GLFW/glfw3native.h"
-                 internal.h platform.h mappings.h
-                 context.c init.c input.c monitor.c platform.c vulkan.c window.c
-                 egl_context.c osmesa_context.c null_platform.h null_joystick.h
-                 null_init.c null_monitor.c null_window.c null_joystick.c)
+                 internal.h platform.h context.c init.c input.c monitor.c platform.c vulkan.c window.c)
 
-# The time, thread and module code is shared between all backends on a given OS,
-# including the null backend, which still needs those bits to be functional
-if (APPLE)
-    target_sources(glfw PRIVATE cocoa_time.h cocoa_time.c posix_thread.h
-                                posix_module.c posix_thread.c)
-elseif (WIN32)
-    target_sources(glfw PRIVATE win32_time.h win32_thread.h win32_module.c
-                                win32_time.c win32_thread.c)
-else()
-    target_sources(glfw PRIVATE posix_time.h posix_thread.h posix_module.c
-                                posix_time.c posix_thread.c)
-endif()
 
-if (GLFW_BUILD_WIN32)
-    target_compile_definitions(glfw PRIVATE _GLFW_WIN32)
-    target_sources(glfw PRIVATE win32_platform.h win32_joystick.h win32_init.c
-                                win32_joystick.c win32_monitor.c win32_window.c
-                                wgl_context.c)
-endif()
+target_sources(glfw PRIVATE win32_time.h win32_thread.h win32_module.c win32_time.c win32_thread.c)
 
-if (WIN32 AND GLFW_BUILD_SHARED_LIBRARY)
-    configure_file(glfw.rc.in glfw.rc @ONLY)
-    target_sources(glfw PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/glfw.rc")
-endif()
+
+target_compile_definitions(glfw PRIVATE _GLFW_WIN32)
+target_sources(glfw PRIVATE win32_platform.h win32_init.c win32_monitor.c win32_window.c wgl_context.c)
 
 if (UNIX AND GLFW_BUILD_SHARED_LIBRARY)
     # On Unix-like systems, shared libraries can use the soname system.
@@ -69,16 +47,6 @@ if (GLFW_BUILD_WIN32)
     list(APPEND glfw_PKG_LIBS "-lgdi32")
 endif()
 
-if (GLFW_BUILD_COCOA)
-    target_link_libraries(glfw PRIVATE "-framework Cocoa"
-                                       "-framework IOKit"
-                                       "-framework CoreFoundation"
-                                       "-framework QuartzCore")
-
-    set(glfw_PKG_DEPS "")
-    set(glfw_PKG_LIBS "-framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore")
-endif()
-
 if (WIN32)
     if (GLFW_USE_HYBRID_HPG)
         target_compile_definitions(glfw PRIVATE _GLFW_USE_HYBRID_HPG)
@@ -98,14 +66,6 @@ endif()
 
 if (GLFW_BUILD_WIN32)
     target_compile_definitions(glfw PRIVATE UNICODE _UNICODE)
-endif()
-
-# HACK: When building on MinGW, WINVER and UNICODE need to be defined before
-# the inclusion of stddef.h (by glfw3.h), which is itself included before
-# win32_platform.h.  We define them here until a saner solution can be found
-# NOTE: MinGW-w64 and Visual C++ do /not/ need this hack.
-if (MINGW)
-    target_compile_definitions(glfw PRIVATE WINVER=0x0501)
 endif()
 
 # Workaround for the MS CRT deprecating parts of the standard library
