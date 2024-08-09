@@ -658,11 +658,6 @@ struct _GLFWplatform
     int (*getKeyScancode)(int);
     void (*setClipboardString)(const char*);
     const char* (*getClipboardString)(void);
-    GLFWbool (*initJoysticks)(void);
-    void (*terminateJoysticks)(void);
-    GLFWbool (*pollJoystick)(_GLFWjoystick*,int);
-    const char* (*getMappingName)(void);
-    void (*updateGamepadGUID)(char*);
     // monitor
     void (*freeMonitor)(_GLFWmonitor*);
     void (*getMonitorPos)(_GLFWmonitor*,int*,int*);
@@ -837,7 +832,6 @@ struct _GLFWlibrary
     // These are defined in platform.h
     GLFW_PLATFORM_LIBRARY_WINDOW_STATE
     GLFW_PLATFORM_LIBRARY_CONTEXT_STATE
-    GLFW_PLATFORM_LIBRARY_JOYSTICK_STATE
 };
 
 // Global state shared between compilation units of GLFW
@@ -864,7 +858,6 @@ void _glfwPlatformLockMutex(_GLFWmutex* mutex);
 void _glfwPlatformUnlockMutex(_GLFWmutex* mutex);
 
 void* _glfwPlatformLoadModule(const char* path);
-void _glfwPlatformFreeModule(void* module);
 GLFWproc _glfwPlatformGetModuleSymbol(void* module, const char* name);
 
 
@@ -932,39 +925,11 @@ void _glfwAllocGammaArrays(GLFWgammaramp* ramp, unsigned int size);
 void _glfwFreeGammaArrays(GLFWgammaramp* ramp);
 void _glfwSplitBPP(int bpp, int* red, int* green, int* blue);
 
-void _glfwInitGamepadMappings(void);
-_GLFWjoystick* _glfwAllocJoystick(const char* name,
-                                  const char* guid,
-                                  int axisCount,
-                                  int buttonCount,
-                                  int hatCount);
-void _glfwFreeJoystick(_GLFWjoystick* js);
 void _glfwCenterCursorInContentArea(_GLFWwindow* window);
-
-GLFWbool _glfwInitEGL(void);
-void _glfwTerminateEGL(void);
-GLFWbool _glfwCreateContextEGL(_GLFWwindow* window,
-                               const _GLFWctxconfig* ctxconfig,
-                               const _GLFWfbconfig* fbconfig);
-#if defined(_GLFW_X11)
-GLFWbool _glfwChooseVisualEGL(const _GLFWwndconfig* wndconfig,
-                              const _GLFWctxconfig* ctxconfig,
-                              const _GLFWfbconfig* fbconfig,
-                              Visual** visual, int* depth);
-#endif /*_GLFW_X11*/
-
-GLFWbool _glfwInitOSMesa(void);
-void _glfwTerminateOSMesa(void);
-GLFWbool _glfwCreateContextOSMesa(_GLFWwindow* window,
-                                  const _GLFWctxconfig* ctxconfig,
-                                  const _GLFWfbconfig* fbconfig);
 
 GLFWbool _glfwInitVulkan(int mode);
 void _glfwTerminateVulkan(void);
 const char* _glfwGetVulkanResultString(VkResult result);
-
-size_t _glfwEncodeUTF8(char* s, uint32_t codepoint);
-char** _glfwParseUriList(char* text, int* count);
 
 char* _glfw_strdup(const char* source);
 int _glfw_min(int a, int b);

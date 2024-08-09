@@ -158,7 +158,7 @@ GLFWbool _glfwInitVulkan(int mode)
 void _glfwTerminateVulkan(void)
 {
     if (_glfw.vk.handle)
-        _glfwPlatformFreeModule(_glfw.vk.handle);
+        FreeLibrary(_glfw.vk.handle);
 }
 
 const char* _glfwGetVulkanResultString(VkResult result)

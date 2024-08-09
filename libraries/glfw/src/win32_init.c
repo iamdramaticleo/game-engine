@@ -170,27 +170,25 @@ static GLFWbool loadLibraries(void)
     return GLFW_TRUE;
 }
 
-// Unload used libraries (DLLs)
-//
-static void freeLibraries(void)
+static void freeLibraries()
 {
     if (_glfw.win32.xinput.instance)
-        _glfwPlatformFreeModule(_glfw.win32.xinput.instance);
+        FreeLibrary(_glfw.win32.xinput.instance);
 
     if (_glfw.win32.dinput8.instance)
-        _glfwPlatformFreeModule(_glfw.win32.dinput8.instance);
+        FreeLibrary(_glfw.win32.dinput8.instance);
 
     if (_glfw.win32.user32.instance)
-        _glfwPlatformFreeModule(_glfw.win32.user32.instance);
+        FreeLibrary(_glfw.win32.user32.instance);
 
     if (_glfw.win32.dwmapi.instance)
-        _glfwPlatformFreeModule(_glfw.win32.dwmapi.instance);
+        FreeLibrary(_glfw.win32.dwmapi.instance);
 
     if (_glfw.win32.shcore.instance)
-        _glfwPlatformFreeModule(_glfw.win32.shcore.instance);
+        FreeLibrary(_glfw.win32.shcore.instance);
 
     if (_glfw.win32.ntdll.instance)
-        _glfwPlatformFreeModule(_glfw.win32.ntdll.instance);
+        FreeLibrary(_glfw.win32.ntdll.instance);
 }
 
 // Create key code translation tables
@@ -331,8 +329,6 @@ static void createKeyTables(void)
     }
 }
 
-// Window procedure for the hidden helper window
-//
 static LRESULT CALLBACK helperWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
@@ -340,35 +336,12 @@ static LRESULT CALLBACK helperWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LP
         case WM_DISPLAYCHANGE:
             _glfwPollMonitorsWin32();
             break;
-
-        case WM_DEVICECHANGE:
-        {
-            if (!_glfw.joysticksInitialized)
-                break;
-
-            if (wParam == DBT_DEVICEARRIVAL)
-            {
-                DEV_BROADCAST_HDR* dbh = (DEV_BROADCAST_HDR*) lParam;
-                if (dbh && dbh->dbch_devicetype == DBT_DEVTYP_DEVICEINTERFACE)
-                    _glfwDetectJoystickConnectionWin32();
-            }
-            else if (wParam == DBT_DEVICEREMOVECOMPLETE)
-            {
-                DEV_BROADCAST_HDR* dbh = (DEV_BROADCAST_HDR*) lParam;
-                if (dbh && dbh->dbch_devicetype == DBT_DEVTYP_DEVICEINTERFACE)
-                    _glfwDetectJoystickDisconnectionWin32();
-            }
-
-            break;
-        }
     }
 
     return DefWindowProcW(hWnd, uMsg, wParam, lParam);
 }
 
-// Creates a dummy window for behind-the-scenes work
-//
-static GLFWbool createHelperWindow(void)
+static GLFWbool createHelperWindow()
 {
     MSG msg;
     WNDCLASSEXW wc = { sizeof(wc) };
@@ -618,11 +591,6 @@ GLFWbool _glfwConnectWin32(int platformID, _GLFWplatform* platform)
         .getKeyScancode = _glfwGetKeyScancodeWin32,
         .setClipboardString = _glfwSetClipboardStringWin32,
         .getClipboardString = _glfwGetClipboardStringWin32,
-        .initJoysticks = _glfwInitJoysticksWin32,
-        .terminateJoysticks = _glfwTerminateJoysticksWin32,
-        .pollJoystick = _glfwPollJoystickWin32,
-        .getMappingName = _glfwGetMappingNameWin32,
-        .updateGamepadGUID = _glfwUpdateGamepadGUIDWin32,
         .freeMonitor = _glfwFreeMonitorWin32,
         .getMonitorPos = _glfwGetMonitorPosWin32,
         .getMonitorContentScale = _glfwGetMonitorContentScaleWin32,
@@ -721,8 +689,6 @@ void _glfwTerminateWin32(void)
     _glfw_free(_glfw.win32.rawInput);
 
     _glfwTerminateWGL();
-    _glfwTerminateEGL();
-    _glfwTerminateOSMesa();
 
     freeLibraries();
 }

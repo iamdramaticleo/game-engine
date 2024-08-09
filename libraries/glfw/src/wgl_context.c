@@ -521,12 +521,10 @@ GLFWbool _glfwInitWGL(void)
     return GLFW_TRUE;
 }
 
-// Terminate WGL
-//
-void _glfwTerminateWGL(void)
+void _glfwTerminateWGL()
 {
     if (_glfw.wgl.instance)
-        _glfwPlatformFreeModule(_glfw.wgl.instance);
+        FreeLibrary(_glfw.wgl.instance);
 }
 
 #define SET_ATTRIB(a, v) \
