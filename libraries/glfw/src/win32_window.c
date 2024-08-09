@@ -1747,14 +1747,7 @@ void _glfwSetWindowMonitorWin32(_GLFWwindow* window,
 
         if (_glfwIsWindows10Version1607OrGreaterWin32())
         {
-            AdjustWindowRectExForDpi(&rect, getWindowStyle(window),
-                                     FALSE, getWindowExStyle(window),
-                                     GetDpiForWindow(window->win32.handle));
-        }
-        else
-        {
-            AdjustWindowRectEx(&rect, getWindowStyle(window),
-                               FALSE, getWindowExStyle(window));
+            AdjustWindowRectExForDpi(&rect, getWindowStyle(window), FALSE, getWindowExStyle(window), GetDpiForWindow(window->win32.handle));
         }
 
         SetWindowPos(window->win32.handle, after,

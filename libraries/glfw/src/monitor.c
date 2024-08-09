@@ -512,9 +512,7 @@ GLFWAPI void glfwSetGammaRamp(GLFWmonitor* handle, const GLFWgammaramp* ramp)
 
     if (ramp->size <= 0)
     {
-        _glfwInputError(GLFW_INVALID_VALUE,
-                        "Invalid gamma ramp size %i",
-                        ramp->size);
+        _glfwInputError(GLFW_INVALID_VALUE, "Invalid gamma ramp size %i", ramp->size);
         return;
     }
 

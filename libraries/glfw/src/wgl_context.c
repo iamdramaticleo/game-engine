@@ -650,13 +650,11 @@ GLFWbool _glfwCreateContextWGL(_GLFWwindow* window, const _GLFWctxconfig* ctxcon
             }
             else if (error == (0xc0070000 | ERROR_INVALID_PROFILE_ARB))
             {
-                _glfwInputError(GLFW_VERSION_UNAVAILABLE,
-                                "WGL: Driver does not support the requested OpenGL profile");
+                _glfwInputError(GLFW_VERSION_UNAVAILABLE,"WGL: Driver does not support the requested OpenGL profile");
             }
             else if (error == (0xc0070000 | ERROR_INCOMPATIBLE_DEVICE_CONTEXTS_ARB))
             {
-                _glfwInputError(GLFW_INVALID_VALUE,
-                                "WGL: The share context is not compatible with the requested context");
+                _glfwInputError(GLFW_INVALID_VALUE,"WGL: The share context is not compatible with the requested context");
             }
             else
             {
@@ -696,12 +694,9 @@ GLFWbool _glfwCreateContextWGL(_GLFWwindow* window, const _GLFWctxconfig* ctxcon
 
 GLFWAPI HGLRC glfwGetWGLContext(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     if (_glfw.platform.platformID != GLFW_PLATFORM_WIN32)
     {
-        _glfwInputError(GLFW_PLATFORM_UNAVAILABLE,
-                        "WGL: Platform not initialized");
+        _glfwInputError(GLFW_PLATFORM_UNAVAILABLE,"WGL: Platform not initialized");
         return NULL;
     }
 
@@ -718,4 +713,3 @@ GLFWAPI HGLRC glfwGetWGLContext(GLFWwindow* handle)
 }
 
 #endif // _GLFW_WIN32
-

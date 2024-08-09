@@ -27,9 +27,6 @@
 
 #include "internal.h"
 
-#include <string.h>
-#include <stdlib.h>
-
 static const struct
 {
     int ID;

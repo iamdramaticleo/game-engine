@@ -340,8 +340,7 @@ char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source)
     int size = WideCharToMultiByte(CP_UTF8, 0, source, -1, NULL, 0, NULL, NULL);
     if (!size)
     {
-        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to convert string to UTF-8");
+        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,"Win32: Failed to convert string to UTF-8");
         return NULL;
     }
 
@@ -362,9 +361,7 @@ void _glfwInputErrorWin32(int error, const char* description)
     WCHAR buffer[_GLFW_MESSAGE_SIZE] = L"";
     char message[_GLFW_MESSAGE_SIZE] = "";
 
-    FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM |
-                       FORMAT_MESSAGE_IGNORE_INSERTS |
-                       FORMAT_MESSAGE_MAX_WIDTH_MASK,
+    FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_MAX_WIDTH_MASK,
                    NULL,
                    GetLastError() & 0xffff,
                    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
