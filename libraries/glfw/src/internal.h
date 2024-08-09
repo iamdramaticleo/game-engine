@@ -411,7 +411,6 @@ struct _GLFWlibrary
 
     struct {
         GLFWmonitorfun  monitor;
-        GLFWjoystickfun joystick;
     } callbacks;
 
     GLFW_PLATFORM_LIBRARY_WINDOW_STATE
