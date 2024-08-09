@@ -104,31 +104,6 @@ static GLFWbool loadLibraries(void)
     _glfw.win32.user32.GetSystemMetricsForDpi_ = (PFN_GetSystemMetricsForDpi)
         _glfwPlatformGetModuleSymbol(_glfw.win32.user32.instance, "GetSystemMetricsForDpi");
 
-    _glfw.win32.dinput8.instance = _glfwPlatformLoadModule("dinput8.dll");
-    if (_glfw.win32.dinput8.instance)
-    {
-        _glfw.win32.dinput8.Create = (PFN_DirectInput8Create)
-            _glfwPlatformGetModuleSymbol(_glfw.win32.dinput8.instance, "DirectInput8Create");
-    }
-
-    {
-
-
-        for (int i = 0;  names[i];  i++)
-        {
-            _glfw.win32.xinput.instance = _glfwPlatformLoadModule(names[i]);
-            if (_glfw.win32.xinput.instance)
-            {
-                _glfw.win32.xinput.GetCapabilities = (PFN_XInputGetCapabilities)
-                    _glfwPlatformGetModuleSymbol(_glfw.win32.xinput.instance, "XInputGetCapabilities");
-                _glfw.win32.xinput.GetState = (PFN_XInputGetState)
-                    _glfwPlatformGetModuleSymbol(_glfw.win32.xinput.instance, "XInputGetState");
-
-                break;
-            }
-        }
-    }
-
     _glfw.win32.dwmapi.instance = _glfwPlatformLoadModule("dwmapi.dll");
     if (_glfw.win32.dwmapi.instance)
     {
@@ -163,12 +138,6 @@ static GLFWbool loadLibraries(void)
 
 static void freeLibraries()
 {
-    if (_glfw.win32.xinput.instance)
-        FreeLibrary(_glfw.win32.xinput.instance);
-
-    if (_glfw.win32.dinput8.instance)
-        FreeLibrary(_glfw.win32.dinput8.instance);
-
     if (_glfw.win32.user32.instance)
         FreeLibrary(_glfw.win32.user32.instance);
 
@@ -602,7 +571,6 @@ GLFWbool _glfwConnectWin32(int platformID, _GLFWplatform* platform)
         .maximizeWindow = _glfwMaximizeWindowWin32,
         .showWindow = _glfwShowWindowWin32,
         .hideWindow = _glfwHideWindowWin32,
-        .requestWindowAttention = _glfwRequestWindowAttentionWin32,
         .focusWindow = _glfwFocusWindowWin32,
         .setWindowMonitor = _glfwSetWindowMonitorWin32,
         .windowFocused = _glfwWindowFocusedWin32,
@@ -610,17 +578,11 @@ GLFWbool _glfwConnectWin32(int platformID, _GLFWplatform* platform)
         .windowVisible = _glfwWindowVisibleWin32,
         .windowMaximized = _glfwWindowMaximizedWin32,
         .windowHovered = _glfwWindowHoveredWin32,
-        .framebufferTransparent = _glfwFramebufferTransparentWin32,
-        .getWindowOpacity = _glfwGetWindowOpacityWin32,
         .setWindowResizable = _glfwSetWindowResizableWin32,
         .setWindowDecorated = _glfwSetWindowDecoratedWin32,
         .setWindowFloating = _glfwSetWindowFloatingWin32,
-        .setWindowOpacity = _glfwSetWindowOpacityWin32,
         .setWindowMousePassthrough = _glfwSetWindowMousePassthroughWin32,
         .pollEvents = _glfwPollEventsWin32,
-        .waitEvents = _glfwWaitEventsWin32,
-        .waitEventsTimeout = _glfwWaitEventsTimeoutWin32,
-        .postEmptyEvent = _glfwPostEmptyEventWin32,
         .getRequiredInstanceExtensions = _glfwGetRequiredInstanceExtensionsWin32,
         .getPhysicalDevicePresentationSupport = _glfwGetPhysicalDevicePresentationSupportWin32,
         .createWindowSurface = _glfwCreateWindowSurfaceWin32

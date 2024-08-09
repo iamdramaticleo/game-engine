@@ -33,11 +33,6 @@
 #include <limits.h>
 #include <stdio.h>
 
-
-//////////////////////////////////////////////////////////////////////////
-//////                       GLFW internal API                      //////
-//////////////////////////////////////////////////////////////////////////
-
 // Checks whether the desired context attributes are valid
 //
 // This function checks things like whether the specified client API version
@@ -99,9 +94,7 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
             if (ctxconfig->profile != GLFW_OPENGL_CORE_PROFILE &&
                 ctxconfig->profile != GLFW_OPENGL_COMPAT_PROFILE)
             {
-                _glfwInputError(GLFW_INVALID_ENUM,
-                                "Invalid OpenGL profile 0x%08X",
-                                ctxconfig->profile);
+                _glfwInputError(GLFW_INVALID_ENUM,"Invalid OpenGL profile 0x%08X",ctxconfig->profile);
                 return GLFW_FALSE;
             }
 
@@ -133,9 +126,7 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
         if (ctxconfig->release != GLFW_RELEASE_BEHAVIOR_NONE &&
             ctxconfig->release != GLFW_RELEASE_BEHAVIOR_FLUSH)
         {
-            _glfwInputError(GLFW_INVALID_ENUM,
-                            "Invalid context release behavior 0x%08X",
-                            ctxconfig->release);
+            _glfwInputError(GLFW_INVALID_ENUM, "Invalid context release behavior 0x%08X", ctxconfig->release);
             return GLFW_FALSE;
         }
     }
@@ -143,22 +134,18 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
     return GLFW_TRUE;
 }
 
-// Chooses the framebuffer config that best matches the desired one
-//
 const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
                                          const _GLFWfbconfig* alternatives,
                                          unsigned int count)
 {
-    unsigned int i;
     unsigned int missing, leastMissing = UINT_MAX;
     unsigned int colorDiff, leastColorDiff = UINT_MAX;
     unsigned int extraDiff, leastExtraDiff = UINT_MAX;
-    const _GLFWfbconfig* current;
     const _GLFWfbconfig* closest = NULL;
 
-    for (i = 0;  i < count;  i++)
+    for (unsigned int i = 0;  i < count;  i++)
     {
-        current = alternatives + i;
+        const _GLFWfbconfig* current = alternatives + i;
 
         if (desired->stereo > 0 && current->stereo == 0)
         {
@@ -166,7 +153,6 @@ const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
             continue;
         }
 
-        // Count number of missing buffers
         {
             missing = 0;
 
@@ -192,9 +178,6 @@ const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
                 // not important to us here, so we count them as one
                 missing++;
             }
-
-            if (desired->transparent != current->transparent)
-                missing++;
         }
 
         // These polynomials make many small channel size differences matter

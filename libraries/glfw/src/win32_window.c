@@ -367,43 +367,6 @@ static void updateWindowStyles(const _GLFWwindow* window)
                  SWP_FRAMECHANGED | SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-// Update window framebuffer transparency
-//
-static void updateFramebufferTransparency(const _GLFWwindow* window)
-{
-    BOOL composition, opaque;
-    DWORD color;
-
-    if (!IsWindowsVistaOrGreater())
-        return;
-
-    if (FAILED(DwmIsCompositionEnabled(&composition)) || !composition)
-       return;
-
-    if (IsWindows8OrGreater() ||
-        (SUCCEEDED(DwmGetColorizationColor(&color, &opaque)) && !opaque))
-    {
-        HRGN region = CreateRectRgn(0, 0, -1, -1);
-        DWM_BLURBEHIND bb = {0};
-        bb.dwFlags = DWM_BB_ENABLE | DWM_BB_BLURREGION;
-        bb.hRgnBlur = region;
-        bb.fEnable = TRUE;
-
-        DwmEnableBlurBehindWindow(window->win32.handle, &bb);
-        DeleteObject(region);
-    }
-    else
-    {
-        // HACK: Disable framebuffer transparency on Windows 7 when the
-        //       colorization color is opaque, because otherwise the window
-        //       contents is blended additively with the previous frame instead
-        //       of replacing it
-        DWM_BLURBEHIND bb = {0};
-        bb.dwFlags = DWM_BB_ENABLE;
-        DwmEnableBlurBehindWindow(window->win32.handle, &bb);
-    }
-}
-
 // Retrieves and translates modifier keys
 //
 static int getKeyMods(void)
@@ -1826,11 +1789,6 @@ void _glfwHideWindowWin32(_GLFWwindow* window)
     ShowWindow(window->win32.handle, SW_HIDE);
 }
 
-void _glfwRequestWindowAttentionWin32(_GLFWwindow* window)
-{
-    FlashWindow(window->win32.handle, TRUE);
-}
-
 void _glfwFocusWindowWin32(_GLFWwindow* window)
 {
     BringWindowToTop(window->win32.handle);
@@ -1973,33 +1931,6 @@ GLFWbool _glfwWindowHoveredWin32(_GLFWwindow* window)
     return cursorInContentArea(window);
 }
 
-GLFWbool _glfwFramebufferTransparentWin32(_GLFWwindow* window)
-{
-    BOOL composition, opaque;
-    DWORD color;
-
-    if (!window->win32.transparent)
-        return GLFW_FALSE;
-
-    if (!IsWindowsVistaOrGreater())
-        return GLFW_FALSE;
-
-    if (FAILED(DwmIsCompositionEnabled(&composition)) || !composition)
-        return GLFW_FALSE;
-
-    if (!IsWindows8OrGreater())
-    {
-        // HACK: Disable framebuffer transparency on Windows 7 when the
-        //       colorization color is opaque, because otherwise the window
-        //       contents is blended additively with the previous frame instead
-        //       of replacing it
-        if (FAILED(DwmGetColorizationColor(&color, &opaque)) || opaque)
-            return GLFW_FALSE;
-    }
-
-    return GLFW_TRUE;
-}
-
 void _glfwSetWindowResizableWin32(_GLFWwindow* window, GLFWbool enabled)
 {
     updateWindowStyles(window);
@@ -2045,42 +1976,6 @@ void _glfwSetWindowMousePassthroughWin32(_GLFWwindow* window, GLFWbool enabled)
 
     if (enabled)
         SetLayeredWindowAttributes(window->win32.handle, key, alpha, flags);
-}
-
-float _glfwGetWindowOpacityWin32(_GLFWwindow* window)
-{
-    BYTE alpha;
-    DWORD flags;
-
-    if ((GetWindowLongW(window->win32.handle, GWL_EXSTYLE) & WS_EX_LAYERED) &&
-        GetLayeredWindowAttributes(window->win32.handle, NULL, &alpha, &flags))
-    {
-        if (flags & LWA_ALPHA)
-            return alpha / 255.f;
-    }
-
-    return 1.f;
-}
-
-void _glfwSetWindowOpacityWin32(_GLFWwindow* window, float opacity)
-{
-    LONG exStyle = GetWindowLongW(window->win32.handle, GWL_EXSTYLE);
-    if (opacity < 1.f || (exStyle & WS_EX_TRANSPARENT))
-    {
-        const BYTE alpha = (BYTE) (255 * opacity);
-        exStyle |= WS_EX_LAYERED;
-        SetWindowLongW(window->win32.handle, GWL_EXSTYLE, exStyle);
-        SetLayeredWindowAttributes(window->win32.handle, 0, alpha, LWA_ALPHA);
-    }
-    else if (exStyle & WS_EX_TRANSPARENT)
-    {
-        SetLayeredWindowAttributes(window->win32.handle, 0, 0, 0);
-    }
-    else
-    {
-        exStyle &= ~WS_EX_LAYERED;
-        SetWindowLongW(window->win32.handle, GWL_EXSTYLE, exStyle);
-    }
 }
 
 void _glfwSetRawMouseMotionWin32(_GLFWwindow *window, GLFWbool enabled)
@@ -2180,25 +2075,6 @@ void _glfwPollEventsWin32(void)
             _glfwSetCursorPosWin32(window, width / 2, height / 2);
         }
     }
-}
-
-void _glfwWaitEventsWin32(void)
-{
-    WaitMessage();
-
-    _glfwPollEventsWin32();
-}
-
-void _glfwWaitEventsTimeoutWin32(double timeout)
-{
-    MsgWaitForMultipleObjects(0, NULL, FALSE, (DWORD) (timeout * 1e3), QS_ALLINPUT);
-
-    _glfwPollEventsWin32();
-}
-
-void _glfwPostEmptyEventWin32(void)
-{
-    PostMessageW(_glfw.win32.helperWindowHandle, WM_NULL, 0, 0);
 }
 
 void _glfwGetCursorPosWin32(_GLFWwindow* window, double* xpos, double* ypos)

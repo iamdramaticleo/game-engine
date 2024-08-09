@@ -540,7 +540,6 @@ void _glfwRestoreWindowWin32(_GLFWwindow* window);
 void _glfwMaximizeWindowWin32(_GLFWwindow* window);
 void _glfwShowWindowWin32(_GLFWwindow* window);
 void _glfwHideWindowWin32(_GLFWwindow* window);
-void _glfwRequestWindowAttentionWin32(_GLFWwindow* window);
 void _glfwFocusWindowWin32(_GLFWwindow* window);
 void _glfwSetWindowMonitorWin32(_GLFWwindow* window, _GLFWmonitor* monitor, int xpos, int ypos, int width, int height, int refreshRate);
 GLFWbool _glfwWindowFocusedWin32(_GLFWwindow* window);
@@ -548,21 +547,15 @@ GLFWbool _glfwWindowIconifiedWin32(_GLFWwindow* window);
 GLFWbool _glfwWindowVisibleWin32(_GLFWwindow* window);
 GLFWbool _glfwWindowMaximizedWin32(_GLFWwindow* window);
 GLFWbool _glfwWindowHoveredWin32(_GLFWwindow* window);
-GLFWbool _glfwFramebufferTransparentWin32(_GLFWwindow* window);
 void _glfwSetWindowResizableWin32(_GLFWwindow* window, GLFWbool enabled);
 void _glfwSetWindowDecoratedWin32(_GLFWwindow* window, GLFWbool enabled);
 void _glfwSetWindowFloatingWin32(_GLFWwindow* window, GLFWbool enabled);
 void _glfwSetWindowMousePassthroughWin32(_GLFWwindow* window, GLFWbool enabled);
-float _glfwGetWindowOpacityWin32(_GLFWwindow* window);
-void _glfwSetWindowOpacityWin32(_GLFWwindow* window, float opacity);
 
 void _glfwSetRawMouseMotionWin32(_GLFWwindow *window, GLFWbool enabled);
 GLFWbool _glfwRawMouseMotionSupportedWin32(void);
 
 void _glfwPollEventsWin32();
-void _glfwWaitEventsWin32();
-void _glfwWaitEventsTimeoutWin32(double timeout);
-void _glfwPostEmptyEventWin32();
 
 void _glfwGetCursorPosWin32(_GLFWwindow* window, double* xpos, double* ypos);
 void _glfwSetCursorPosWin32(_GLFWwindow* window, double xpos, double ypos);
