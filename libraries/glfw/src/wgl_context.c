@@ -91,11 +91,6 @@ static int choosePixelFormatWGL(_GLFWwindow* window,
         ADD_ATTRIB(WGL_ALPHA_SHIFT_ARB);
         ADD_ATTRIB(WGL_DEPTH_BITS_ARB);
         ADD_ATTRIB(WGL_STENCIL_BITS_ARB);
-        ADD_ATTRIB(WGL_ACCUM_BITS_ARB);
-        ADD_ATTRIB(WGL_ACCUM_RED_BITS_ARB);
-        ADD_ATTRIB(WGL_ACCUM_GREEN_BITS_ARB);
-        ADD_ATTRIB(WGL_ACCUM_BLUE_BITS_ARB);
-        ADD_ATTRIB(WGL_ACCUM_ALPHA_BITS_ARB);
         ADD_ATTRIB(WGL_AUX_BUFFERS_ARB);
         ADD_ATTRIB(WGL_STEREO_ARB);
         ADD_ATTRIB(WGL_DOUBLE_BUFFER_ARB);
@@ -178,11 +173,6 @@ static int choosePixelFormatWGL(_GLFWwindow* window,
             u->depthBits = FIND_ATTRIB_VALUE(WGL_DEPTH_BITS_ARB);
             u->stencilBits = FIND_ATTRIB_VALUE(WGL_STENCIL_BITS_ARB);
 
-            u->accumRedBits = FIND_ATTRIB_VALUE(WGL_ACCUM_RED_BITS_ARB);
-            u->accumGreenBits = FIND_ATTRIB_VALUE(WGL_ACCUM_GREEN_BITS_ARB);
-            u->accumBlueBits = FIND_ATTRIB_VALUE(WGL_ACCUM_BLUE_BITS_ARB);
-            u->accumAlphaBits = FIND_ATTRIB_VALUE(WGL_ACCUM_ALPHA_BITS_ARB);
-
             u->auxBuffers = FIND_ATTRIB_VALUE(WGL_AUX_BUFFERS_ARB);
 
             if (FIND_ATTRIB_VALUE(WGL_STEREO_ARB))
@@ -253,11 +243,6 @@ static int choosePixelFormatWGL(_GLFWwindow* window,
             u->depthBits = pfd.cDepthBits;
             u->stencilBits = pfd.cStencilBits;
 
-            u->accumRedBits = pfd.cAccumRedBits;
-            u->accumGreenBits = pfd.cAccumGreenBits;
-            u->accumBlueBits = pfd.cAccumBlueBits;
-            u->accumAlphaBits = pfd.cAccumAlphaBits;
-
             u->auxBuffers = pfd.cAuxBuffers;
 
             if (pfd.dwFlags & PFD_STEREO)
@@ -270,8 +255,7 @@ static int choosePixelFormatWGL(_GLFWwindow* window,
 
     if (!usableCount)
     {
-        _glfwInputError(GLFW_API_UNAVAILABLE,
-                        "WGL: The driver does not appear to support OpenGL");
+        _glfwInputError(GLFW_API_UNAVAILABLE, "WGL: The driver does not appear to support OpenGL");
 
         free(usableConfigs);
         return 0;
@@ -280,8 +264,7 @@ static int choosePixelFormatWGL(_GLFWwindow* window,
     const _GLFWfbconfig* closest = _glfwChooseFBConfig(fbconfig, usableConfigs, usableCount);
     if (!closest)
     {
-        _glfwInputError(GLFW_FORMAT_UNAVAILABLE,
-                        "WGL: Failed to find a suitable pixel format");
+        _glfwInputError(GLFW_FORMAT_UNAVAILABLE, "WGL: Failed to find a suitable pixel format");
 
         free(usableConfigs);
         return 0;
@@ -304,8 +287,7 @@ static void makeContextCurrentWGL(_GLFWwindow* window)
             _glfwPlatformSetTls(&_glfw.contextSlot, window);
         else
         {
-            _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                                 "WGL: Failed to make context current");
+            _glfwInputErrorWin32(GLFW_PLATFORM_ERROR, "WGL: Failed to make context current");
             _glfwPlatformSetTls(&_glfw.contextSlot, NULL);
         }
     }
@@ -313,32 +295,15 @@ static void makeContextCurrentWGL(_GLFWwindow* window)
     {
         if (!wglMakeCurrent(NULL, NULL))
         {
-            _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                                 "WGL: Failed to clear current context");
+            _glfwInputErrorWin32(GLFW_PLATFORM_ERROR, "WGL: Failed to clear current context");
         }
 
         _glfwPlatformSetTls(&_glfw.contextSlot, NULL);
     }
 }
 
-static void swapBuffersWGL(_GLFWwindow* window)
+static void swapBuffersWGL(const _GLFWwindow* window)
 {
-    if (!window->monitor)
-    {
-        // HACK: Use DwmFlush when desktop composition is enabled on Windows Vista and 7
-        if (!IsWindows8OrGreater() && IsWindowsVistaOrGreater())
-        {
-            BOOL enabled = FALSE;
-
-            if (SUCCEEDED(DwmIsCompositionEnabled(&enabled)) && enabled)
-            {
-                int count = abs(window->context.wgl.interval);
-                while (count--)
-                    DwmFlush();
-            }
-        }
-    }
-
     SwapBuffers(window->context.wgl.dc);
 }
 
@@ -375,11 +340,9 @@ static void destroyContextWGL(_GLFWwindow* window)
     }
 }
 
-GLFWbool _glfwInitWGL(void)
+GLFWbool _glfwInitWGL()
 {
     PIXELFORMATDESCRIPTOR pfd;
-    HGLRC prc, rc;
-    HDC pdc, dc;
 
     if (_glfw.wgl.instance)
         return GLFW_TRUE;
@@ -387,30 +350,23 @@ GLFWbool _glfwInitWGL(void)
     _glfw.wgl.instance = LoadLibraryA("opengl32.dll");
     if (!_glfw.wgl.instance)
     {
-        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "WGL: Failed to load opengl32.dll");
+        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR, "WGL: Failed to load opengl32.dll");
         return GLFW_FALSE;
     }
 
-    _glfw.wgl.CreateContext = (PFN_wglCreateContext)
-        GetProcAddress(_glfw.wgl.instance, "wglCreateContext");
-    _glfw.wgl.DeleteContext = (PFN_wglDeleteContext)
-        GetProcAddress(_glfw.wgl.instance, "wglDeleteContext");
-    _glfw.wgl.GetProcAddress = (PFN_wglGetProcAddress)
-        GetProcAddress(_glfw.wgl.instance, "wglGetProcAddress");
-    _glfw.wgl.GetCurrentDC = (PFN_wglGetCurrentDC)
-        GetProcAddress(_glfw.wgl.instance, "wglGetCurrentDC");
-    _glfw.wgl.GetCurrentContext = (PFN_wglGetCurrentContext)
-        GetProcAddress(_glfw.wgl.instance, "wglGetCurrentContext");
-    _glfw.wgl.MakeCurrent = (PFN_wglMakeCurrent)
-        GetProcAddress(_glfw.wgl.instance, "wglMakeCurrent");
+    _glfw.wgl.CreateContext  = (PFN_wglCreateContext)GetProcAddress(_glfw.wgl.instance, "wglCreateContext");
+    _glfw.wgl.DeleteContext  = (PFN_wglDeleteContext)GetProcAddress(_glfw.wgl.instance, "wglDeleteContext");
+    _glfw.wgl.GetProcAddress = (PFN_wglGetProcAddress)GetProcAddress(_glfw.wgl.instance, "wglGetProcAddress");
+    _glfw.wgl.GetCurrentDC   = (PFN_wglGetCurrentDC)GetProcAddress(_glfw.wgl.instance, "wglGetCurrentDC");
+    _glfw.wgl.GetCurrentContext = (PFN_wglGetCurrentContext)GetProcAddress(_glfw.wgl.instance, "wglGetCurrentContext");
+    _glfw.wgl.MakeCurrent       = (PFN_wglMakeCurrent)GetProcAddress(_glfw.wgl.instance, "wglMakeCurrent");
 
     // NOTE: A dummy context has to be created for opengl32.dll to load the
     //       OpenGL ICD, from which we can then query WGL extensions
     // NOTE: This code will accept the Microsoft GDI ICD; accelerated context
     //       creation failure occurs during manual pixel format enumeration
 
-    dc = GetDC(_glfw.win32.helperWindowHandle);
+    HDC dc = GetDC(_glfw.win32.helperWindowHandle);
 
     ZeroMemory(&pfd, sizeof(pfd));
     pfd.nSize = sizeof(pfd);
@@ -426,7 +382,7 @@ GLFWbool _glfwInitWGL(void)
         return GLFW_FALSE;
     }
 
-    rc = wglCreateContext(dc);
+    HGLRC rc = wglCreateContext(dc);
     if (!rc)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -434,8 +390,8 @@ GLFWbool _glfwInitWGL(void)
         return GLFW_FALSE;
     }
 
-    pdc = wglGetCurrentDC();
-    prc = wglGetCurrentContext();
+    HDC   pdc = wglGetCurrentDC();
+    HGLRC prc = wglGetCurrentContext();
 
     if (!wglMakeCurrent(dc, rc))
     {

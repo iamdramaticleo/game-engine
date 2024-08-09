@@ -110,11 +110,9 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
     return GLFW_TRUE;
 }
 
-const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
-                                         const _GLFWfbconfig* alternatives,
-                                         unsigned int count)
+const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired, const _GLFWfbconfig* alternatives, unsigned int count)
 {
-    unsigned int missing, leastMissing = UINT_MAX;
+    unsigned int missing,   leastMissing = UINT_MAX;
     unsigned int colorDiff, leastColorDiff = UINT_MAX;
     unsigned int extraDiff, leastExtraDiff = UINT_MAX;
     const _GLFWfbconfig* closest = NULL;
@@ -202,30 +200,6 @@ const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
             {
                 extraDiff += (desired->stencilBits - current->stencilBits) *
                              (desired->stencilBits - current->stencilBits);
-            }
-
-            if (desired->accumRedBits != GLFW_DONT_CARE)
-            {
-                extraDiff += (desired->accumRedBits - current->accumRedBits) *
-                             (desired->accumRedBits - current->accumRedBits);
-            }
-
-            if (desired->accumGreenBits != GLFW_DONT_CARE)
-            {
-                extraDiff += (desired->accumGreenBits - current->accumGreenBits) *
-                             (desired->accumGreenBits - current->accumGreenBits);
-            }
-
-            if (desired->accumBlueBits != GLFW_DONT_CARE)
-            {
-                extraDiff += (desired->accumBlueBits - current->accumBlueBits) *
-                             (desired->accumBlueBits - current->accumBlueBits);
-            }
-
-            if (desired->accumAlphaBits != GLFW_DONT_CARE)
-            {
-                extraDiff += (desired->accumAlphaBits - current->accumAlphaBits) *
-                             (desired->accumAlphaBits - current->accumAlphaBits);
             }
 
             if (desired->samples != GLFW_DONT_CARE)

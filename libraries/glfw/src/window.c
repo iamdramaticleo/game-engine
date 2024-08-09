@@ -278,18 +278,6 @@ GLFWAPI void glfwWindowHint(int hint, int value)
         case GLFW_STENCIL_BITS:
             _glfw.hints.framebuffer.stencilBits = value;
             return;
-        case GLFW_ACCUM_RED_BITS:
-            _glfw.hints.framebuffer.accumRedBits = value;
-            return;
-        case GLFW_ACCUM_GREEN_BITS:
-            _glfw.hints.framebuffer.accumGreenBits = value;
-            return;
-        case GLFW_ACCUM_BLUE_BITS:
-            _glfw.hints.framebuffer.accumBlueBits = value;
-            return;
-        case GLFW_ACCUM_ALPHA_BITS:
-            _glfw.hints.framebuffer.accumAlphaBits = value;
-            return;
         case GLFW_AUX_BUFFERS:
             _glfw.hints.framebuffer.auxBuffers = value;
             return;
