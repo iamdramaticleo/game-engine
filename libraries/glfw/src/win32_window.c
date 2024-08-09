@@ -1894,7 +1894,7 @@ void _glfwSetWindowMousePassthroughWin32(_GLFWwindow* window, GLFWbool enabled)
         GetLayeredWindowAttributes(window->win32.handle, &key, &alpha, &flags);
 
     if (enabled)
-        exStyle |= (WS_EX_TRANSPARENT | WS_EX_LAYERED);
+        exStyle |= WS_EX_TRANSPARENT | WS_EX_LAYERED;
     else
     {
         exStyle &= ~WS_EX_TRANSPARENT;
@@ -1924,15 +1924,14 @@ void _glfwSetRawMouseMotionWin32(_GLFWwindow *window, GLFWbool enabled)
         disableRawMouseMotion(window);
 }
 
-GLFWbool _glfwRawMouseMotionSupportedWin32(void)
+GLFWbool _glfwRawMouseMotionSupportedWin32()
 {
     return GLFW_TRUE;
 }
 
-void _glfwPollEventsWin32(void)
+void _glfwPollEventsWin32()
 {
     MSG msg;
-    HWND handle;
     _GLFWwindow* window;
 
     while (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
@@ -1964,13 +1963,12 @@ void _glfwPollEventsWin32(void)
     //       Other Win hotkeys are handled implicitly by _glfwInputWindowFocus
     //       because they change the input focus
     // NOTE: The other half of this is in the WM_*KEY* handler in windowProc
-    handle = GetActiveWindow();
+    HWND handle = GetActiveWindow();
     if (handle)
     {
         window = GetPropW(handle, L"GLFW");
         if (window)
         {
-            int i;
             const int keys[4][2] =
             {
                 { VK_LSHIFT, GLFW_KEY_LEFT_SHIFT },
@@ -1979,7 +1977,7 @@ void _glfwPollEventsWin32(void)
                 { VK_RWIN, GLFW_KEY_RIGHT_SUPER }
             };
 
-            for (i = 0;  i < 4;  i++)
+            for (int i = 0;  i < 4;  i++)
             {
                 const int vk = keys[i][0];
                 const int key = keys[i][1];
@@ -2135,13 +2133,10 @@ GLFWbool _glfwCreateStandardCursorWin32(_GLFWcursor* cursor, int shape)
             return GLFW_FALSE;
     }
 
-    cursor->win32.handle = LoadImageW(NULL,
-                                      MAKEINTRESOURCEW(id), IMAGE_CURSOR, 0, 0,
-                                      LR_DEFAULTSIZE | LR_SHARED);
+    cursor->win32.handle = LoadImageW(NULL, MAKEINTRESOURCEW(id), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE | LR_SHARED);
     if (!cursor->win32.handle)
     {
-        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to create standard cursor");
+        _glfwInputErrorWin32(GLFW_PLATFORM_ERROR, "Win32: Failed to create standard cursor");
         return GLFW_FALSE;
     }
 
@@ -2258,7 +2253,7 @@ const char* _glfwGetClipboardStringWin32(void)
     return _glfw.win32.clipboardString;
 }
 
-GLFWAPI HWND glfwGetWin32Window(GLFWwindow* handle)
+HWND glfwGetWin32Window(GLFWwindow* handle)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 
@@ -2276,4 +2271,3 @@ GLFWAPI HWND glfwGetWin32Window(GLFWwindow* handle)
 }
 
 #endif // _GLFW_WIN32
-
