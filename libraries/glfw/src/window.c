@@ -171,8 +171,6 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height, const char* title, G
     assert(width >= 0);
     assert(height >= 0);
 
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     if (width <= 0 || height <= 0)
     {
         _glfwInputError(GLFW_INVALID_VALUE, "Invalid window size %ix%i",width, height);
@@ -229,10 +227,8 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height, const char* title, G
     return (GLFWwindow*) window;
 }
 
-void glfwDefaultWindowHints(void)
+void glfwDefaultWindowHints()
 {
-    _GLFW_REQUIRE_INIT();
-
     // The default is OpenGL with minimum version 1.0
     memset(&_glfw.hints.context, 0, sizeof(_glfw.hints.context));
     _glfw.hints.context.client = GLFW_OPENGL_API;
@@ -270,8 +266,6 @@ void glfwDefaultWindowHints(void)
 
 GLFWAPI void glfwWindowHint(int hint, int value)
 {
-    _GLFW_REQUIRE_INIT();
-
     switch (hint)
     {
         case GLFW_RED_BITS:
@@ -395,8 +389,6 @@ GLFWAPI void glfwWindowHint(int hint, int value)
 
 GLFWAPI void glfwDestroyWindow(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
 
     // Allow closing of NULL (to match the behavior of free)
@@ -429,8 +421,6 @@ GLFWAPI void glfwDestroyWindow(GLFWwindow* handle)
 
 GLFWAPI int glfwWindowShouldClose(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(0);
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -439,8 +429,6 @@ GLFWAPI int glfwWindowShouldClose(GLFWwindow* handle)
 
 GLFWAPI void glfwSetWindowShouldClose(GLFWwindow* handle, int value)
 {
-    _GLFW_REQUIRE_INIT();
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -449,8 +437,6 @@ GLFWAPI void glfwSetWindowShouldClose(GLFWwindow* handle, int value)
 
 GLFWAPI const char* glfwGetWindowTitle(GLFWwindow* handle)
 {
-    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
-
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
 
@@ -473,11 +459,8 @@ GLFWAPI void glfwSetWindowTitle(GLFWwindow* handle, const char* title)
     _glfw_free(prev);
 }
 
-GLFWAPI void glfwSetWindowIcon(GLFWwindow* handle,
-                               int count, const GLFWimage* images)
+GLFWAPI void glfwSetWindowIcon(GLFWwindow* handle, int count, const GLFWimage* images)
 {
-    int i;
-
     assert(count >= 0);
     assert(count == 0 || images != NULL);
 
@@ -492,7 +475,7 @@ GLFWAPI void glfwSetWindowIcon(GLFWwindow* handle,
         return;
     }
 
-    for (i = 0; i < count; i++)
+    for (int i = 0; i < count; i++)
     {
         assert(images[i].pixels != NULL);
 
@@ -1038,6 +1021,5 @@ GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* 
 
 GLFWAPI void glfwPollEvents()
 {
-    _GLFW_REQUIRE_INIT();
     _glfw.platform.pollEvents();
 }

@@ -412,7 +412,7 @@ GLFWbool _glfwInitWGL(void)
     if (_glfw.wgl.instance)
         return GLFW_TRUE;
 
-    _glfw.wgl.instance = _glfwPlatformLoadModule("opengl32.dll");
+    _glfw.wgl.instance = LoadLibraryA("opengl32.dll");
     if (!_glfw.wgl.instance)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,

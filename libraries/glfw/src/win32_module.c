@@ -28,15 +28,6 @@
 
 #if defined(GLFW_BUILD_WIN32_MODULE)
 
-//////////////////////////////////////////////////////////////////////////
-//////                       GLFW platform API                      //////
-//////////////////////////////////////////////////////////////////////////
-
-void* _glfwPlatformLoadModule(const char* path)
-{
-    return LoadLibraryA(path);
-}
-
 GLFWproc _glfwPlatformGetModuleSymbol(void* module, const char* name)
 {
     return (GLFWproc) GetProcAddress((HMODULE) module, name);

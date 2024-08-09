@@ -81,7 +81,7 @@ static GLFWbool loadLibraries(void)
         return GLFW_FALSE;
     }
 
-    _glfw.win32.user32.instance = _glfwPlatformLoadModule("user32.dll");
+    _glfw.win32.user32.instance = LoadLibraryA("user32.dll");
     if (!_glfw.win32.user32.instance)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -104,7 +104,7 @@ static GLFWbool loadLibraries(void)
     _glfw.win32.user32.GetSystemMetricsForDpi_ = (PFN_GetSystemMetricsForDpi)
         _glfwPlatformGetModuleSymbol(_glfw.win32.user32.instance, "GetSystemMetricsForDpi");
 
-    _glfw.win32.dwmapi.instance = _glfwPlatformLoadModule("dwmapi.dll");
+    _glfw.win32.dwmapi.instance = LoadLibraryA("dwmapi.dll");
     if (_glfw.win32.dwmapi.instance)
     {
         _glfw.win32.dwmapi.IsCompositionEnabled = (PFN_DwmIsCompositionEnabled)
@@ -117,7 +117,7 @@ static GLFWbool loadLibraries(void)
             _glfwPlatformGetModuleSymbol(_glfw.win32.dwmapi.instance, "DwmGetColorizationColor");
     }
 
-    _glfw.win32.shcore.instance = _glfwPlatformLoadModule("shcore.dll");
+    _glfw.win32.shcore.instance = LoadLibraryA("shcore.dll");
     if (_glfw.win32.shcore.instance)
     {
         _glfw.win32.shcore.SetProcessDpiAwareness_ = (PFN_SetProcessDpiAwareness)
@@ -126,7 +126,7 @@ static GLFWbool loadLibraries(void)
             _glfwPlatformGetModuleSymbol(_glfw.win32.shcore.instance, "GetDpiForMonitor");
     }
 
-    _glfw.win32.ntdll.instance = _glfwPlatformLoadModule("ntdll.dll");
+    _glfw.win32.ntdll.instance = LoadLibraryA("ntdll.dll");
     if (_glfw.win32.ntdll.instance)
     {
         _glfw.win32.ntdll.RtlVerifyVersionInfo_ = (PFN_RtlVerifyVersionInfo)
@@ -582,10 +582,7 @@ GLFWbool _glfwConnectWin32(int platformID, _GLFWplatform* platform)
         .setWindowDecorated = _glfwSetWindowDecoratedWin32,
         .setWindowFloating = _glfwSetWindowFloatingWin32,
         .setWindowMousePassthrough = _glfwSetWindowMousePassthroughWin32,
-        .pollEvents = _glfwPollEventsWin32,
-        .getRequiredInstanceExtensions = _glfwGetRequiredInstanceExtensionsWin32,
-        .getPhysicalDevicePresentationSupport = _glfwGetPhysicalDevicePresentationSupportWin32,
-        .createWindowSurface = _glfwCreateWindowSurfaceWin32
+        .pollEvents = _glfwPollEventsWin32
     };
 
     *platform = win32;

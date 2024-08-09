@@ -100,68 +100,6 @@ typedef const GLubyte* (APIENTRY * PFNGLGETSTRINGPROC)(GLenum);
 typedef void (APIENTRY * PFNGLGETINTEGERVPROC)(GLenum,GLint*);
 typedef const GLubyte* (APIENTRY * PFNGLGETSTRINGIPROC)(GLenum,GLuint);
 
-#define VK_NULL_HANDLE 0
-
-typedef void* VkInstance;
-typedef void* VkPhysicalDevice;
-typedef uint64_t VkSurfaceKHR;
-typedef uint32_t VkFlags;
-typedef uint32_t VkBool32;
-
-typedef enum VkStructureType
-{
-    VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR = 1000004000,
-    VK_STRUCTURE_TYPE_XCB_SURFACE_CREATE_INFO_KHR = 1000005000,
-    VK_STRUCTURE_TYPE_WAYLAND_SURFACE_CREATE_INFO_KHR = 1000006000,
-    VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR = 1000009000,
-    VK_STRUCTURE_TYPE_MACOS_SURFACE_CREATE_INFO_MVK = 1000123000,
-    VK_STRUCTURE_TYPE_METAL_SURFACE_CREATE_INFO_EXT = 1000217000,
-    VK_STRUCTURE_TYPE_HEADLESS_SURFACE_CREATE_INFO_EXT = 1000256000,
-    VK_STRUCTURE_TYPE_MAX_ENUM = 0x7FFFFFFF
-} VkStructureType;
-
-typedef enum VkResult
-{
-    VK_SUCCESS = 0,
-    VK_NOT_READY = 1,
-    VK_TIMEOUT = 2,
-    VK_EVENT_SET = 3,
-    VK_EVENT_RESET = 4,
-    VK_INCOMPLETE = 5,
-    VK_ERROR_OUT_OF_HOST_MEMORY = -1,
-    VK_ERROR_OUT_OF_DEVICE_MEMORY = -2,
-    VK_ERROR_INITIALIZATION_FAILED = -3,
-    VK_ERROR_DEVICE_LOST = -4,
-    VK_ERROR_MEMORY_MAP_FAILED = -5,
-    VK_ERROR_LAYER_NOT_PRESENT = -6,
-    VK_ERROR_EXTENSION_NOT_PRESENT = -7,
-    VK_ERROR_FEATURE_NOT_PRESENT = -8,
-    VK_ERROR_INCOMPATIBLE_DRIVER = -9,
-    VK_ERROR_TOO_MANY_OBJECTS = -10,
-    VK_ERROR_FORMAT_NOT_SUPPORTED = -11,
-    VK_ERROR_SURFACE_LOST_KHR = -1000000000,
-    VK_SUBOPTIMAL_KHR = 1000001003,
-    VK_ERROR_OUT_OF_DATE_KHR = -1000001004,
-    VK_ERROR_INCOMPATIBLE_DISPLAY_KHR = -1000003001,
-    VK_ERROR_NATIVE_WINDOW_IN_USE_KHR = -1000000001,
-    VK_ERROR_VALIDATION_FAILED_EXT = -1000011001,
-    VK_RESULT_MAX_ENUM = 0x7FFFFFFF
-} VkResult;
-
-typedef struct VkAllocationCallbacks VkAllocationCallbacks;
-
-typedef struct VkExtensionProperties
-{
-    char            extensionName[256];
-    uint32_t        specVersion;
-} VkExtensionProperties;
-
-typedef void (APIENTRY * PFN_vkVoidFunction)(void);
-
-typedef PFN_vkVoidFunction (APIENTRY * PFN_vkGetInstanceProcAddr)(VkInstance,const char*);
-typedef VkResult (APIENTRY * PFN_vkEnumerateInstanceExtensionProperties)(const char*,uint32_t*,VkExtensionProperties*);
-#define vkGetInstanceProcAddr _glfw.vk.GetInstanceProcAddr
-
 #include "platform.h"
 
 #define GLFW_NATIVE_INCLUDE_NONE
@@ -200,7 +138,6 @@ struct _GLFWerror
 struct _GLFWinitconfig
 {
     int           platformID;
-    PFN_vkGetInstanceProcAddr vulkanLoader;
 };
 
 struct _GLFWwndconfig
@@ -440,10 +377,6 @@ struct _GLFWplatform
     void (*setWindowFloating)(_GLFWwindow*,GLFWbool);
     void (*setWindowMousePassthrough)(_GLFWwindow*,GLFWbool);
     void (*pollEvents)();
-    // vulkan
-    void (*getRequiredInstanceExtensions)(char**);
-    GLFWbool (*getPhysicalDevicePresentationSupport)(VkInstance,VkPhysicalDevice,uint32_t);
-    VkResult (*createWindowSurface)(VkInstance,_GLFWwindow*,const VkAllocationCallbacks*,VkSurfaceKHR*);
 };
 
 struct _GLFWlibrary
@@ -479,21 +412,6 @@ struct _GLFWlibrary
     } timer;
 
     struct {
-        GLFWbool        available;
-        void*           handle;
-        char*           extensions[2];
-        PFN_vkGetInstanceProcAddr GetInstanceProcAddr;
-        GLFWbool        KHR_surface;
-        GLFWbool        KHR_win32_surface;
-        GLFWbool        MVK_macos_surface;
-        GLFWbool        EXT_metal_surface;
-        GLFWbool        KHR_xlib_surface;
-        GLFWbool        KHR_xcb_surface;
-        GLFWbool        KHR_wayland_surface;
-        GLFWbool        EXT_headless_surface;
-    } vk;
-
-    struct {
         GLFWmonitorfun  monitor;
         GLFWjoystickfun joystick;
     } callbacks;
@@ -518,7 +436,6 @@ void _glfwPlatformDestroyMutex(_GLFWmutex* mutex);
 void _glfwPlatformLockMutex(_GLFWmutex* mutex);
 void _glfwPlatformUnlockMutex(_GLFWmutex* mutex);
 
-void* _glfwPlatformLoadModule(const char* path);
 GLFWproc _glfwPlatformGetModuleSymbol(void* module, const char* name);
 
 void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused);
@@ -561,10 +478,6 @@ void _glfwFreeGammaArrays(GLFWgammaramp* ramp);
 void _glfwSplitBPP(int bpp, int* red, int* green, int* blue);
 
 void _glfwCenterCursorInContentArea(_GLFWwindow* window);
-
-GLFWbool _glfwInitVulkan(int mode);
-void _glfwTerminateVulkan(void);
-const char* _glfwGetVulkanResultString(VkResult result);
 
 char* _glfw_strdup(const char* source);
 int _glfw_min(int a, int b);

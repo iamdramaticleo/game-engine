@@ -39,8 +39,7 @@ static _GLFWerror _glfwMainThreadError;
 static GLFWallocator _glfwInitAllocator;
 static _GLFWinitconfig _glfwInitHints =
 {
-    .platformID   = GLFW_ANY_PLATFORM,
-    .vulkanLoader = NULL
+    .platformID = GLFW_ANY_PLATFORM
 };
 
 static void* defaultAllocate(size_t size, void* user)
@@ -80,9 +79,7 @@ static void terminate()
     _glfw.monitors = NULL;
     _glfw.monitorCount = 0;
 
-    _glfwTerminateVulkan();
     _glfw.platform.terminate();
-
     _glfw.initialized = GLFW_FALSE;
 
     while (_glfw.errorListHead)
@@ -321,11 +318,6 @@ GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator)
     }
     else
         memset(&_glfwInitAllocator, 0, sizeof(GLFWallocator));
-}
-
-GLFWAPI void glfwInitVulkanLoader(PFN_vkGetInstanceProcAddr loader)
-{
-    _glfwInitHints.vulkanLoader = loader;
 }
 
 GLFWAPI int glfwGetError(const char** description)
