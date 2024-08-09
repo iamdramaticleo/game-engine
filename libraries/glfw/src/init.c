@@ -31,7 +31,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <assert.h>
 
 _GLFWlibrary _glfw = { GLFW_FALSE };
 
@@ -45,11 +44,6 @@ static _GLFWinitconfig _glfwInitHints =
 static void* defaultAllocate(size_t size, void* user)
 {
     return malloc(size);
-}
-
-static void defaultDeallocate(void* block, void* user)
-{
-    free(block);
 }
 
 static void* defaultReallocate(void* block, size_t size, void* user)
@@ -164,7 +158,7 @@ void* _glfw_realloc(void* block, size_t size)
 void _glfw_free(void* block)
 {
     if (block)
-        _glfw.allocator.deallocate(block, _glfw.allocator.user);
+        free(block);
 }
 
 
@@ -256,7 +250,6 @@ GLFWAPI int glfwInit()
     {
         _glfw.allocator.allocate   = defaultAllocate;
         _glfw.allocator.reallocate = defaultReallocate;
-        _glfw.allocator.deallocate = defaultDeallocate;
     }
 
     if (!_glfwSelectPlatform(_glfw.hints.init.platformID, &_glfw.platform))
@@ -311,7 +304,7 @@ GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator)
 {
     if (allocator)
     {
-        if (allocator->allocate && allocator->reallocate && allocator->deallocate)
+        if (allocator->allocate && allocator->reallocate)
             _glfwInitAllocator = *allocator;
         else
             _glfwInputError(GLFW_INVALID_VALUE, "Missing function in allocator");

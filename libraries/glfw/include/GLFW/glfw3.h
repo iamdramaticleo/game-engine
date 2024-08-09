@@ -1306,10 +1306,6 @@ typedef struct GLFWallocator
      *  reallocation function.
      */
     GLFWreallocatefun reallocate;
-    /*! The memory deallocation function.  See @ref GLFWdeallocatefun for details about
-     *  deallocation function.
-     */
-    GLFWdeallocatefun deallocate;
     /*! The user pointer for this custom allocator.  This value will be passed to the
      *  allocator functions.
      */

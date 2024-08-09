@@ -185,40 +185,6 @@ typedef enum
 #define _glfwIsWindows10Version1703OrGreaterWin32() \
     _glfwIsWindows10BuildOrGreaterWin32(15063)
 
-// HACK: Define macros that some xinput.h variants don't
-#ifndef XINPUT_CAPS_WIRELESS
- #define XINPUT_CAPS_WIRELESS 0x0002
-#endif
-#ifndef XINPUT_DEVSUBTYPE_WHEEL
- #define XINPUT_DEVSUBTYPE_WHEEL 0x02
-#endif
-#ifndef XINPUT_DEVSUBTYPE_ARCADE_STICK
- #define XINPUT_DEVSUBTYPE_ARCADE_STICK 0x03
-#endif
-#ifndef XINPUT_DEVSUBTYPE_FLIGHT_STICK
- #define XINPUT_DEVSUBTYPE_FLIGHT_STICK 0x04
-#endif
-#ifndef XINPUT_DEVSUBTYPE_DANCE_PAD
- #define XINPUT_DEVSUBTYPE_DANCE_PAD 0x05
-#endif
-#ifndef XINPUT_DEVSUBTYPE_GUITAR
- #define XINPUT_DEVSUBTYPE_GUITAR 0x06
-#endif
-#ifndef XINPUT_DEVSUBTYPE_DRUM_KIT
- #define XINPUT_DEVSUBTYPE_DRUM_KIT 0x08
-#endif
-#ifndef XINPUT_DEVSUBTYPE_ARCADE_PAD
- #define XINPUT_DEVSUBTYPE_ARCADE_PAD 0x13
-#endif
-#ifndef XUSER_MAX_COUNT
- #define XUSER_MAX_COUNT 4
-#endif
-
-// HACK: Define macros that some dinput.h variants don't
-#ifndef DIDFT_OPTIONAL
- #define DIDFT_OPTIONAL 0x80000000
-#endif
-
 #define WGL_NUMBER_PIXEL_FORMATS_ARB 0x2000
 #define WGL_SUPPORT_OPENGL_ARB 0x2010
 #define WGL_DRAW_TO_WINDOW_ARB 0x2001
