@@ -436,8 +436,6 @@ void _glfwPlatformDestroyMutex(_GLFWmutex* mutex);
 void _glfwPlatformLockMutex(_GLFWmutex* mutex);
 void _glfwPlatformUnlockMutex(_GLFWmutex* mutex);
 
-GLFWproc _glfwPlatformGetModuleSymbol(void* module, const char* name);
-
 void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused);
 void _glfwInputWindowPos(_GLFWwindow* window, int xpos, int ypos);
 void _glfwInputWindowSize(_GLFWwindow* window, int width, int height);
